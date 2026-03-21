@@ -125,7 +125,7 @@ const CompanyDashboard = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-[#050505] font-sans text-white selection:bg-accent-500/30 selection:text-white relative overflow-hidden flex">
+        <div className="h-screen w-full bg-[#050505] font-sans text-white selection:bg-accent-500/30 selection:text-white relative overflow-hidden flex">
 
             {/* Background Dots */}
             <div className="fixed inset-0 pointer-events-none z-0 dotted-bg"></div>
