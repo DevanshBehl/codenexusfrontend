@@ -43,6 +43,7 @@ const CompanyDashboard = () => {
         { icon: Users, label: 'CANDIDATES' },
         { icon: Swords, label: 'CODE ARENA' },
         { icon: Video, label: 'INTERVIEWS' },
+        { icon: CheckCircle2, label: 'EVALUATIONS', onClick: () => window.location.href = '/company/evaluation' },
         { icon: BarChart3, label: 'ANALYTICS' },
     ];
 

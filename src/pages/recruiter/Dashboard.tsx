@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Terminal,
@@ -23,7 +23,8 @@ import {
     Award,
     Code2,
     FileText,
-    MessageSquare
+    MessageSquare,
+    Trophy
 } from 'lucide-react';
 
 /* ────────── Types & Mock Data ────────── */
@@ -244,7 +245,6 @@ const RECORDINGS: Recording[] = [
 
 /* ────────── Component ────────── */
 export default function RecruiterDashboard() {
-    const navigate = useNavigate();
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [activeTab, setActiveTab] = useState<TabType>('INTERVIEWS');
     const [studentFilter, setStudentFilter] = useState<StudentFilter>('ALL');
