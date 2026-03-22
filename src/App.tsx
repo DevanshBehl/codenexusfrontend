@@ -17,12 +17,14 @@ import WebinarRoom from './pages/shared/WebinarRoom';
 import WebinarList from './pages/shared/WebinarList';
 import Mail from './pages/mail/Mail';
 import UniversityEvaluation from './pages/university/Evaluation';
+import AboutDeveloper from './pages/AboutDeveloper';
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Landing />} />
+        <Route path="/about-developer" element={<AboutDeveloper />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/student/mail/*" element={<Mail />} />

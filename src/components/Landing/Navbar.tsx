@@ -8,9 +8,10 @@ export default function Navbar() {
                     <span>{'<'}cn/{'>'}</span>
                 </div>
                 <div className="hidden md:flex items-center gap-6 text-sm text-[#888]">
-                    <a href="#" className="text-white border-b-2 border-accent-500 pb-1">CodeNexus</a>
+                    <Link to="/" className="text-white border-b-2 border-accent-500 pb-1">CodeNexus</Link>
                     <a href="#prep" className="hover:text-white transition-colors">For Students</a>
                     <a href="#hiring" className="hover:text-white transition-colors">For HR & Universities</a>
+                    <Link to="/about-developer" className="hover:text-white transition-colors">About Developer</Link>
                 </div>
             </div>
             <div className="hidden md:flex items-center gap-4 text-sm font-mono">
