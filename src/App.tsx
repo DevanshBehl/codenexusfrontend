@@ -8,6 +8,7 @@ import CodeArena from './pages/student/CodeArena';
 import CodeArenaProblem from './pages/student/CodeArenaProblem';
 import UniversityDashboard from './pages/university/Dashboard';
 import CompanyDashboard from './pages/company/Dashboard';
+import CreateContest from './pages/company/CreateContest';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/student/codearena/:id" element={<CodeArenaProblem />} />
         <Route path="/university/dashboard" element={<UniversityDashboard />} />
         <Route path="/company/dashboard" element={<CompanyDashboard />} />
+        <Route path="/company/create-contest" element={<CreateContest />} />
       </Routes>
     </Router>
   );

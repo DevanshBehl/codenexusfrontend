@@ -36,7 +36,6 @@ const CompanyDashboard = () => {
     const [studentFilter, setStudentFilter] = useState<StudentFilter>('ALL');
     const [searchQuery, setSearchQuery] = useState('');
     const [showScheduleModal, setShowScheduleModal] = useState(false);
-    const [showContestModal, setShowContestModal] = useState(false);
 
     const sidebarItems = [
         { icon: Terminal, label: 'CMD CENTER', active: true },
@@ -236,12 +235,12 @@ const CompanyDashboard = () => {
                         </div>
 
                         <div className="flex gap-3 flex-wrap">
-                            <button
-                                onClick={() => setShowContestModal(!showContestModal)}
+                            <Link
+                                to="/company/create-contest"
                                 className="border border-[#555] bg-transparent text-white px-4 py-2 font-bold hover:bg-[#111] transition-colors text-xs font-mono uppercase tracking-widest flex items-center gap-2"
                             >
                                 <Trophy size={14} /> Create Contest
-                            </button>
+                            </Link>
                             <button
                                 onClick={() => setShowScheduleModal(!showScheduleModal)}
                                 className="bg-[#e0e0e0] text-black px-4 py-2 font-bold hover:bg-white transition-colors text-xs font-mono uppercase tracking-widest flex items-center gap-2 group"
@@ -471,69 +470,16 @@ const CompanyDashboard = () => {
                                                 </h3>
                                                 <p className="text-[10px] font-mono text-[#888] mt-1">Design custom coding challenges to evaluate candidates at scale</p>
                                             </div>
-                                            <button
-                                                onClick={() => setShowContestModal(!showContestModal)}
+                                            <Link
+                                                to="/company/create-contest"
                                                 className="bg-[#e0e0e0] text-black px-4 py-2 font-bold hover:bg-white transition-colors text-xs font-mono uppercase tracking-widest flex items-center gap-2 group shrink-0"
                                             >
                                                 <Plus size={14} /> New Contest <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                                            </button>
+                                            </Link>
                                         </div>
                                     </div>
 
-                                    {/* Contest Modal */}
-                                    <AnimatePresence>
-                                        {showContestModal && (
-                                            <motion.div
-                                                initial={{ opacity: 0, height: 0 }}
-                                                animate={{ opacity: 1, height: 'auto' }}
-                                                exit={{ opacity: 0, height: 0 }}
-                                                className="bg-[#0A0A0A] border border-[#333] rounded-sm overflow-hidden"
-                                            >
-                                                <div className="p-6 space-y-4">
-                                                    <h4 className="text-xs font-mono uppercase tracking-widest text-accent-400 mb-4">New Contest Configuration</h4>
-                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                                        <div>
-                                                            <label className="text-[10px] font-mono uppercase tracking-widest text-[#888] block mb-2">Contest Title</label>
-                                                            <input className="w-full bg-[#050505] border border-[#333] rounded-sm px-3 py-2 text-xs font-mono text-white placeholder:text-[#555] outline-none focus:border-accent-500 transition-colors" placeholder="e.g., SDE Hiring Challenge" />
-                                                        </div>
-                                                        <div>
-                                                            <label className="text-[10px] font-mono uppercase tracking-widest text-[#888] block mb-2">Date & Time</label>
-                                                            <input type="datetime-local" className="w-full bg-[#050505] border border-[#333] rounded-sm px-3 py-2 text-xs font-mono text-white outline-none focus:border-accent-500 transition-colors [color-scheme:dark]" />
-                                                        </div>
-                                                        <div>
-                                                            <label className="text-[10px] font-mono uppercase tracking-widest text-[#888] block mb-2">Duration</label>
-                                                            <select className="w-full bg-[#050505] border border-[#333] rounded-sm px-3 py-2 text-xs font-mono text-white outline-none focus:border-accent-500 transition-colors">
-                                                                <option>1 hour</option>
-                                                                <option>1.5 hours</option>
-                                                                <option>2 hours</option>
-                                                                <option>3 hours</option>
-                                                            </select>
-                                                        </div>
-                                                        <div>
-                                                            <label className="text-[10px] font-mono uppercase tracking-widest text-[#888] block mb-2">No. of Problems</label>
-                                                            <select className="w-full bg-[#050505] border border-[#333] rounded-sm px-3 py-2 text-xs font-mono text-white outline-none focus:border-accent-500 transition-colors">
-                                                                <option>3 Problems</option>
-                                                                <option>4 Problems</option>
-                                                                <option>5 Problems</option>
-                                                                <option>6 Problems</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div className="flex gap-3 pt-2">
-                                                        <button className="bg-[#e0e0e0] text-black px-4 py-2 font-bold hover:bg-white transition-colors text-xs font-mono uppercase tracking-widest">
-                                                            Create Contest
-                                                        </button>
-                                                        <button
-                                                            onClick={() => setShowContestModal(false)}
-                                                            className="border border-[#333] text-[#888] px-4 py-2 font-bold hover:text-white hover:border-[#555] transition-colors text-xs font-mono uppercase tracking-widest"
-                                                        >
-                                                            Cancel
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
+
 
                                     {/* Existing Contests */}
                                     <div className="bg-[#0A0A0A] border border-[#222] rounded-sm">
