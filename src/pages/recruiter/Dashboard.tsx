@@ -254,7 +254,7 @@ export default function RecruiterDashboard() {
     const [selectedReport, setSelectedReport] = useState<Recording | null>(null);
 
     const sidebarItems = [
-        { icon: Mail, label: 'MAIL', onClick: () => window.location.href = '/mail' },
+        { icon: Mail, label: 'MAIL', onClick: () => window.location.href = '/recruiter/mail' },
         { icon: Terminal, label: 'CMD CENTER', active: true },
         { icon: Video, label: 'INTERVIEWS', onClick: () => setActiveTab('INTERVIEWS') },
         { icon: Play, label: 'RECORDINGS', onClick: () => setActiveTab('RECORDINGS') },

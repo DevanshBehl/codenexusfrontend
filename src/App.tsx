@@ -22,7 +22,10 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/mail/*" element={<Mail />} />
+        <Route path="/student/mail/*" element={<Mail />} />
+        <Route path="/university/mail/*" element={<Mail />} />
+        <Route path="/company/mail/*" element={<Mail />} />
+        <Route path="/recruiter/mail/*" element={<Mail />} />
         <Route path="/student/dashboard" element={<StudentDashboard />} />
         <Route path="/student/codearena" element={<CodeArena />} />
         <Route path="/student/codearena/:id" element={<CodeArenaProblem />} />

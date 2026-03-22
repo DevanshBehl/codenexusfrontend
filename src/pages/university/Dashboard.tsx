@@ -31,7 +31,7 @@ const UniversityDashboard = () => {
     const [searchQuery, setSearchQuery] = useState('');
 
     const sidebarItems = [
-        { icon: Mail, label: 'MAIL', onClick: () => window.location.href = '/mail' },
+        { icon: Mail, label: 'MAIL', onClick: () => window.location.href = '/university/mail' },
         { icon: Terminal, label: 'CMD CENTER', active: true },
         { icon: Building2, label: 'COMPANIES' },
         { icon: Users, label: 'STUDENTS' },

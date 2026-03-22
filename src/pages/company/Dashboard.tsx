@@ -39,7 +39,7 @@ const CompanyDashboard = () => {
     const [showScheduleModal, setShowScheduleModal] = useState(false);
 
     const sidebarItems = [
-        { icon: Mail, label: 'MAIL', onClick: () => window.location.href = '/mail' },
+        { icon: Mail, label: 'MAIL', onClick: () => window.location.href = '/company/mail' },
         { icon: Terminal, label: 'CMD CENTER', active: true },
         { icon: Building2, label: 'UNIVERSITIES' },
         { icon: Users, label: 'CANDIDATES' },

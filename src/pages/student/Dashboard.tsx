@@ -20,7 +20,7 @@ const StudentDashboard = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
     const sidebarItems = [
-        { icon: Mail, label: 'MAIL', onClick: () => window.location.href = '/mail' },
+        { icon: Mail, label: 'MAIL', onClick: () => window.location.href = '/student/mail' },
         { icon: Terminal, label: 'CMD CENTER', active: true },
         { icon: Code2, label: 'CODE ARENA' },
         { icon: Briefcase, label: 'INTERVIEWS' },
