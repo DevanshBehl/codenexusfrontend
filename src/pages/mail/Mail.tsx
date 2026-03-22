@@ -385,7 +385,7 @@ export default function Mail() {
                         /* Inbox / Sent View */
                         <div className="flex-1 flex bg-[#050505] overflow-hidden">
                             {/* List */ }
-                            <div className={`w-full ${selectedMail ? 'hidden lg:flex w-[400px] border-r border-[#222]' : 'flex'} flex-col bg-[#0A0A0A]`}>
+                            <div className="w-full h-full flex flex-col bg-[#0A0A0A]">
                                 <div className="flex-1 overflow-y-auto custom-scrollbar divide-y divide-[#1a1a1a]">
                                     {displayList.map(mail => (
                                         <div 
@@ -416,48 +416,64 @@ export default function Mail() {
                                 </div>
                             </div>
 
-                            {/* Viewer */ }
+                            {/* Viewer Modal */ }
+                            <AnimatePresence>
                             {selectedMail && (
-                                <div className="flex-1 flex flex-col bg-[#050505]">
-                                    <div className="p-6 border-b border-[#222] bg-[#0A0A0A] flex justify-between items-start gap-4">
-                                        <div className="flex-1">
-                                            <h2 className="text-xl lg:text-3xl font-bold font-sans text-white mb-6 tracking-tight">{selectedMail.subject}</h2>
-                                            <div className="flex items-start justify-between">
-                                                <div className="flex items-center gap-4">
-                                                    <div className="w-10 h-10 bg-[#111] border border-[#333] rounded-full flex items-center justify-center">
-                                                        <User size={18} className="text-[#888]" />
-                                                    </div>
-                                                    <div>
-                                                        <div className="font-bold text-sm text-white flex items-center gap-2">
-                                                            {selectedMail.senderName}
-                                                            <span className={`text-[9px] font-mono px-1.5 py-0.5 border rounded-sm tracking-widest uppercase ${getRoleColor(selectedMail.senderRole)}`}>
-                                                                {selectedMail.senderRole}
-                                                            </span>
+                                <motion.div 
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+                                    onClick={() => setSelectedMail(null)}
+                                >
+                                    <motion.div 
+                                        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                                        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                                        onClick={(e) => e.stopPropagation()}
+                                        className="w-full max-w-4xl h-[85vh] bg-[#0A0A0A] border border-[#333] rounded-sm flex flex-col shadow-2xl overflow-hidden"
+                                    >
+                                        <div className="p-6 border-b border-[#222] bg-[#111] flex justify-between items-start gap-4">
+                                            <div className="flex-1">
+                                                <h2 className="text-xl lg:text-3xl font-bold font-sans text-white mb-6 tracking-tight">{selectedMail.subject}</h2>
+                                                <div className="flex items-start justify-between">
+                                                    <div className="flex items-center gap-4">
+                                                        <div className="w-10 h-10 bg-[#1a1a1a] border border-[#333] rounded-full flex items-center justify-center">
+                                                            <User size={18} className="text-[#888]" />
                                                         </div>
-                                                        <div className="text-[10px] font-mono text-[#666] mt-1">
-                                                            From: <span className="text-[#aaa]">{selectedMail.senderId}</span> • To: <span className="text-[#aaa]">{currentView === 'INBOX' ? 'Me' : selectedMail.recipientId}</span>
+                                                        <div>
+                                                            <div className="font-bold text-sm text-white flex items-center gap-2">
+                                                                {selectedMail.senderName}
+                                                                <span className={`text-[9px] font-mono px-1.5 py-0.5 border rounded-sm tracking-widest uppercase ${getRoleColor(selectedMail.senderRole)}`}>
+                                                                    {selectedMail.senderRole}
+                                                                </span>
+                                                            </div>
+                                                            <div className="text-[10px] font-mono text-[#666] mt-1">
+                                                                From: <span className="text-[#aaa]">{selectedMail.senderId}</span> • To: <span className="text-[#aaa]">{currentView === 'INBOX' ? 'Me' : selectedMail.recipientId}</span>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div className="text-[10px] font-mono text-[#555] whitespace-nowrap">
-                                                    {selectedMail.timestamp}
+                                                    <div className="text-[10px] font-mono text-[#555] whitespace-nowrap">
+                                                        {selectedMail.timestamp}
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <button 
+                                                onClick={() => setSelectedMail(null)}
+                                                className="p-2 text-[#666] hover:text-white hover:bg-[#222] border border-[#333] rounded-sm transition-colors"
+                                            >
+                                                <X size={16} />
+                                            </button>
                                         </div>
-                                        <button 
-                                            onClick={() => setSelectedMail(null)}
-                                            className="lg:hidden p-2 text-[#666] hover:text-white hover:bg-[#111] border border-[#333] rounded-sm transition-colors"
-                                        >
-                                            <X size={16} />
-                                        </button>
-                                    </div>
-                                    <div className="flex-1 overflow-y-auto custom-scrollbar p-6 lg:p-10">
-                                        <div className="max-w-3xl font-sans text-[#ccc] whitespace-pre-wrap leading-[1.8] text-sm md:text-base">
-                                            {selectedMail.body}
+                                        <div className="flex-1 overflow-y-auto custom-scrollbar p-6 lg:p-10 bg-[#050505]">
+                                            <div className="max-w-3xl font-sans text-[#ccc] whitespace-pre-wrap leading-[1.8] text-sm md:text-base">
+                                                {selectedMail.body}
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
+                                    </motion.div>
+                                </motion.div>
                             )}
+                            </AnimatePresence>
                         </div>
                     )}
                 </div>
