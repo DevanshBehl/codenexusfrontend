@@ -6,12 +6,12 @@ import {
     Building2,
     Users,
     BarChart3,
+    FileBarChart,
     ChevronRight,
     ChevronLeft,
     LogOut,
-    Video,
     CheckCircle2,
-    Swords,
+    Briefcase,
     Search,
     Play,
     Star,
@@ -19,8 +19,6 @@ import {
     MessageSquare,
     Code2,
     FileText,
-    Check,
-    XCircle
 } from 'lucide-react';
 
 /* ────────── Types & Mock Data ────────── */
@@ -36,7 +34,7 @@ interface SolvedQuestion {
 interface EvaluationCandidate {
     id: string;
     student: string;
-    university: string;
+    company: string;
     recruiter: string;
     role: string;
     date: string;
@@ -52,7 +50,7 @@ const mockCandidates: EvaluationCandidate[] = [
     {
         id: 'c1',
         student: 'Kavya Iyer',
-        university: 'IIT Bombay',
+        company: 'Flipkart',
         recruiter: 'John Doe',
         role: 'Backend Eng.',
         date: 'Mar 13, 2026',
@@ -72,14 +70,15 @@ const mockCandidates: EvaluationCandidate[] = [
     {
         id: 'c2',
         student: 'Arjun Nair',
-        university: 'BITS Pilani',
+        company: 'Stripe',
         recruiter: 'Jane Smith',
         role: 'SDE I',
         date: 'Mar 12, 2026',
         duration: '40 min',
         rating: 2.8,
-        status: 'PENDING',
+        status: 'REJECTED',
         notes: "Candidate was unable to grasp the optimal solution even after several hints. The basic string manipulation question was left incomplete.",
+        evaluatorNote: "Does not meet technical bar currently. Pass for now.",
         questions: [
             {
                 title: 'Valid Palindrome',
@@ -92,7 +91,7 @@ const mockCandidates: EvaluationCandidate[] = [
     {
         id: 'c3',
         student: 'Vikram Singh',
-        university: 'NIT Trichy',
+        company: 'Meta',
         recruiter: 'John Doe',
         role: 'Systems Eng.',
         date: 'Mar 14, 2026',
@@ -112,22 +111,21 @@ const mockCandidates: EvaluationCandidate[] = [
     }
 ];
 
-export default function CompanyEvaluation() {
+export default function UniversityEvaluation() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-    const [activeTab, setActiveTab] = useState<TabType>('PENDING');
+    const [activeTab, setActiveTab] = useState<TabType>('EVALUATED');
     const [searchQuery, setSearchQuery] = useState('');
-    const [candidates, setCandidates] = useState<EvaluationCandidate[]>(mockCandidates);
+    const [candidates] = useState<EvaluationCandidate[]>(mockCandidates);
     const [selectedCandidate, setSelectedCandidate] = useState<EvaluationCandidate | null>(null);
-    const [evaluatorNote, setEvaluatorNote] = useState('');
 
     const sidebarItems = [
-        { icon: Terminal, label: 'CMD CENTER', onClick: () => window.location.href = '/company/dashboard' },
-        { icon: Building2, label: 'UNIVERSITIES', onClick: () => window.location.href = '/company/dashboard' },
-        { icon: Users, label: 'CANDIDATES', onClick: () => window.location.href = '/company/dashboard' },
-        { icon: Swords, label: 'CODE ARENA', onClick: () => window.location.href = '/company/dashboard' },
-        { icon: Video, label: 'INTERVIEWS', onClick: () => window.location.href = '/company/dashboard' },
+        { icon: Terminal, label: 'CMD CENTER', onClick: () => window.location.href = '/university/dashboard' },
+        { icon: Building2, label: 'COMPANIES', onClick: () => window.location.href = '/university/dashboard' },
+        { icon: Users, label: 'STUDENTS', onClick: () => window.location.href = '/university/dashboard' },
+        { icon: Briefcase, label: 'PLACEMENTS', onClick: () => window.location.href = '/university/dashboard' },
         { icon: CheckCircle2, label: 'EVALUATIONS', active: true },
-        { icon: BarChart3, label: 'ANALYTICS', onClick: () => window.location.href = '/company/dashboard' },
+        { icon: BarChart3, label: 'ANALYTICS', onClick: () => window.location.href = '/university/dashboard' },
+        { icon: FileBarChart, label: 'REPORTS', onClick: () => window.location.href = '/university/dashboard' },
     ];
 
     const getStatusStyle = (status: string) => {
@@ -139,23 +137,11 @@ export default function CompanyEvaluation() {
         }
     };
 
-    const handleEvaluation = (status: 'SELECTED' | 'REJECTED') => {
-        if (!selectedCandidate) return;
-        setCandidates(prev => prev.map(c => {
-            if (c.id === selectedCandidate.id) {
-                return { ...c, status, evaluatorNote };
-            }
-            return c;
-        }));
-        setSelectedCandidate(null);
-        setEvaluatorNote('');
-    };
-
     const displayList = candidates.filter(c => {
         const matchesTab = activeTab === 'PENDING' ? c.status === 'PENDING' : c.status !== 'PENDING';
         const matchesSearch = c.student.toLowerCase().includes(searchQuery.toLowerCase()) ||
             c.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            c.recruiter.toLowerCase().includes(searchQuery.toLowerCase());
+            c.company.toLowerCase().includes(searchQuery.toLowerCase());
         return matchesTab && matchesSearch;
     });
 
@@ -227,7 +213,7 @@ export default function CompanyEvaluation() {
                 <div className="p-4 border-t border-[#222]">
                     <div className="flex items-center group cursor-pointer hover:bg-[#111] p-2 rounded-sm border border-transparent hover:border-[#333] transition-colors">
                         <div className="w-8 h-8 rounded-sm bg-[#1a1a1a] border border-[#333] flex items-center justify-center text-white font-mono text-xs font-bold shrink-0">
-                            TC
+                            PC
                         </div>
                         <AnimatePresence>
                             {isSidebarOpen && (
@@ -238,8 +224,8 @@ export default function CompanyEvaluation() {
                                     className="ml-3 overflow-hidden flex-1 flex items-center justify-between"
                                 >
                                     <div>
-                                        <p className="text-xs font-mono text-white whitespace-nowrap uppercase tracking-wider">TechCorp Inc.</p>
-                                        <p className="text-[10px] font-mono text-[#888] whitespace-nowrap">HR MANAGER</p>
+                                        <p className="text-xs font-mono text-white whitespace-nowrap uppercase tracking-wider">Placement Cell</p>
+                                        <p className="text-[10px] font-mono text-accent-500 whitespace-nowrap">UNIVERSITY</p>
                                     </div>
                                     <LogOut size={14} className="text-[#555] group-hover:text-red-400 transition-colors" />
                                 </motion.div>
@@ -259,29 +245,18 @@ export default function CompanyEvaluation() {
 
                         <div className="inline-flex items-center gap-2 border border-[#333] bg-[#111] px-2 py-1 text-[10px] text-[#aaa] rounded-sm mb-4 font-mono tracking-widest uppercase self-start">
                             <span className="w-1.5 h-1.5 rounded-full bg-accent-500 animate-pulse"></span>
-                            EVALUATION PORTAL
+                            UNIVERSITY EVALUATIONS DASHBOARD
                         </div>
                         <h1 className="text-3xl md:text-5xl font-bold text-white tracking-tight uppercase">
-                            <span className="text-accent-400 font-serif italic">Candidate</span> Review
+                            <span className="text-accent-400 font-serif italic">Student</span> Reports & Status
                         </h1>
                         <p className="text-[#888] font-mono text-xs mt-2">
-                            /home/company/techcorp/evaluation
+                            /home/university/placement_cell/evaluations
                         </p>
                     </div>
 
                     {/* Tab Navigation */}
                     <div className="flex items-center gap-1 border-b border-[#222] pb-0 overflow-x-auto mt-4">
-                        <button
-                            onClick={() => setActiveTab('PENDING')}
-                            className={`flex items-center gap-2 px-6 py-3 text-[10px] font-mono uppercase tracking-widest transition-all border-b-2 whitespace-nowrap ${
-                                activeTab === 'PENDING'
-                                    ? 'border-accent-500 text-accent-400'
-                                    : 'border-transparent text-[#666] hover:text-white'
-                            }`}
-                        >
-                            <FileText size={13} />
-                            Pending Evaluation ({candidates.filter(c => c.status === 'PENDING').length})
-                        </button>
                         <button
                             onClick={() => setActiveTab('EVALUATED')}
                             className={`flex items-center gap-2 px-6 py-3 text-[10px] font-mono uppercase tracking-widest transition-all border-b-2 whitespace-nowrap ${
@@ -291,7 +266,18 @@ export default function CompanyEvaluation() {
                             }`}
                         >
                             <CheckCircle2 size={13} />
-                            Evaluated Students ({candidates.filter(c => c.status !== 'PENDING').length})
+                            Completed Output ({candidates.filter(c => c.status !== 'PENDING').length})
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('PENDING')}
+                            className={`flex items-center gap-2 px-6 py-3 text-[10px] font-mono uppercase tracking-widest transition-all border-b-2 whitespace-nowrap ${
+                                activeTab === 'PENDING'
+                                    ? 'border-accent-500 text-accent-400'
+                                    : 'border-transparent text-[#666] hover:text-white'
+                            }`}
+                        >
+                            <FileText size={13} />
+                            In Progress ({candidates.filter(c => c.status === 'PENDING').length})
                         </button>
                     </div>
 
@@ -300,14 +286,14 @@ export default function CompanyEvaluation() {
                         <div className="flex flex-col md:flex-row justify-between items-start md:items-center p-6 pb-4 border-b border-[#222] gap-4">
                             <h3 className="text-sm font-bold font-sans uppercase tracking-widest text-white flex items-center gap-2">
                                 <Users size={16} className="text-[#888]" />
-                                {activeTab === 'PENDING' ? 'Awaiting Decision' : 'Evaluated Candidates'}
+                                {activeTab === 'PENDING' ? 'Students Awaiting Details' : 'Final Decisions & Offers'}
                             </h3>
                             <div className="flex items-center gap-3 flex-wrap">
                                 <div className="relative">
                                     <Search size={12} className="absolute left-2 top-1/2 -translate-y-1/2 text-[#555]" />
                                     <input
                                         type="text"
-                                        placeholder="Name, role, recruiter..."
+                                        placeholder="Student, company, role..."
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
                                         className="bg-[#050505] border border-[#333] rounded-sm pl-7 pr-3 py-1.5 text-[10px] font-mono text-white placeholder:text-[#555] outline-none focus:border-accent-500 transition-colors w-64"
@@ -320,8 +306,8 @@ export default function CompanyEvaluation() {
                             {displayList.map((candidate, i) => (
                                 <div key={i} className="flex flex-col md:flex-row md:items-center justify-between p-5 hover:bg-[#050505] transition-colors group cursor-pointer">
                                     <div className="flex items-start gap-4 flex-1">
-                                        <div className={`w-10 h-10 rounded-sm bg-[#111] border flex items-center justify-center shrink-0 ${candidate.status === 'PENDING' ? 'border-[#333] group-hover:border-accent-500/50 text-[#555] group-hover:text-accent-400' : 'border-[#333] text-[#888]'}`}>
-                                            <FileText size={16} className="transition-colors" />
+                                        <div className={`w-10 h-10 rounded-sm bg-[#111] border flex items-center justify-center shrink-0 ${candidate.status === 'PENDING' ? 'border-[#333] text-[#555] group-hover:text-accent-400 group-hover:border-accent-500/50' : 'border-[#333] text-[#888]'}`}>
+                                            <Briefcase size={16} className="transition-colors" />
                                         </div>
                                         <div>
                                             <div className="flex items-center gap-3 mb-1">
@@ -338,7 +324,7 @@ export default function CompanyEvaluation() {
                                                 )}
                                             </div>
                                             <div className="flex items-center gap-3 text-[10px] font-mono text-[#666] uppercase tracking-widest mt-1">
-                                                <span>{candidate.university}</span>
+                                                <span>{candidate.company}</span>
                                                 <span>•</span>
                                                 <span>{candidate.role}</span>
                                             </div>
@@ -351,19 +337,12 @@ export default function CompanyEvaluation() {
                                     </div>
                                     <div className="flex items-center gap-4 mt-3 md:mt-0">
                                         <button 
-                                            onClick={() => {
-                                                setSelectedCandidate(candidate);
-                                                setEvaluatorNote(candidate.evaluatorNote || '');
-                                            }}
-                                            className={`px-4 py-2 bg-[#111] border rounded-sm transition-colors flex items-center gap-2 group/btn ${
-                                                candidate.status === 'PENDING' ? 'border-accent-500/50 hover:bg-accent-500/10 hover:border-accent-500' : 'border-[#333] hover:border-[#555]'
-                                            }`}
+                                            onClick={() => setSelectedCandidate(candidate)}
+                                            className={`px-4 py-2 bg-[#111] border rounded-sm transition-colors flex items-center gap-2 group/btn border-[#333] hover:border-[#555]`}
                                         >
-                                            <Search size={14} className={candidate.status === 'PENDING' ? 'text-accent-400' : 'text-[#888]'} />
-                                            <span className={`text-[10px] font-mono uppercase tracking-widest ${
-                                                candidate.status === 'PENDING' ? 'text-accent-400' : 'text-[#aaa]'
-                                            }`}>
-                                                {candidate.status === 'PENDING' ? 'Review & Decide' : 'View Details'}
+                                            <FileText size={14} className="text-[#888]" />
+                                            <span className="text-[10px] font-mono uppercase tracking-widest text-[#aaa]">
+                                                View Report
                                             </span>
                                         </button>
                                     </div>
@@ -371,7 +350,7 @@ export default function CompanyEvaluation() {
                             ))}
                             {displayList.length === 0 && (
                                 <div className="text-center py-16 text-[#555] font-mono text-xs uppercase tracking-widest bg-[#050505]">
-                                    No candidates found
+                                    No records found
                                 </div>
                             )}
                         </div>
@@ -379,7 +358,7 @@ export default function CompanyEvaluation() {
                 </div>
             </main>
 
-            {/* Evaluation Modal */}
+            {/* Read-Only Report Modal */}
             <AnimatePresence>
                 {selectedCandidate && (
                     <motion.div
@@ -399,7 +378,7 @@ export default function CompanyEvaluation() {
                             {/* Header */}
                             <div className="shrink-0 h-16 bg-gradient-to-r from-[#111] to-[#0A0A0A] border-b border-[#222] flex items-center justify-between px-6">
                                 <h2 className="text-sm font-bold font-sans uppercase tracking-widest text-white flex items-center gap-2">
-                                    <FileText size={16} className="text-accent-400" /> Evaluation Review: {selectedCandidate.student}
+                                    <FileText size={16} className="text-accent-400" /> Student Progress Report: {selectedCandidate.student}
                                 </h2>
                                 <button
                                     onClick={() => setSelectedCandidate(null)}
@@ -434,8 +413,8 @@ export default function CompanyEvaluation() {
 
                                         <div className="bg-[#0A0A0A] border border-[#222] p-4 rounded-sm flex flex-col gap-3">
                                             <div>
-                                                <span className="text-[10px] font-mono text-[#888] uppercase tracking-widest block mb-1">Role</span>
-                                                <span className="text-sm font-bold font-sans text-white">{selectedCandidate.role}</span>
+                                                <span className="text-[10px] font-mono text-[#888] uppercase tracking-widest block mb-1">Company / Role</span>
+                                                <span className="text-sm font-bold font-sans text-white">{selectedCandidate.company} - {selectedCandidate.role}</span>
                                             </div>
                                             <div>
                                                 <span className="text-[10px] font-mono text-[#888] uppercase tracking-widest block mb-1">Date</span>
@@ -511,15 +490,13 @@ export default function CompanyEvaluation() {
 
                                         <div className="bg-[#111] border border-[#333] p-4 rounded-sm flex flex-col">
                                             <h3 className="text-[10px] font-mono uppercase tracking-widest text-[#aaa] mb-2 flex items-center gap-2">
-                                                <FileText size={12} className="text-white" /> Evaluator's Note (Required)
+                                                <FileText size={12} className="text-white" /> Final Evaluator's Note (From HR)
                                             </h3>
-                                            <textarea
-                                                readOnly={selectedCandidate.status !== 'PENDING'}
-                                                value={evaluatorNote}
-                                                onChange={(e) => setEvaluatorNote(e.target.value)}
-                                                placeholder={selectedCandidate.status !== 'PENDING' ? '' : "Add final decision notes here..."}
-                                                className={`w-full bg-[#050505] border border-[#333] outline-none rounded-sm p-3 text-xs font-mono text-white resize-none min-h-[80px] transition-colors ${selectedCandidate.status === 'PENDING' ? 'focus:border-accent-500' : ''}`}
-                                            />
+                                            <div className="w-full bg-[#050505] border border-[#333] rounded-sm p-3 text-xs font-mono text-[#ccc] min-h-[80px]">
+                                                {selectedCandidate.status === 'PENDING' 
+                                                    ? <span className="text-[#666] italic">Company HR has not submitted a final decision yet.</span>
+                                                    : selectedCandidate.evaluatorNote || <span className="text-[#666] italic">No additional note provided by HR.</span>}
+                                            </div>
                                         </div>
 
                                     </div>
@@ -533,31 +510,12 @@ export default function CompanyEvaluation() {
                                 </span>
                                 
                                 <div className="flex items-center gap-3">
-                                    {selectedCandidate.status === 'PENDING' ? (
-                                        <>
-                                            <button
-                                                onClick={() => handleEvaluation('REJECTED')}
-                                                disabled={evaluatorNote.trim().length === 0}
-                                                className="px-6 py-2.5 rounded-sm bg-[#111] border border-[#333] hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-400 text-xs font-mono uppercase tracking-widest text-[#888] disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2 group"
-                                            >
-                                                <XCircle size={14} className="group-hover:text-red-400" /> Reject
-                                            </button>
-                                            <button
-                                                onClick={() => handleEvaluation('SELECTED')}
-                                                disabled={evaluatorNote.trim().length === 0}
-                                                className="px-6 py-2.5 rounded-sm bg-[#111] border border-[#333] hover:border-green-500/50 hover:bg-green-500/10 hover:text-green-400 text-xs font-bold font-mono uppercase tracking-widest text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2 group shadow-2xl"
-                                            >
-                                                <Check size={14} className="group-hover:text-green-400" /> Select
-                                            </button>
-                                        </>
-                                    ) : (
-                                        <button
-                                            onClick={() => setSelectedCandidate(null)}
-                                            className="px-6 py-2.5 rounded-sm bg-[#111] border border-[#333] text-xs font-mono uppercase tracking-widest text-white hover:border-[#555] transition-colors"
-                                        >
-                                            Close Record
-                                        </button>
-                                    )}
+                                    <button
+                                        onClick={() => setSelectedCandidate(null)}
+                                        className="px-6 py-2.5 rounded-sm bg-[#111] border border-[#333] text-xs font-mono uppercase tracking-widest text-white hover:border-[#555] transition-colors"
+                                    >
+                                        Close Record
+                                    </button>
                                 </div>
                             </div>
                         </motion.div>

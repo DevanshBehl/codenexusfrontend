@@ -34,6 +34,7 @@ const UniversityDashboard = () => {
         { icon: Building2, label: 'COMPANIES' },
         { icon: Users, label: 'STUDENTS' },
         { icon: Briefcase, label: 'PLACEMENTS' },
+        { icon: CheckCircle2, label: 'EVALUATIONS', onClick: () => window.location.href = '/university/evaluation' },
         { icon: BarChart3, label: 'ANALYTICS' },
         { icon: FileBarChart, label: 'REPORTS' },
     ];

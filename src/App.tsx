@@ -12,6 +12,7 @@ import CreateContest from './pages/company/CreateContest';
 import RecruiterDashboard from './pages/recruiter/Dashboard';
 import RecruiterInterview from './pages/recruiter/RecruiterInterview';
 import CompanyEvaluation from './pages/company/Evaluation';
+import UniversityEvaluation from './pages/university/Evaluation';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/student/codearena/:id" element={<CodeArenaProblem />} />
         <Route path="/student/interview" element={<StudentInterview />} />
         <Route path="/university/dashboard" element={<UniversityDashboard />} />
+        <Route path="/university/evaluation" element={<UniversityEvaluation />} />
         <Route path="/company/dashboard" element={<CompanyDashboard />} />
         <Route path="/company/create-contest" element={<CreateContest />} />
         <Route path="/company/evaluation" element={<CompanyEvaluation />} />
