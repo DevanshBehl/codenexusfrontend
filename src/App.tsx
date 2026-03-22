@@ -9,6 +9,7 @@ import StudentInterview from './pages/student/StudentInterview';
 import UniversityDashboard from './pages/university/Dashboard';
 import CompanyDashboard from './pages/company/Dashboard';
 import CreateContest from './pages/company/CreateContest';
+import RecruiterDashboard from './pages/recruiter/Dashboard';
 import RecruiterInterview from './pages/recruiter/RecruiterInterview';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route path="/university/dashboard" element={<UniversityDashboard />} />
         <Route path="/company/dashboard" element={<CompanyDashboard />} />
         <Route path="/company/create-contest" element={<CreateContest />} />
+        <Route path="/recruiter/dashboard" element={<RecruiterDashboard />} />
         <Route path="/recruiter/interview" element={<RecruiterInterview />} />
       </Routes>
     </Router>
