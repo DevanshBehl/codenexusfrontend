@@ -619,7 +619,7 @@ const CompanyDashboard = () => {
                                                             <div className="text-xs font-mono text-white">{interview.date}</div>
                                                             <div className="text-[9px] font-mono text-accent-400 uppercase tracking-widest">{interview.status}</div>
                                                         </div>
-                                                        <Link to="/interview" className="p-2 bg-accent-500/10 border border-accent-500/30 rounded-sm hover:bg-accent-500/20 transition-colors">
+                                                        <Link to="/recruiter/interview" className="p-2 bg-accent-500/10 border border-accent-500/30 rounded-sm hover:bg-accent-500/20 transition-colors">
                                                             <Video size={14} className="text-accent-400" />
                                                         </Link>
                                                     </div>
