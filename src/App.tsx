@@ -5,7 +5,9 @@ import Login from './pages/Login';
 import StudentDashboard from './pages/student/Dashboard';
 import CodeArena from './pages/student/CodeArena';
 import CodeArenaProblem from './pages/student/CodeArenaProblem';
+import DesignArenaProblem from './pages/student/DesignArenaProblem';
 import StudentInterview from './pages/student/StudentInterview';
+import DesignArena from './pages/student/DesignArena';
 import UniversityDashboard from './pages/university/Dashboard';
 import CompanyDashboard from './pages/company/Dashboard';
 import CreateContest from './pages/company/CreateContest';
@@ -34,6 +36,8 @@ function App() {
         <Route path="/student/dashboard" element={<StudentDashboard />} />
         <Route path="/student/codearena" element={<CodeArena />} />
         <Route path="/student/codearena/:id" element={<CodeArenaProblem />} />
+        <Route path="/student/designarena" element={<DesignArena />} />
+        <Route path="/student/designarena/:id" element={<DesignArenaProblem />} />
         <Route path="/student/interview" element={<StudentInterview />} />
         <Route path="/student/webinars" element={<WebinarList userRole="STUDENT" />} />
         <Route path="/student/webinar" element={<WebinarRoom userRole="STUDENT" />} />
