@@ -5,7 +5,7 @@ import {
     Terminal, Building2, Users, FileText, CheckSquare, Mail, Presentation,
     Calendar, Video, Building, Lock,
     Code2, Play, CheckCircle2, MessageSquare, Briefcase, PenTool, 
-    BarChart3, FileBarChart
+    BarChart3, FileBarChart, Box
 } from 'lucide-react';
 
 /* ────────── Types & Mock Data ────────── */
@@ -78,16 +78,14 @@ export default function WebinarList({ userRole }: WebinarListProps) {
     ];
 
     const studentSidebarItems = [
+        { icon: Mail, label: 'MAIL', onClick: () => navigate('/student/mail') },
+        { icon: Presentation, label: 'WEBINARS', active: true, onClick: () => navigate('/student/webinars') },
         { icon: Terminal, label: 'CMD CENTER', onClick: () => navigate('/student/dashboard') },
         { icon: Code2, label: 'CODE ARENA', onClick: () => navigate('/student/codearena') },
-        { icon: Play, label: 'INTERVIEWS', onClick: () => navigate('/student/dashboard') },
-        { icon: Users, label: 'PORTFOLIO', onClick: () => navigate('/student/dashboard') },
-        { icon: FileText, label: 'RESUME', onClick: () => navigate('/student/dashboard') },
-        { icon: CheckCircle2, label: 'EVALUATIONS', onClick: () => navigate('/student/dashboard') },
-        { icon: MessageSquare, label: 'FORUM', onClick: () => navigate('/student/dashboard') },
-        { icon: Briefcase, label: 'JOBS', onClick: () => navigate('/student/dashboard') },
-        { icon: Presentation, label: 'WEBINARS', active: true, onClick: () => navigate('/student/webinars') },
         { icon: PenTool, label: 'DESIGN ARENA', onClick: () => navigate('/student/designarena') },
+        { icon: Briefcase, label: 'INTERVIEWS', onClick: () => navigate('/student/interview') },
+        { icon: FileText, label: 'APPLICATIONS', onClick: () => navigate('/student/dashboard') },
+        { icon: Box, label: 'PROJECTS', onClick: () => navigate('/student/projects') },
     ];
 
     const universitySidebarItems = [

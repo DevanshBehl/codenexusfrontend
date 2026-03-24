@@ -9,6 +9,7 @@ import CodeArenaSubmissions from './pages/student/CodeArenaSubmissions';
 import CodeArenaProblem from './pages/student/CodeArenaProblem';
 import DesignArenaProblem from './pages/student/DesignArenaProblem';
 import StudentInterview from './pages/student/StudentInterview';
+import StudentProjects from './pages/student/StudentProjects';
 import DesignArena from './pages/student/DesignArena';
 import UniversityDashboard from './pages/university/Dashboard';
 import CompanyDashboard from './pages/company/Dashboard';
@@ -43,6 +44,7 @@ function App() {
         <Route path="/student/designarena" element={<DesignArena />} />
         <Route path="/student/designarena/:id" element={<DesignArenaProblem />} />
         <Route path="/student/interview" element={<StudentInterview />} />
+        <Route path="/student/projects" element={<StudentProjects />} />
         <Route path="/student/webinars" element={<WebinarList userRole="STUDENT" />} />
         <Route path="/student/webinar" element={<WebinarRoom userRole="STUDENT" />} />
         <Route path="/university/dashboard" element={<UniversityDashboard />} />

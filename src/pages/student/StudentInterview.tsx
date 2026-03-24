@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-    Terminal, Building2, Users, FileText, CheckCircle2, MessageSquare, Briefcase, PenTool,
-    Calendar, Video, Building, Lock,
-    Code2, Play, Presentation, Clock, PlayCircle
+    Terminal, Building2, Users, FileText, CheckCircle2, CheckSquare, Mail, Presentation,
+    Calendar, Video, PlayCircle, Building, Lock, Play, Clock,
+    Code2, MessageSquare, Briefcase, PenTool, Box
 } from 'lucide-react';
 import InterviewRoom from '../../components/Interview/InterviewRoom';
 
@@ -65,16 +65,14 @@ export default function StudentInterview() {
     ];
 
     const sidebarItems = [
+        { icon: Mail, label: 'MAIL', onClick: () => navigate('/student/mail') },
+        { icon: Presentation, label: 'WEBINARS', onClick: () => navigate('/student/webinars') },
         { icon: Terminal, label: 'CMD CENTER', onClick: () => navigate('/student/dashboard') },
         { icon: Code2, label: 'CODE ARENA', onClick: () => navigate('/student/codearena') },
-        { icon: PlayCircle, label: 'INTERVIEWS', active: true, onClick: () => navigate('/student/interview') },
-        { icon: Users, label: 'PORTFOLIO', onClick: () => navigate('/student/dashboard') },
-        { icon: FileText, label: 'RESUME', onClick: () => navigate('/student/dashboard') },
-        { icon: CheckCircle2, label: 'EVALUATIONS', onClick: () => navigate('/student/dashboard') },
-        { icon: MessageSquare, label: 'FORUM', onClick: () => navigate('/student/dashboard') },
-        { icon: Briefcase, label: 'JOBS', onClick: () => navigate('/student/dashboard') },
-        { icon: Presentation, label: 'WEBINARS', onClick: () => navigate('/student/webinars') },
         { icon: PenTool, label: 'DESIGN ARENA', onClick: () => navigate('/student/designarena') },
+        { icon: Briefcase, label: 'INTERVIEWS', active: true, onClick: () => navigate('/student/interview') },
+        { icon: FileText, label: 'APPLICATIONS', onClick: () => navigate('/student/dashboard') },
+        { icon: Box, label: 'PROJECTS', onClick: () => navigate('/student/projects') },
     ];
 
     const canJoinInterview = (dateStr: string, timeStr: string) => {

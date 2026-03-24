@@ -29,8 +29,7 @@ const StudentDashboard = () => {
         { icon: PenTool, label: 'DESIGN ARENA', onClick: () => window.location.href = '/student/designarena' },
         { icon: Briefcase, label: 'INTERVIEWS', onClick: () => window.location.href = '/student/interview' },
         { icon: FileText, label: 'APPLICATIONS', onClick: () => window.location.href = '/student/dashboard' },
-        { icon: Box, label: 'PROJECTS', onClick: () => window.location.href = '/student/dashboard' },
-        { icon: Activity, label: 'ANALYTICS', onClick: () => window.location.href = '/student/dashboard' },
+        { icon: Box, label: 'PROJECTS', onClick: () => window.location.href = '/student/projects' },
     ];
 
     const upcomingContests = [

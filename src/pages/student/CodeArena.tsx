@@ -33,8 +33,7 @@ const CodeArena = () => {
         { icon: PenTool, label: 'DESIGN ARENA', path: '/student/designarena' },
         { icon: Briefcase, label: 'INTERVIEWS', path: '/student/interview' },
         { icon: FileText, label: 'APPLICATIONS', path: '/student/dashboard' },
-        { icon: Box, label: 'PROJECTS', path: '/student/dashboard' },
-        { icon: Activity, label: 'ANALYTICS', path: '/student/dashboard' },
+        { icon: Box, label: 'PROJECTS', path: '/student/projects' },
     ];
 
     const topics = [
