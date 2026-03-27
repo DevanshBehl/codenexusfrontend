@@ -2,6 +2,7 @@ import express, { Application, request, response } from "express";
 import cors from "cors";
 import { errorHandler } from "./middleware/error-handler.js";
 import { ApiResponse } from "./utils/api-response.js";
+import authRoutes from './modules/auth/auth.routes.js';
 
 const app: Application = express();
 app.use(express.json({ limit: '10mb' }));
@@ -15,6 +16,9 @@ app.get("/api/v1/health", (req, res) => {
         new ApiResponse(200, { status: "UP" }, "Server is running smoothly")
     )
 })
+
+app.use("/api/v1/auth", authRoutes);
+
 
 app.use((req, res) => {
     res.status(404).json({
