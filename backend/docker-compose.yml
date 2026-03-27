@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: devanshbehl
+      POSTGRES_PASSWORD: devansh
+      POSTGRES_DB: codenexus
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data   # 👈 THIS is the key
+
+volumes:
+  pgdata:

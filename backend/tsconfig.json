@@ -6,12 +6,16 @@
     "outDir": "./dist",
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
-    "module": "nodenext",
-    "target": "esnext",
-    "types": [],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "es2023",
     // For nodejs:
-    // "lib": ["esnext"],
-    // "types": ["node"],
+    "lib": [
+      "esnext"
+    ],
+    "types": [
+      "node"
+    ],
     // and npm install -D @types/node
     // Other Outputs
     "sourceMap": true,
@@ -35,5 +39,10 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
-  }
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": [
+    "src/**/*"
+  ]
 }
