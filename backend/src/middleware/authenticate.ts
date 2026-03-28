@@ -1,29 +1,35 @@
-import { Request, response, NextFunction } from "express";
-import jwt, { JsonWebTokenError } from "jsonwebtoken";
-import { env } from "../config/env.js";
-import { ApiError } from "../utils/api-error.js";
-import { Role } from "../generated/prisma/enums.js";
+import { Request, Response, NextFunction, RequestHandler } from 'express';
+import jwt from 'jsonwebtoken';
+import { Role } from '../generated/prisma/enums.js';
+import { env } from '../config/env.js';
+import { ApiError } from '../utils/api-error.js';
 
-export const authenticate = (req: Request, res: Response, next: NextFunction) => {
+// Add RequestHandler here, and you can remove the types from req, res, next
+export const authenticate: RequestHandler = (req, res, next) => {
     try {
         const authHeader = req.headers.authorization;
+
         if (!authHeader?.startsWith('Bearer ')) {
-            throw new ApiError(401, "Unauthorized : Missing or invalid token")
+            throw new ApiError(401, 'Unauthorized: Missing or invalid token');
         }
-        const token = authHeader.split(" ")[1];
+
+        const token = authHeader.split(' ')[1];
+
         const decoded = jwt.verify(token as string, env.JWT_SECRET as string) as jwt.JwtPayload;
+
         req.user = {
             id: decoded.id as string,
-            role: decoded.role as Role
-        }
+            role: decoded.role as Role,
+        };
+
         next();
-    } catch (e) {
-        if (e instanceof jwt.TokenExpiredError) {
-            next(new ApiError(401, "Unauthorized: token expired"));
-        } else if (e instanceof JsonWebTokenError) {
-            next(new ApiError(401, "Unauthorized token"));
+    } catch (error) {
+        if (error instanceof jwt.TokenExpiredError) {
+            next(new ApiError(401, 'Unauthorized: Token has expired'));
+        } else if (error instanceof jwt.JsonWebTokenError) {
+            next(new ApiError(401, 'Unauthorized: Invalid token'));
         } else {
-            next(e);
+            next(error);
         }
     }
 };
