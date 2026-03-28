@@ -11,6 +11,7 @@ import DesignArenaProblem from './pages/student/DesignArenaProblem';
 import StudentInterview from './pages/student/StudentInterview';
 import StudentProjects from './pages/student/StudentProjects';
 import StudentProfile from './pages/student/StudentProfile';
+import Contest from './pages/student/Contest';
 import DesignArena from './pages/student/DesignArena';
 import UniversityDashboard from './pages/university/Dashboard';
 import CompanyDashboard from './pages/company/Dashboard';
@@ -48,6 +49,7 @@ function App() {
         <Route path="/student/interview" element={<StudentInterview />} />
         <Route path="/student/projects" element={<StudentProjects />} />
         <Route path="/student/profile" element={<StudentProfile />} />
+        <Route path="/student/contest" element={<Contest />} />
         <Route path="/student/recording" element={<Recordings userRole="STUDENT" />} />
         <Route path="/student/webinars" element={<WebinarList userRole="STUDENT" />} />
         <Route path="/student/webinar" element={<WebinarRoom userRole="STUDENT" />} />
