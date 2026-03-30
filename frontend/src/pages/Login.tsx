@@ -1,9 +1,48 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ChevronRight, Mail, Lock, Briefcase } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ChevronRight, Mail, Lock, AlertCircle, Loader2 } from 'lucide-react';
+import { useAuth, getRoleDashboard } from '../lib/auth';
+import { ApiRequestError } from '../lib/api';
 
 export default function Login() {
-    const [role, setRole] = useState('student');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const { login } = useAuth();
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError('');
+
+        if (!email || !password) {
+            setError('Please fill in all fields');
+            return;
+        }
+
+        setIsSubmitting(true);
+        try {
+            await login({ email, password });
+            // After login, auth context has user — redirect based on role
+            const storedUser = localStorage.getItem('cn_user');
+            if (storedUser) {
+                const user = JSON.parse(storedUser);
+                navigate(getRoleDashboard(user.role), { replace: true });
+            } else {
+                navigate('/student/dashboard', { replace: true });
+            }
+        } catch (err) {
+            if (err instanceof ApiRequestError) {
+                setError(err.message);
+            } else {
+                setError('Something went wrong. Please try again.');
+            }
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
     return (
         <div className="min-h-screen bg-[#050505] font-sans text-white selection:bg-accent-500/30 selection:text-white relative overflow-hidden flex flex-col">
@@ -31,12 +70,26 @@ export default function Login() {
                         Access your CodeNexus dashboard or resume your practice sessions.
                     </p>
 
-                    <form className="flex flex-col gap-5">
+                    {error && (
+                        <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-sm mb-5 text-xs font-mono">
+                            <AlertCircle size={14} />
+                            {error}
+                        </div>
+                    )}
+
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                         <div className="flex flex-col gap-2">
                             <label className="text-[10px] uppercase tracking-widest text-[#888] font-mono">Email Address</label>
                             <div className="relative">
                                 <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#555]" />
-                                <input type="email" placeholder="john@example.com" className="w-full bg-[#111] border border-[#333] py-2.5 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-accent-500 transition-colors font-mono rounded-sm" />
+                                <input
+                                    type="email"
+                                    placeholder="john@example.com"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    disabled={isSubmitting}
+                                    className="w-full bg-[#111] border border-[#333] py-2.5 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-accent-500 transition-colors font-mono rounded-sm disabled:opacity-50"
+                                />
                             </div>
                         </div>
 
@@ -47,32 +100,31 @@ export default function Login() {
                             </div>
                             <div className="relative">
                                 <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#555]" />
-                                <input type="password" placeholder="••••••••" className="w-full bg-[#111] border border-[#333] py-2.5 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-accent-500 transition-colors font-mono rounded-sm" />
+                                <input
+                                    type="password"
+                                    placeholder="••••••••"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    disabled={isSubmitting}
+                                    className="w-full bg-[#111] border border-[#333] py-2.5 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-accent-500 transition-colors font-mono rounded-sm disabled:opacity-50"
+                                />
                             </div>
                         </div>
 
-                        <div className="flex flex-col gap-2 mb-2">
-                            <label className="text-[10px] uppercase tracking-widest text-[#888] font-mono">Login As</label>
-                            <div className="relative">
-                                <Briefcase size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#555]" />
-                                <select
-                                    value={role}
-                                    onChange={(e) => setRole(e.target.value)}
-                                    className="w-full bg-[#111] border border-[#333] py-2.5 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-accent-500 transition-colors font-mono rounded-sm appearance-none cursor-pointer"
-                                >
-                                    <option value="student">Student</option>
-                                    <option value="university">University Placement Cell</option>
-                                    <option value="recruiter">Recruiter</option>
-                                    <option value="admin">CodeNexus Admin</option>
-                                </select>
-                                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <ChevronRight size={14} className="text-[#555] rotate-90" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <button type="button" className="w-full bg-[#e0e0e0] text-black py-3 font-bold hover:bg-white transition-colors text-sm font-mono mt-2 uppercase tracking-wide flex justify-center items-center gap-2 group">
-                            Log In <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                        <button
+                            type="submit"
+                            disabled={isSubmitting}
+                            className="w-full bg-[#e0e0e0] text-black py-3 font-bold hover:bg-white transition-colors text-sm font-mono mt-2 uppercase tracking-wide flex justify-center items-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            {isSubmitting ? (
+                                <>
+                                    <Loader2 size={16} className="animate-spin" /> Logging in...
+                                </>
+                            ) : (
+                                <>
+                                    Log In <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                                </>
+                            )}
                         </button>
                     </form>
 

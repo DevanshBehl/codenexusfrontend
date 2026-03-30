@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { webinarApi } from '../../lib/api';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
@@ -38,40 +39,42 @@ interface PPT {
     status: 'UPCOMING' | 'COMPLETED';
 }
 
-const mockPPTs: PPT[] = [
-    {
-        id: '1',
-        title: 'Google Cloud Platform Info Session',
-        targetUniversities: ['IIT Bombay', 'BITS Pilani'],
-        date: '2026-04-10',
-        time: '14:00',
-        duration: '60 mins',
-        meetingLink: 'https://meet.google.com/abc-defg-hij',
-        agenda: 'Introduction to GCP infrastructure and hiring process for the Site Reliability Engineering roles.',
-        status: 'UPCOMING'
-    },
-    {
-        id: '2',
-        title: 'Stripe Engineering Culture',
-        targetUniversities: ['NIT Trichy', 'IIIT Hyderabad'],
-        date: '2026-03-15',
-        time: '16:00',
-        duration: '45 mins',
-        meetingLink: 'https://zoom.us/j/123456789',
-        agenda: 'A deep dive into Stripe engineering culture and Q&A with our Lead Engineers.',
-        status: 'COMPLETED'
-    }
-];
 
-const mockUniversities = [
-    'IIT Bombay', 'IIT Delhi', 'IIT Madras', 'BITS Pilani', 'NIT Trichy', 'IIIT Hyderabad', 'DTU', 'NSUT'
+
+
+const universities = [
+    'VIT University'
 ];
 
 export default function SchedulePPT() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [view, setView] = useState<'LIST' | 'SCHEDULE'>('LIST');
-    const [ppts, setPpts] = useState<PPT[]>(mockPPTs);
+    const [ppts, setPpts] = useState<PPT[]>([]);
     const [currentTime, setCurrentTime] = useState(new Date());
+
+    // Fetch webinars from backend
+    useEffect(() => {
+        const fetchWebinars = async () => {
+            try {
+                const res = await webinarApi.getAll();
+                const webinars = res.data as any[];
+                setPpts(webinars.map((w: any) => ({
+                    id: w.id,
+                    title: w.title,
+                    targetUniversities: w.targetUniversities?.map((t: any) => t.university?.name || 'Unknown') || [],
+                    date: new Date(w.scheduledAt).toISOString().split('T')[0],
+                    time: new Date(w.scheduledAt).toTimeString().slice(0, 5),
+                    duration: `${w.durationMins} mins`,
+                    meetingLink: w.meetingLink,
+                    agenda: w.agenda,
+                    status: w.status === 'COMPLETED' ? 'COMPLETED' : 'UPCOMING',
+                })));
+            } catch (err) {
+                console.error('Failed to fetch webinars:', err);
+            }
+        };
+        fetchWebinars();
+    }, []);
 
     // Evaluate 5 min rule
     useEffect(() => {
@@ -113,32 +116,50 @@ export default function SchedulePPT() {
         );
     };
 
-    const handleSchedule = (e: React.FormEvent) => {
+    const handleSchedule = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!title || selectedUniversities.length === 0 || !date || !time || !meetingLink) return;
 
-        const newPPT: PPT = {
-            id: Math.random().toString(36).substr(2, 9),
-            title,
-            targetUniversities: selectedUniversities,
-            date,
-            time,
-            duration,
-            meetingLink,
-            agenda,
-            status: 'UPCOMING'
-        };
+        try {
+            // Parse duration string (e.g. "60 mins") into minutes
+            const durationMins = parseInt(duration) || 60;
 
-        setPpts([newPPT, ...ppts]);
-        setView('LIST');
-        
-        // Reset form
-        setTitle('');
-        setSelectedUniversities([]);
-        setDate('');
-        setTime('');
-        setMeetingLink('');
-        setAgenda('');
+            await webinarApi.create({
+                title,
+                agenda,
+                scheduledDate: date,
+                scheduledTime: time,
+                durationMins,
+                meetingLink,
+                targetUniversityIds: selectedUniversities,
+            });
+
+            // Add locally for immediate UI update
+            const newPPT: PPT = {
+                id: Math.random().toString(36).substr(2, 9),
+                title,
+                targetUniversities: selectedUniversities,
+                date,
+                time,
+                duration,
+                meetingLink,
+                agenda,
+                status: 'UPCOMING'
+            };
+            setPpts([newPPT, ...ppts]);
+            setView('LIST');
+            
+            // Reset form
+            setTitle('');
+            setSelectedUniversities([]);
+            setDate('');
+            setTime('');
+            setMeetingLink('');
+            setAgenda('');
+        } catch (err: any) {
+            console.error('Failed to schedule webinar:', err);
+            alert(err.message || 'Failed to schedule webinar');
+        }
     };
 
     return (
@@ -355,7 +376,7 @@ export default function SchedulePPT() {
                                         <div className="flex flex-col gap-2">
                                             <label className="text-[10px] font-mono text-[#888] uppercase tracking-widest">Select Target Universities</label>
                                             <div className="flex flex-wrap gap-2 p-4 bg-[#111] border border-[#333] rounded-sm">
-                                                {mockUniversities.map(uni => (
+                                                {universities.map((uni: string) => (
                                                     <button
                                                         key={uni}
                                                         type="button"

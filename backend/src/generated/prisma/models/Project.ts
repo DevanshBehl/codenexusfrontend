@@ -29,7 +29,9 @@ export type ProjectMinAggregateOutputType = {
   studentId: string | null
   title: string | null
   description: string | null
-  url: string | null
+  techStack: string | null
+  githubLink: string | null
+  liveLink: string | null
 }
 
 export type ProjectMaxAggregateOutputType = {
@@ -37,7 +39,9 @@ export type ProjectMaxAggregateOutputType = {
   studentId: string | null
   title: string | null
   description: string | null
-  url: string | null
+  techStack: string | null
+  githubLink: string | null
+  liveLink: string | null
 }
 
 export type ProjectCountAggregateOutputType = {
@@ -46,7 +50,8 @@ export type ProjectCountAggregateOutputType = {
   title: number
   description: number
   techStack: number
-  url: number
+  githubLink: number
+  liveLink: number
   _all: number
 }
 
@@ -56,7 +61,9 @@ export type ProjectMinAggregateInputType = {
   studentId?: true
   title?: true
   description?: true
-  url?: true
+  techStack?: true
+  githubLink?: true
+  liveLink?: true
 }
 
 export type ProjectMaxAggregateInputType = {
@@ -64,7 +71,9 @@ export type ProjectMaxAggregateInputType = {
   studentId?: true
   title?: true
   description?: true
-  url?: true
+  techStack?: true
+  githubLink?: true
+  liveLink?: true
 }
 
 export type ProjectCountAggregateInputType = {
@@ -73,7 +82,8 @@ export type ProjectCountAggregateInputType = {
   title?: true
   description?: true
   techStack?: true
-  url?: true
+  githubLink?: true
+  liveLink?: true
   _all?: true
 }
 
@@ -154,8 +164,9 @@ export type ProjectGroupByOutputType = {
   studentId: string
   title: string
   description: string
-  techStack: string[]
-  url: string | null
+  techStack: string
+  githubLink: string | null
+  liveLink: string | null
   _count: ProjectCountAggregateOutputType | null
   _min: ProjectMinAggregateOutputType | null
   _max: ProjectMaxAggregateOutputType | null
@@ -184,8 +195,9 @@ export type ProjectWhereInput = {
   studentId?: Prisma.StringFilter<"Project"> | string
   title?: Prisma.StringFilter<"Project"> | string
   description?: Prisma.StringFilter<"Project"> | string
-  techStack?: Prisma.StringNullableListFilter<"Project">
-  url?: Prisma.StringNullableFilter<"Project"> | string | null
+  techStack?: Prisma.StringFilter<"Project"> | string
+  githubLink?: Prisma.StringNullableFilter<"Project"> | string | null
+  liveLink?: Prisma.StringNullableFilter<"Project"> | string | null
   student?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
 }
 
@@ -195,7 +207,8 @@ export type ProjectOrderByWithRelationInput = {
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   techStack?: Prisma.SortOrder
-  url?: Prisma.SortOrderInput | Prisma.SortOrder
+  githubLink?: Prisma.SortOrderInput | Prisma.SortOrder
+  liveLink?: Prisma.SortOrderInput | Prisma.SortOrder
   student?: Prisma.StudentOrderByWithRelationInput
 }
 
@@ -207,8 +220,9 @@ export type ProjectWhereUniqueInput = Prisma.AtLeast<{
   studentId?: Prisma.StringFilter<"Project"> | string
   title?: Prisma.StringFilter<"Project"> | string
   description?: Prisma.StringFilter<"Project"> | string
-  techStack?: Prisma.StringNullableListFilter<"Project">
-  url?: Prisma.StringNullableFilter<"Project"> | string | null
+  techStack?: Prisma.StringFilter<"Project"> | string
+  githubLink?: Prisma.StringNullableFilter<"Project"> | string | null
+  liveLink?: Prisma.StringNullableFilter<"Project"> | string | null
   student?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
 }, "id">
 
@@ -218,7 +232,8 @@ export type ProjectOrderByWithAggregationInput = {
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   techStack?: Prisma.SortOrder
-  url?: Prisma.SortOrderInput | Prisma.SortOrder
+  githubLink?: Prisma.SortOrderInput | Prisma.SortOrder
+  liveLink?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ProjectCountOrderByAggregateInput
   _max?: Prisma.ProjectMaxOrderByAggregateInput
   _min?: Prisma.ProjectMinOrderByAggregateInput
@@ -232,16 +247,18 @@ export type ProjectScalarWhereWithAggregatesInput = {
   studentId?: Prisma.StringWithAggregatesFilter<"Project"> | string
   title?: Prisma.StringWithAggregatesFilter<"Project"> | string
   description?: Prisma.StringWithAggregatesFilter<"Project"> | string
-  techStack?: Prisma.StringNullableListFilter<"Project">
-  url?: Prisma.StringNullableWithAggregatesFilter<"Project"> | string | null
+  techStack?: Prisma.StringWithAggregatesFilter<"Project"> | string
+  githubLink?: Prisma.StringNullableWithAggregatesFilter<"Project"> | string | null
+  liveLink?: Prisma.StringNullableWithAggregatesFilter<"Project"> | string | null
 }
 
 export type ProjectCreateInput = {
   id?: string
   title: string
   description: string
-  techStack?: Prisma.ProjectCreatetechStackInput | string[]
-  url?: string | null
+  techStack: string
+  githubLink?: string | null
+  liveLink?: string | null
   student: Prisma.StudentCreateNestedOneWithoutProjectsInput
 }
 
@@ -250,16 +267,18 @@ export type ProjectUncheckedCreateInput = {
   studentId: string
   title: string
   description: string
-  techStack?: Prisma.ProjectCreatetechStackInput | string[]
-  url?: string | null
+  techStack: string
+  githubLink?: string | null
+  liveLink?: string | null
 }
 
 export type ProjectUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  techStack?: Prisma.ProjectUpdatetechStackInput | string[]
-  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  techStack?: Prisma.StringFieldUpdateOperationsInput | string
+  githubLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  liveLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   student?: Prisma.StudentUpdateOneRequiredWithoutProjectsNestedInput
 }
 
@@ -268,8 +287,9 @@ export type ProjectUncheckedUpdateInput = {
   studentId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  techStack?: Prisma.ProjectUpdatetechStackInput | string[]
-  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  techStack?: Prisma.StringFieldUpdateOperationsInput | string
+  githubLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  liveLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ProjectCreateManyInput = {
@@ -277,16 +297,18 @@ export type ProjectCreateManyInput = {
   studentId: string
   title: string
   description: string
-  techStack?: Prisma.ProjectCreatetechStackInput | string[]
-  url?: string | null
+  techStack: string
+  githubLink?: string | null
+  liveLink?: string | null
 }
 
 export type ProjectUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  techStack?: Prisma.ProjectUpdatetechStackInput | string[]
-  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  techStack?: Prisma.StringFieldUpdateOperationsInput | string
+  githubLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  liveLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ProjectUncheckedUpdateManyInput = {
@@ -294,8 +316,9 @@ export type ProjectUncheckedUpdateManyInput = {
   studentId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  techStack?: Prisma.ProjectUpdatetechStackInput | string[]
-  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  techStack?: Prisma.StringFieldUpdateOperationsInput | string
+  githubLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  liveLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ProjectListRelationFilter = {
@@ -308,21 +331,14 @@ export type ProjectOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type StringNullableListFilter<$PrismaModel = never> = {
-  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
-  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
-  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
-  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
-  isEmpty?: boolean
-}
-
 export type ProjectCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   studentId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   techStack?: Prisma.SortOrder
-  url?: Prisma.SortOrder
+  githubLink?: Prisma.SortOrder
+  liveLink?: Prisma.SortOrder
 }
 
 export type ProjectMaxOrderByAggregateInput = {
@@ -330,7 +346,9 @@ export type ProjectMaxOrderByAggregateInput = {
   studentId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  url?: Prisma.SortOrder
+  techStack?: Prisma.SortOrder
+  githubLink?: Prisma.SortOrder
+  liveLink?: Prisma.SortOrder
 }
 
 export type ProjectMinOrderByAggregateInput = {
@@ -338,7 +356,9 @@ export type ProjectMinOrderByAggregateInput = {
   studentId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  url?: Prisma.SortOrder
+  techStack?: Prisma.SortOrder
+  githubLink?: Prisma.SortOrder
+  liveLink?: Prisma.SortOrder
 }
 
 export type ProjectCreateNestedManyWithoutStudentInput = {
@@ -383,29 +403,22 @@ export type ProjectUncheckedUpdateManyWithoutStudentNestedInput = {
   deleteMany?: Prisma.ProjectScalarWhereInput | Prisma.ProjectScalarWhereInput[]
 }
 
-export type ProjectCreatetechStackInput = {
-  set: string[]
-}
-
-export type ProjectUpdatetechStackInput = {
-  set?: string[]
-  push?: string | string[]
-}
-
 export type ProjectCreateWithoutStudentInput = {
   id?: string
   title: string
   description: string
-  techStack?: Prisma.ProjectCreatetechStackInput | string[]
-  url?: string | null
+  techStack: string
+  githubLink?: string | null
+  liveLink?: string | null
 }
 
 export type ProjectUncheckedCreateWithoutStudentInput = {
   id?: string
   title: string
   description: string
-  techStack?: Prisma.ProjectCreatetechStackInput | string[]
-  url?: string | null
+  techStack: string
+  githubLink?: string | null
+  liveLink?: string | null
 }
 
 export type ProjectCreateOrConnectWithoutStudentInput = {
@@ -442,40 +455,45 @@ export type ProjectScalarWhereInput = {
   studentId?: Prisma.StringFilter<"Project"> | string
   title?: Prisma.StringFilter<"Project"> | string
   description?: Prisma.StringFilter<"Project"> | string
-  techStack?: Prisma.StringNullableListFilter<"Project">
-  url?: Prisma.StringNullableFilter<"Project"> | string | null
+  techStack?: Prisma.StringFilter<"Project"> | string
+  githubLink?: Prisma.StringNullableFilter<"Project"> | string | null
+  liveLink?: Prisma.StringNullableFilter<"Project"> | string | null
 }
 
 export type ProjectCreateManyStudentInput = {
   id?: string
   title: string
   description: string
-  techStack?: Prisma.ProjectCreatetechStackInput | string[]
-  url?: string | null
+  techStack: string
+  githubLink?: string | null
+  liveLink?: string | null
 }
 
 export type ProjectUpdateWithoutStudentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  techStack?: Prisma.ProjectUpdatetechStackInput | string[]
-  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  techStack?: Prisma.StringFieldUpdateOperationsInput | string
+  githubLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  liveLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ProjectUncheckedUpdateWithoutStudentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  techStack?: Prisma.ProjectUpdatetechStackInput | string[]
-  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  techStack?: Prisma.StringFieldUpdateOperationsInput | string
+  githubLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  liveLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ProjectUncheckedUpdateManyWithoutStudentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  techStack?: Prisma.ProjectUpdatetechStackInput | string[]
-  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  techStack?: Prisma.StringFieldUpdateOperationsInput | string
+  githubLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  liveLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -486,7 +504,8 @@ export type ProjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   title?: boolean
   description?: boolean
   techStack?: boolean
-  url?: boolean
+  githubLink?: boolean
+  liveLink?: boolean
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["project"]>
 
@@ -496,7 +515,8 @@ export type ProjectSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   title?: boolean
   description?: boolean
   techStack?: boolean
-  url?: boolean
+  githubLink?: boolean
+  liveLink?: boolean
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["project"]>
 
@@ -506,7 +526,8 @@ export type ProjectSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   title?: boolean
   description?: boolean
   techStack?: boolean
-  url?: boolean
+  githubLink?: boolean
+  liveLink?: boolean
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["project"]>
 
@@ -516,10 +537,11 @@ export type ProjectSelectScalar = {
   title?: boolean
   description?: boolean
   techStack?: boolean
-  url?: boolean
+  githubLink?: boolean
+  liveLink?: boolean
 }
 
-export type ProjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "studentId" | "title" | "description" | "techStack" | "url", ExtArgs["result"]["project"]>
+export type ProjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "studentId" | "title" | "description" | "techStack" | "githubLink" | "liveLink", ExtArgs["result"]["project"]>
 export type ProjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
 }
@@ -540,8 +562,9 @@ export type $ProjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     studentId: string
     title: string
     description: string
-    techStack: string[]
-    url: string | null
+    techStack: string
+    githubLink: string | null
+    liveLink: string | null
   }, ExtArgs["result"]["project"]>
   composites: {}
 }
@@ -970,8 +993,9 @@ export interface ProjectFieldRefs {
   readonly studentId: Prisma.FieldRef<"Project", 'String'>
   readonly title: Prisma.FieldRef<"Project", 'String'>
   readonly description: Prisma.FieldRef<"Project", 'String'>
-  readonly techStack: Prisma.FieldRef<"Project", 'String[]'>
-  readonly url: Prisma.FieldRef<"Project", 'String'>
+  readonly techStack: Prisma.FieldRef<"Project", 'String'>
+  readonly githubLink: Prisma.FieldRef<"Project", 'String'>
+  readonly liveLink: Prisma.FieldRef<"Project", 'String'>
 }
     
 

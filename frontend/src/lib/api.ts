@@ -130,13 +130,39 @@ export const authApi = {
 };
 
 // ─── User APIs ───
+export interface StudentProfileData {
+    id: string;
+    userId: string;
+    universityId: string;
+    name: string;
+    age: number | null;
+    phone: string | null;
+    branch: string;
+    cgpa: number;
+    specialization: string | null;
+    gender: string | null;
+    registrationNumber: string | null;
+    codeNexusId: string | null;
+    parentsName: string | null;
+    parentContactNo: string | null;
+    parentEmail: string | null;
+    address: string | null;
+    xSchool: string | null;
+    xPercentage: string | null;
+    xiiSchool: string | null;
+    xiiPercentage: string | null;
+    otherInfo: string | null;
+    status: string;
+    codeArenaScore: number;
+}
+
 export interface UserProfile {
     id: string;
     email: string;
     role: string;
     createdAt: string;
     updatedAt: string;
-    profile: any;
+    profile: StudentProfileData | any;
 }
 
 export const userApi = {
@@ -154,6 +180,8 @@ export interface ContestListItem {
     description: string | null;
     date: string;
     durationMins: number;
+    timeLimitMinutes: number;
+    languages: string[];
     status: string;
     company: {
         name: string;
@@ -164,10 +192,27 @@ export interface ContestListItem {
     };
 }
 
+export interface CreateContestPayload {
+    title: string;
+    description?: string;
+    scheduledDate: string;
+    durationMins: number;
+    timeLimitMinutes: number;
+    languages: string[];
+    questions: {
+        title: string;
+        difficulty: 'EASY' | 'MEDIUM' | 'HARD';
+        points: number;
+        statement: string;
+        constraints?: string;
+        testCases: { input: string; expectedOutput: string }[];
+    }[];
+}
+
 export const contestApi = {
     getAll: () => api.get<ContestListItem[]>('/contests', false),
     getById: (id: string) => api.get<any>(`/contests/${id}`, false),
-    create: (data: any) => api.post('/contests', data),
+    create: (data: CreateContestPayload) => api.post('/contests', data),
 };
 
 // ─── Problem APIs ───
@@ -175,6 +220,7 @@ export interface ProblemListItem {
     id: string;
     title: string;
     difficulty: string;
+    points: number;
     contestId: string | null;
     _count: {
         testCases: number;
@@ -203,4 +249,63 @@ export const problemApi = {
     },
     getById: (id: string) => api.get<any>(`/problems/${id}`, false),
     create: (data: any) => api.post('/problems', data),
+};
+
+// ─── Project APIs ───
+export interface ProjectItem {
+    id: string;
+    studentId: string;
+    title: string;
+    description: string;
+    techStack: string;
+    githubLink: string | null;
+    liveLink: string | null;
+}
+
+export interface CreateProjectPayload {
+    title: string;
+    description: string;
+    techStack: string;
+    githubLink?: string;
+    liveLink?: string;
+}
+
+export const projectApi = {
+    getMyProjects: () => api.get<ProjectItem[]>('/projects'),
+    create: (data: CreateProjectPayload) => api.post<ProjectItem>('/projects', data),
+    delete: (id: string) => api.del(`/projects/${id}`),
+};
+
+// ─── Webinar APIs ───
+export interface WebinarItem {
+    id: string;
+    title: string;
+    agenda: string;
+    scheduledAt: string;
+    durationMins: number;
+    meetingLink: string;
+    status: string;
+    company: {
+        name: string;
+        industry: string | null;
+    };
+    targetUniversities: {
+        university: { id: string; name: string };
+    }[];
+}
+
+export interface CreateWebinarPayload {
+    title: string;
+    agenda: string;
+    scheduledDate: string;
+    scheduledTime: string;
+    durationMins: number;
+    meetingLink: string;
+    targetUniversityIds: string[];
+}
+
+export const webinarApi = {
+    getAll: () => api.get<WebinarItem[]>('/webinars', false),
+    getById: (id: string) => api.get<WebinarItem>(`/webinars/${id}`, false),
+    create: (data: CreateWebinarPayload) => api.post<WebinarItem>('/webinars', data),
 };

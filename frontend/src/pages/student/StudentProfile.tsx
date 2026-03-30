@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { userApi } from '../../lib/api';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
@@ -31,28 +32,70 @@ interface ProfileData {
 export default function StudentProfile() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
+    const [userEmail, setUserEmail] = useState('');
     
     const [profile, setProfile] = useState<ProfileData>({
-        name: 'Devansh Behl',
-        age: '20',
-        email: 'devansh.behl@example.com',
-        number: '+91 98765 43210',
-        gender: 'Male',
-        branch: 'Computer Science',
-        registrationNumber: 'REG2023001',
-        codeNexusId: 'CNX-DEVANSH-1',
-        parentsName: 'Mr. Behl',
-        parentContactNo: '+91 98765 43211',
-        parentEmail: 'parent@example.com',
-        address: 'Delhi, India',
-        currentCgpa: '9.2',
-        institute: 'Tech University',
-        xSchool: 'High School',
-        xPercentage: '95%',
-        xiiSchool: 'Senior Secondary School',
-        xiiPercentage: '96%',
-        otherInfo: 'Competitive Programmer, Hackathon winner',
+        name: '',
+        age: '',
+        email: '',
+        number: '',
+        gender: '',
+        branch: '',
+        registrationNumber: '',
+        codeNexusId: '',
+        parentsName: '',
+        parentContactNo: '',
+        parentEmail: '',
+        address: '',
+        currentCgpa: '',
+        institute: '',
+        xSchool: '',
+        xPercentage: '',
+        xiiSchool: '',
+        xiiPercentage: '',
+        otherInfo: '',
     });
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const res = await userApi.getMe();
+                const data = res.data;
+                setUserEmail(data.email);
+                if (data.profile) {
+                    const p = data.profile;
+                    setProfile({
+                        name: p.name || '',
+                        age: p.age?.toString() || '',
+                        email: data.email || '',
+                        number: p.phone || '',
+                        gender: p.gender || '',
+                        branch: p.branch || '',
+                        registrationNumber: p.registrationNumber || '',
+                        codeNexusId: p.codeNexusId || '',
+                        parentsName: p.parentsName || '',
+                        parentContactNo: p.parentContactNo || '',
+                        parentEmail: p.parentEmail || '',
+                        address: p.address || '',
+                        currentCgpa: p.cgpa?.toString() || '',
+                        institute: p.universityId || '',
+                        xSchool: p.xSchool || '',
+                        xPercentage: p.xPercentage || '',
+                        xiiSchool: p.xiiSchool || '',
+                        xiiPercentage: p.xiiPercentage || '',
+                        otherInfo: p.otherInfo || '',
+                    });
+                }
+            } catch (err) {
+                console.error('Failed to fetch profile:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchProfile();
+    }, []);
 
     const [editForm, setEditForm] = useState<ProfileData>({ ...profile });
 
@@ -67,9 +110,36 @@ export default function StudentProfile() {
         { icon: Box, label: 'PROJECTS', onClick: () => window.location.href = '/student/projects' },
     ];
 
-    const handleSave = () => {
-        setProfile(editForm);
-        setIsEditModalOpen(false);
+    const handleSave = async () => {
+        setSaving(true);
+        try {
+            const payload: any = {
+                name: editForm.name,
+                age: editForm.age ? parseInt(editForm.age) || undefined : undefined,
+                phone: editForm.number || undefined,
+                branch: editForm.branch,
+                cgpa: editForm.currentCgpa ? parseFloat(editForm.currentCgpa) || undefined : undefined,
+                gender: editForm.gender || undefined,
+                registrationNumber: editForm.registrationNumber || undefined,
+                parentsName: editForm.parentsName || undefined,
+                parentContactNo: editForm.parentContactNo || undefined,
+                parentEmail: editForm.parentEmail || undefined,
+                address: editForm.address || undefined,
+                xSchool: editForm.xSchool || undefined,
+                xPercentage: editForm.xPercentage || undefined,
+                xiiSchool: editForm.xiiSchool || undefined,
+                xiiPercentage: editForm.xiiPercentage || undefined,
+                otherInfo: editForm.otherInfo || undefined,
+            };
+            await userApi.updateStudentProfile(payload);
+            setProfile(editForm);
+            setIsEditModalOpen(false);
+        } catch (err: any) {
+            console.error('Failed to save profile:', err);
+            alert(err.message || 'Failed to save profile');
+        } finally {
+            setSaving(false);
+        }
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

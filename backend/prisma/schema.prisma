@@ -99,17 +99,30 @@ model Recruiter {
 }
 
 model Student {
-  id             String   @id @default(uuid())
-  userId         String   @unique
-  universityId   String
-  name           String
-  branch         String
-  cgpa           Float
-  specialization String?
-  gender         String?
-  status         String   @default("AVAILABLE") // PLACED, AVAILABLE
-  codeArenaScore Int      @default(0)
-  createdAt      DateTime @default(now())
+  id                 String   @id @default(uuid())
+  userId             String   @unique
+  universityId       String
+  name               String
+  age                Int?
+  phone              String?
+  branch             String
+  cgpa               Float
+  specialization     String?
+  gender             String?
+  registrationNumber String?
+  codeNexusId        String?
+  parentsName        String?
+  parentContactNo    String?
+  parentEmail        String?
+  address            String?
+  xSchool            String?
+  xPercentage        String?
+  xiiSchool          String?
+  xiiPercentage      String?
+  otherInfo          String?  @db.Text
+  status             String   @default("AVAILABLE") // PLACED, AVAILABLE
+  codeArenaScore     Int      @default(0)
+  createdAt          DateTime @default(now())
 
   user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   university University @relation(fields: [universityId], references: [id], onDelete: Cascade)
@@ -121,12 +134,13 @@ model Student {
 }
 
 model Project {
-  id          String   @id @default(uuid())
+  id          String  @id @default(uuid())
   studentId   String
   title       String
-  description String
-  techStack   String[]
-  url         String?
+  description String  @db.Text
+  techStack   String
+  githubLink  String?
+  liveLink    String?
 
   student Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
 }
@@ -136,13 +150,15 @@ model Project {
 // ==========================================
 
 model Contest {
-  id           String   @id @default(uuid())
-  companyId    String
-  title        String
-  description  String?
-  date         DateTime
-  durationMins Int
-  status       String   @default("UPCOMING") // UPCOMING, ACTIVE, COMPLETED
+  id               String   @id @default(uuid())
+  companyId        String
+  title            String
+  description      String?  @db.Text
+  date             DateTime
+  durationMins     Int
+  timeLimitMinutes Int      @default(30)
+  languages        String[]
+  status           String   @default("UPCOMING") // UPCOMING, ACTIVE, COMPLETED
 
   company  Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
   problems Problem[]
@@ -152,8 +168,11 @@ model Problem {
   id          String  @id @default(uuid())
   contestId   String? // Nullable if problem is standalone in the general Arena
   title       String
-  description String
-  difficulty  String // EASY, MEDIUM, HARD
+  description String  @db.Text
+  difficulty  String  // EASY, MEDIUM, HARD
+  topic       String  @default("Arrays") // Arrays, Strings, Linked Lists, Trees, Graphs, Dynamic Programming, Backtracking, Math
+  points      Int     @default(100)
+  constraints String? @db.Text
 
   contest     Contest?     @relation(fields: [contestId], references: [id], onDelete: Cascade)
   testCases   TestCase[]

@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { projectApi } from '../../lib/api';
+import type { ProjectItem } from '../../lib/api';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -19,16 +21,27 @@ export default function StudentProjects() {
     const navigate = useNavigate();
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [projects, setProjects] = useState<Project[]>([
-        {
-            id: '1',
-            title: 'CodeNexus Platform Overview',
-            description: 'A comprehensive platform designed for universities, companies, and students to streamline coding evaluations and simplify technical recruitment with real-time feedback and an interactive workspace.',
-            techStack: 'React, TypeScript, TailwindCSS, Express.js, MongoDB',
-            githubLink: 'https://github.com/example/codenexus',
-            liveLink: 'https://codenexus.example.com'
-        }
-    ]);
+    const [saving, setSaving] = useState(false);
+    const [projects, setProjects] = useState<Project[]>([]);
+
+    useEffect(() => {
+        const fetchProjects = async () => {
+            try {
+                const res = await projectApi.getMyProjects();
+                setProjects((res.data as unknown as ProjectItem[]).map(p => ({
+                    id: p.id,
+                    title: p.title,
+                    description: p.description,
+                    techStack: p.techStack,
+                    githubLink: p.githubLink || undefined,
+                    liveLink: p.liveLink || undefined,
+                })));
+            } catch (err) {
+                console.error('Failed to fetch projects:', err);
+            }
+        };
+        fetchProjects();
+    }, []);
 
     // Modal Form State
     const [formData, setFormData] = useState({
@@ -80,26 +93,40 @@ export default function StudentProjects() {
         }
     };
 
-    const handleAddProject = (e: React.FormEvent) => {
+    const handleAddProject = async (e: React.FormEvent) => {
         e.preventDefault();
         
         // Final validation
         if (getWordCount(formData.description) > 200 || getWordCount(formData.techStack) > 30) {
-            return; // Prevent saving if constraints matched
+            return;
         }
 
-        const newProject: Project = {
-            id: Date.now().toString(),
-            title: formData.title,
-            description: formData.description,
-            techStack: formData.techStack,
-            githubLink: formData.githubLink || undefined,
-            liveLink: formData.liveLink || undefined
-        };
-
-        setProjects(prev => [...prev, newProject]);
-        setIsModalOpen(false);
-        setFormData({ title: '', description: '', techStack: '', githubLink: '', liveLink: '' });
+        setSaving(true);
+        try {
+            const res = await projectApi.create({
+                title: formData.title,
+                description: formData.description,
+                techStack: formData.techStack,
+                githubLink: formData.githubLink || undefined,
+                liveLink: formData.liveLink || undefined,
+            });
+            const p = res.data;
+            setProjects(prev => [...prev, {
+                id: p.id,
+                title: p.title,
+                description: p.description,
+                techStack: p.techStack,
+                githubLink: p.githubLink || undefined,
+                liveLink: p.liveLink || undefined,
+            }]);
+            setIsModalOpen(false);
+            setFormData({ title: '', description: '', techStack: '', githubLink: '', liveLink: '' });
+        } catch (err: any) {
+            console.error('Failed to add project:', err);
+            alert(err.message || 'Failed to add project');
+        } finally {
+            setSaving(false);
+        }
     };
 
     return (

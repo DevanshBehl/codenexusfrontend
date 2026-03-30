@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { userApi, contestApi, problemApi } from '../../lib/api';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -20,6 +21,57 @@ import {
 
 const StudentDashboard = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [userName, setUserName] = useState('Student');
+    const [codeArenaScore, setCodeArenaScore] = useState(0);
+    const [upcomingContests, setUpcomingContests] = useState<{title: string; date: string; participants: string; status: string}[]>([]);
+    const [problemOfTheDay, setProblemOfTheDay] = useState({
+        title: 'Loading...',
+        difficulty: 'Medium',
+        topics: [] as string[],
+        points: 0
+    });
+
+    useEffect(() => {
+        // Fetch user profile
+        userApi.getMe().then(res => {
+            const data = res.data;
+            if (data.profile) {
+                setUserName(data.profile.name?.split(' ')[0] || 'Student');
+                setCodeArenaScore(data.profile.codeArenaScore || 0);
+            }
+        }).catch(() => {});
+
+        // Fetch contests
+        contestApi.getAll().then(res => {
+            const contests = (res.data as any[]) || [];
+            setUpcomingContests(contests.slice(0, 3).map((c: any) => ({
+                title: c.title,
+                date: new Date(c.date).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
+                participants: c._count?.problems ? `${c._count.problems} Q` : '0 Q',
+                status: c.status || 'UPCOMING',
+            })));
+        }).catch(() => {});
+
+        // Fetch problem of the day (pick first problem)
+        problemApi.getAll({ limit: 5 }).then(res => {
+            const data = res.data as any;
+            const problems = data.problems || data || [];
+            if (problems.length > 0) {
+                const p = problems[Math.floor(Math.random() * problems.length)];
+                setProblemOfTheDay({
+                    title: p.title,
+                    difficulty: p.difficulty === 'EASY' ? 'Easy' : p.difficulty === 'MEDIUM' ? 'Medium' : 'Hard',
+                    topics: ['Algorithms'],
+                    points: p.points || 100,
+                });
+            }
+        }).catch(() => {});
+    }, []);
+
+    const upcomingEvents = [
+        { title: 'Platform Exploration', type: 'TASK', time: 'Complete your profile', color: 'text-accent-400 border-accent-500/50' },
+        { title: 'Code Arena Practice', type: 'PRACTICE', time: 'Solve problems daily', color: 'text-[#888] border-[#333]' },
+    ];
 
     const sidebarItems = [
         { icon: Mail, label: 'MAIL', onClick: () => window.location.href = '/student/mail' },
@@ -30,24 +82,6 @@ const StudentDashboard = () => {
         { icon: Briefcase, label: 'INTERVIEWS', onClick: () => window.location.href = '/student/interview' },
         { icon: FileText, label: 'APPLICATIONS', onClick: () => window.location.href = '/student/dashboard' },
         { icon: Box, label: 'PROJECTS', onClick: () => window.location.href = '/student/projects' },
-    ];
-
-    const upcomingContests = [
-        { title: 'Weekly Coder Challenge #42', date: 'Tomorrow, 10:00 AM', participants: '1.2k', status: 'REGISTERED' },
-        { title: 'Amazon Hiring Hackathon', date: 'Oct 15, 2:00 PM', participants: '5.5k', status: 'OPEN' }
-    ];
-
-    const problemOfTheDay = {
-        title: 'Merge K Sorted Lists',
-        difficulty: 'Hard',
-        topics: ['Linked List', 'Divide and Conquer', 'Heap'],
-        successRate: '45.2%'
-    };
-
-    const upcomingEvents = [
-        { title: 'Interview with Amazon', type: 'INTERVIEW', time: 'Today, 2:00 PM', color: 'text-accent-400 border-accent-500/50' },
-        { title: 'Apple Application Opens', type: 'DEADLINE', time: 'Tomorrow, 9:00 AM', color: 'text-[#888] border-[#333]' },
-        { title: 'System Design Session', type: 'WORKSHOP', time: 'Oct 12, 5:00 PM', color: 'text-[#888] border-[#333]' }
     ];
 
     return (
@@ -159,7 +193,7 @@ const StudentDashboard = () => {
                                 SYSTEM ONLINE
                             </div>
                             <h1 className="text-3xl md:text-5xl font-bold text-white tracking-tight uppercase">
-                                Welcome, <span className="text-accent-400 font-serif italic">Devansh</span>
+                                Welcome, <span className="text-accent-400 font-serif italic">{userName}</span>
                             </h1>
                             <p className="text-[#888] font-mono text-xs mt-2">
                                 /home/students/devansh_behl/dashboard
@@ -194,12 +228,10 @@ const StudentDashboard = () => {
                         <div className="bg-[#0A0A0A] border border-[#222] p-6 rounded-sm group hover:border-[#333] transition-colors relative overflow-hidden">
                             <div className="absolute top-0 left-0 w-1 h-full bg-[#111] group-hover:bg-accent-500 transition-colors"></div>
                             <h3 className="text-[10px] uppercase font-mono tracking-widest text-[#888] mb-2 flex justify-between items-center">
-                                Problems Solved
-                                <span className="text-accent-400 font-bold">342</span>
+                                Arena Score
+                                <span className="text-accent-400 font-bold">{codeArenaScore}</span>
                             </h3>
-                            <div className="text-2xl font-bold font-sans tracking-tight flex items-end gap-2">
-                                342 <span className="text-xs text-[#555] font-mono font-normal pb-1">/ 2000+</span>
-                            </div>
+                            <div className="text-2xl font-bold font-sans tracking-tight">{codeArenaScore} pts</div>
                             <div className="w-full bg-[#111] border border-[#333] h-1.5 mt-3 rounded-sm overflow-hidden">
                                 <div className="bg-accent-500 h-1.5 rounded-sm" style={{ width: '17%' }} />
                             </div>
@@ -257,7 +289,7 @@ const StudentDashboard = () => {
 
                                 <div className="flex items-center justify-between pt-4 border-t border-[#222] relative z-10">
                                     <p className="text-[10px] font-mono uppercase tracking-widest text-[#555]">
-                                        Success Rate <span className="text-[#aaa] ml-2">{problemOfTheDay.successRate}</span>
+                                        Success Rate <span className="text-[#aaa] ml-2">{problemOfTheDay.points} pts</span>
                                     </p>
                                     <button className="flex items-center gap-2 text-[10px] font-mono font-bold uppercase tracking-widest text-accent-500 hover:text-accent-400 transition-colors group">
                                         Solve Challenge <ChevronRight size={12} className="group-hover:translate-x-1 transition-transform" />

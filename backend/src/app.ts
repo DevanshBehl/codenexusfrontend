@@ -6,6 +6,9 @@ import authRoutes from './modules/auth/auth.routes.js';
 import userRoutes from './modules/user/user.routes.js';
 import contestRoutes from "./modules/contest/contest.routes.js";
 import problemRoutes from "./modules/problem/problem.routes.js";
+import webinarRoutes from "./modules/webinar/webinar.routes.js";
+import projectRoutes from "./modules/project/project.routes.js";
+
 const app: Application = express();
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
@@ -23,6 +26,9 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/contests", contestRoutes);
 app.use("/api/v1/problems", problemRoutes);
+app.use("/api/v1/webinars", webinarRoutes);
+app.use("/api/v1/projects", projectRoutes);
+
 app.use((req, res) => {
     res.status(404).json({
         success: false,

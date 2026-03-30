@@ -27,11 +27,13 @@ export type AggregateStudent = {
 }
 
 export type StudentAvgAggregateOutputType = {
+  age: number | null
   cgpa: number | null
   codeArenaScore: number | null
 }
 
 export type StudentSumAggregateOutputType = {
+  age: number | null
   cgpa: number | null
   codeArenaScore: number | null
 }
@@ -41,10 +43,23 @@ export type StudentMinAggregateOutputType = {
   userId: string | null
   universityId: string | null
   name: string | null
+  age: number | null
+  phone: string | null
   branch: string | null
   cgpa: number | null
   specialization: string | null
   gender: string | null
+  registrationNumber: string | null
+  codeNexusId: string | null
+  parentsName: string | null
+  parentContactNo: string | null
+  parentEmail: string | null
+  address: string | null
+  xSchool: string | null
+  xPercentage: string | null
+  xiiSchool: string | null
+  xiiPercentage: string | null
+  otherInfo: string | null
   status: string | null
   codeArenaScore: number | null
   createdAt: Date | null
@@ -55,10 +70,23 @@ export type StudentMaxAggregateOutputType = {
   userId: string | null
   universityId: string | null
   name: string | null
+  age: number | null
+  phone: string | null
   branch: string | null
   cgpa: number | null
   specialization: string | null
   gender: string | null
+  registrationNumber: string | null
+  codeNexusId: string | null
+  parentsName: string | null
+  parentContactNo: string | null
+  parentEmail: string | null
+  address: string | null
+  xSchool: string | null
+  xPercentage: string | null
+  xiiSchool: string | null
+  xiiPercentage: string | null
+  otherInfo: string | null
   status: string | null
   codeArenaScore: number | null
   createdAt: Date | null
@@ -69,10 +97,23 @@ export type StudentCountAggregateOutputType = {
   userId: number
   universityId: number
   name: number
+  age: number
+  phone: number
   branch: number
   cgpa: number
   specialization: number
   gender: number
+  registrationNumber: number
+  codeNexusId: number
+  parentsName: number
+  parentContactNo: number
+  parentEmail: number
+  address: number
+  xSchool: number
+  xPercentage: number
+  xiiSchool: number
+  xiiPercentage: number
+  otherInfo: number
   status: number
   codeArenaScore: number
   createdAt: number
@@ -81,11 +122,13 @@ export type StudentCountAggregateOutputType = {
 
 
 export type StudentAvgAggregateInputType = {
+  age?: true
   cgpa?: true
   codeArenaScore?: true
 }
 
 export type StudentSumAggregateInputType = {
+  age?: true
   cgpa?: true
   codeArenaScore?: true
 }
@@ -95,10 +138,23 @@ export type StudentMinAggregateInputType = {
   userId?: true
   universityId?: true
   name?: true
+  age?: true
+  phone?: true
   branch?: true
   cgpa?: true
   specialization?: true
   gender?: true
+  registrationNumber?: true
+  codeNexusId?: true
+  parentsName?: true
+  parentContactNo?: true
+  parentEmail?: true
+  address?: true
+  xSchool?: true
+  xPercentage?: true
+  xiiSchool?: true
+  xiiPercentage?: true
+  otherInfo?: true
   status?: true
   codeArenaScore?: true
   createdAt?: true
@@ -109,10 +165,23 @@ export type StudentMaxAggregateInputType = {
   userId?: true
   universityId?: true
   name?: true
+  age?: true
+  phone?: true
   branch?: true
   cgpa?: true
   specialization?: true
   gender?: true
+  registrationNumber?: true
+  codeNexusId?: true
+  parentsName?: true
+  parentContactNo?: true
+  parentEmail?: true
+  address?: true
+  xSchool?: true
+  xPercentage?: true
+  xiiSchool?: true
+  xiiPercentage?: true
+  otherInfo?: true
   status?: true
   codeArenaScore?: true
   createdAt?: true
@@ -123,10 +192,23 @@ export type StudentCountAggregateInputType = {
   userId?: true
   universityId?: true
   name?: true
+  age?: true
+  phone?: true
   branch?: true
   cgpa?: true
   specialization?: true
   gender?: true
+  registrationNumber?: true
+  codeNexusId?: true
+  parentsName?: true
+  parentContactNo?: true
+  parentEmail?: true
+  address?: true
+  xSchool?: true
+  xPercentage?: true
+  xiiSchool?: true
+  xiiPercentage?: true
+  otherInfo?: true
   status?: true
   codeArenaScore?: true
   createdAt?: true
@@ -224,10 +306,23 @@ export type StudentGroupByOutputType = {
   userId: string
   universityId: string
   name: string
+  age: number | null
+  phone: string | null
   branch: string
   cgpa: number
   specialization: string | null
   gender: string | null
+  registrationNumber: string | null
+  codeNexusId: string | null
+  parentsName: string | null
+  parentContactNo: string | null
+  parentEmail: string | null
+  address: string | null
+  xSchool: string | null
+  xPercentage: string | null
+  xiiSchool: string | null
+  xiiPercentage: string | null
+  otherInfo: string | null
   status: string
   codeArenaScore: number
   createdAt: Date
@@ -261,10 +356,23 @@ export type StudentWhereInput = {
   userId?: Prisma.StringFilter<"Student"> | string
   universityId?: Prisma.StringFilter<"Student"> | string
   name?: Prisma.StringFilter<"Student"> | string
+  age?: Prisma.IntNullableFilter<"Student"> | number | null
+  phone?: Prisma.StringNullableFilter<"Student"> | string | null
   branch?: Prisma.StringFilter<"Student"> | string
   cgpa?: Prisma.FloatFilter<"Student"> | number
   specialization?: Prisma.StringNullableFilter<"Student"> | string | null
   gender?: Prisma.StringNullableFilter<"Student"> | string | null
+  registrationNumber?: Prisma.StringNullableFilter<"Student"> | string | null
+  codeNexusId?: Prisma.StringNullableFilter<"Student"> | string | null
+  parentsName?: Prisma.StringNullableFilter<"Student"> | string | null
+  parentContactNo?: Prisma.StringNullableFilter<"Student"> | string | null
+  parentEmail?: Prisma.StringNullableFilter<"Student"> | string | null
+  address?: Prisma.StringNullableFilter<"Student"> | string | null
+  xSchool?: Prisma.StringNullableFilter<"Student"> | string | null
+  xPercentage?: Prisma.StringNullableFilter<"Student"> | string | null
+  xiiSchool?: Prisma.StringNullableFilter<"Student"> | string | null
+  xiiPercentage?: Prisma.StringNullableFilter<"Student"> | string | null
+  otherInfo?: Prisma.StringNullableFilter<"Student"> | string | null
   status?: Prisma.StringFilter<"Student"> | string
   codeArenaScore?: Prisma.IntFilter<"Student"> | number
   createdAt?: Prisma.DateTimeFilter<"Student"> | Date | string
@@ -281,10 +389,23 @@ export type StudentOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   universityId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  age?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
   branch?: Prisma.SortOrder
   cgpa?: Prisma.SortOrder
   specialization?: Prisma.SortOrderInput | Prisma.SortOrder
   gender?: Prisma.SortOrderInput | Prisma.SortOrder
+  registrationNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  codeNexusId?: Prisma.SortOrderInput | Prisma.SortOrder
+  parentsName?: Prisma.SortOrderInput | Prisma.SortOrder
+  parentContactNo?: Prisma.SortOrderInput | Prisma.SortOrder
+  parentEmail?: Prisma.SortOrderInput | Prisma.SortOrder
+  address?: Prisma.SortOrderInput | Prisma.SortOrder
+  xSchool?: Prisma.SortOrderInput | Prisma.SortOrder
+  xPercentage?: Prisma.SortOrderInput | Prisma.SortOrder
+  xiiSchool?: Prisma.SortOrderInput | Prisma.SortOrder
+  xiiPercentage?: Prisma.SortOrderInput | Prisma.SortOrder
+  otherInfo?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   codeArenaScore?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -304,10 +425,23 @@ export type StudentWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.StudentWhereInput | Prisma.StudentWhereInput[]
   universityId?: Prisma.StringFilter<"Student"> | string
   name?: Prisma.StringFilter<"Student"> | string
+  age?: Prisma.IntNullableFilter<"Student"> | number | null
+  phone?: Prisma.StringNullableFilter<"Student"> | string | null
   branch?: Prisma.StringFilter<"Student"> | string
   cgpa?: Prisma.FloatFilter<"Student"> | number
   specialization?: Prisma.StringNullableFilter<"Student"> | string | null
   gender?: Prisma.StringNullableFilter<"Student"> | string | null
+  registrationNumber?: Prisma.StringNullableFilter<"Student"> | string | null
+  codeNexusId?: Prisma.StringNullableFilter<"Student"> | string | null
+  parentsName?: Prisma.StringNullableFilter<"Student"> | string | null
+  parentContactNo?: Prisma.StringNullableFilter<"Student"> | string | null
+  parentEmail?: Prisma.StringNullableFilter<"Student"> | string | null
+  address?: Prisma.StringNullableFilter<"Student"> | string | null
+  xSchool?: Prisma.StringNullableFilter<"Student"> | string | null
+  xPercentage?: Prisma.StringNullableFilter<"Student"> | string | null
+  xiiSchool?: Prisma.StringNullableFilter<"Student"> | string | null
+  xiiPercentage?: Prisma.StringNullableFilter<"Student"> | string | null
+  otherInfo?: Prisma.StringNullableFilter<"Student"> | string | null
   status?: Prisma.StringFilter<"Student"> | string
   codeArenaScore?: Prisma.IntFilter<"Student"> | number
   createdAt?: Prisma.DateTimeFilter<"Student"> | Date | string
@@ -324,10 +458,23 @@ export type StudentOrderByWithAggregationInput = {
   userId?: Prisma.SortOrder
   universityId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  age?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
   branch?: Prisma.SortOrder
   cgpa?: Prisma.SortOrder
   specialization?: Prisma.SortOrderInput | Prisma.SortOrder
   gender?: Prisma.SortOrderInput | Prisma.SortOrder
+  registrationNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  codeNexusId?: Prisma.SortOrderInput | Prisma.SortOrder
+  parentsName?: Prisma.SortOrderInput | Prisma.SortOrder
+  parentContactNo?: Prisma.SortOrderInput | Prisma.SortOrder
+  parentEmail?: Prisma.SortOrderInput | Prisma.SortOrder
+  address?: Prisma.SortOrderInput | Prisma.SortOrder
+  xSchool?: Prisma.SortOrderInput | Prisma.SortOrder
+  xPercentage?: Prisma.SortOrderInput | Prisma.SortOrder
+  xiiSchool?: Prisma.SortOrderInput | Prisma.SortOrder
+  xiiPercentage?: Prisma.SortOrderInput | Prisma.SortOrder
+  otherInfo?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   codeArenaScore?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -346,10 +493,23 @@ export type StudentScalarWhereWithAggregatesInput = {
   userId?: Prisma.StringWithAggregatesFilter<"Student"> | string
   universityId?: Prisma.StringWithAggregatesFilter<"Student"> | string
   name?: Prisma.StringWithAggregatesFilter<"Student"> | string
+  age?: Prisma.IntNullableWithAggregatesFilter<"Student"> | number | null
+  phone?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
   branch?: Prisma.StringWithAggregatesFilter<"Student"> | string
   cgpa?: Prisma.FloatWithAggregatesFilter<"Student"> | number
   specialization?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
   gender?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
+  registrationNumber?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
+  codeNexusId?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
+  parentsName?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
+  parentContactNo?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
+  parentEmail?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
+  address?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
+  xSchool?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
+  xPercentage?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
+  xiiSchool?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
+  xiiPercentage?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
+  otherInfo?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
   status?: Prisma.StringWithAggregatesFilter<"Student"> | string
   codeArenaScore?: Prisma.IntWithAggregatesFilter<"Student"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Student"> | Date | string
@@ -358,10 +518,23 @@ export type StudentScalarWhereWithAggregatesInput = {
 export type StudentCreateInput = {
   id?: string
   name: string
+  age?: number | null
+  phone?: string | null
   branch: string
   cgpa: number
   specialization?: string | null
   gender?: string | null
+  registrationNumber?: string | null
+  codeNexusId?: string | null
+  parentsName?: string | null
+  parentContactNo?: string | null
+  parentEmail?: string | null
+  address?: string | null
+  xSchool?: string | null
+  xPercentage?: string | null
+  xiiSchool?: string | null
+  xiiPercentage?: string | null
+  otherInfo?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -378,10 +551,23 @@ export type StudentUncheckedCreateInput = {
   userId: string
   universityId: string
   name: string
+  age?: number | null
+  phone?: string | null
   branch: string
   cgpa: number
   specialization?: string | null
   gender?: string | null
+  registrationNumber?: string | null
+  codeNexusId?: string | null
+  parentsName?: string | null
+  parentContactNo?: string | null
+  parentEmail?: string | null
+  address?: string | null
+  xSchool?: string | null
+  xPercentage?: string | null
+  xiiSchool?: string | null
+  xiiPercentage?: string | null
+  otherInfo?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -394,10 +580,23 @@ export type StudentUncheckedCreateInput = {
 export type StudentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branch?: Prisma.StringFieldUpdateOperationsInput | string
   cgpa?: Prisma.FloatFieldUpdateOperationsInput | number
   specialization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codeNexusId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentsName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentContactNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -414,10 +613,23 @@ export type StudentUncheckedUpdateInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   universityId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branch?: Prisma.StringFieldUpdateOperationsInput | string
   cgpa?: Prisma.FloatFieldUpdateOperationsInput | number
   specialization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codeNexusId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentsName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentContactNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -432,10 +644,23 @@ export type StudentCreateManyInput = {
   userId: string
   universityId: string
   name: string
+  age?: number | null
+  phone?: string | null
   branch: string
   cgpa: number
   specialization?: string | null
   gender?: string | null
+  registrationNumber?: string | null
+  codeNexusId?: string | null
+  parentsName?: string | null
+  parentContactNo?: string | null
+  parentEmail?: string | null
+  address?: string | null
+  xSchool?: string | null
+  xPercentage?: string | null
+  xiiSchool?: string | null
+  xiiPercentage?: string | null
+  otherInfo?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -444,10 +669,23 @@ export type StudentCreateManyInput = {
 export type StudentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branch?: Prisma.StringFieldUpdateOperationsInput | string
   cgpa?: Prisma.FloatFieldUpdateOperationsInput | number
   specialization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codeNexusId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentsName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentContactNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -458,10 +696,23 @@ export type StudentUncheckedUpdateManyInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   universityId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branch?: Prisma.StringFieldUpdateOperationsInput | string
   cgpa?: Prisma.FloatFieldUpdateOperationsInput | number
   specialization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codeNexusId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentsName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentContactNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -487,16 +738,30 @@ export type StudentCountOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   universityId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  age?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
   branch?: Prisma.SortOrder
   cgpa?: Prisma.SortOrder
   specialization?: Prisma.SortOrder
   gender?: Prisma.SortOrder
+  registrationNumber?: Prisma.SortOrder
+  codeNexusId?: Prisma.SortOrder
+  parentsName?: Prisma.SortOrder
+  parentContactNo?: Prisma.SortOrder
+  parentEmail?: Prisma.SortOrder
+  address?: Prisma.SortOrder
+  xSchool?: Prisma.SortOrder
+  xPercentage?: Prisma.SortOrder
+  xiiSchool?: Prisma.SortOrder
+  xiiPercentage?: Prisma.SortOrder
+  otherInfo?: Prisma.SortOrder
   status?: Prisma.SortOrder
   codeArenaScore?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type StudentAvgOrderByAggregateInput = {
+  age?: Prisma.SortOrder
   cgpa?: Prisma.SortOrder
   codeArenaScore?: Prisma.SortOrder
 }
@@ -506,10 +771,23 @@ export type StudentMaxOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   universityId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  age?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
   branch?: Prisma.SortOrder
   cgpa?: Prisma.SortOrder
   specialization?: Prisma.SortOrder
   gender?: Prisma.SortOrder
+  registrationNumber?: Prisma.SortOrder
+  codeNexusId?: Prisma.SortOrder
+  parentsName?: Prisma.SortOrder
+  parentContactNo?: Prisma.SortOrder
+  parentEmail?: Prisma.SortOrder
+  address?: Prisma.SortOrder
+  xSchool?: Prisma.SortOrder
+  xPercentage?: Prisma.SortOrder
+  xiiSchool?: Prisma.SortOrder
+  xiiPercentage?: Prisma.SortOrder
+  otherInfo?: Prisma.SortOrder
   status?: Prisma.SortOrder
   codeArenaScore?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -520,16 +798,30 @@ export type StudentMinOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   universityId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  age?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
   branch?: Prisma.SortOrder
   cgpa?: Prisma.SortOrder
   specialization?: Prisma.SortOrder
   gender?: Prisma.SortOrder
+  registrationNumber?: Prisma.SortOrder
+  codeNexusId?: Prisma.SortOrder
+  parentsName?: Prisma.SortOrder
+  parentContactNo?: Prisma.SortOrder
+  parentEmail?: Prisma.SortOrder
+  address?: Prisma.SortOrder
+  xSchool?: Prisma.SortOrder
+  xPercentage?: Prisma.SortOrder
+  xiiSchool?: Prisma.SortOrder
+  xiiPercentage?: Prisma.SortOrder
+  otherInfo?: Prisma.SortOrder
   status?: Prisma.SortOrder
   codeArenaScore?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type StudentSumOrderByAggregateInput = {
+  age?: Prisma.SortOrder
   cgpa?: Prisma.SortOrder
   codeArenaScore?: Prisma.SortOrder
 }
@@ -613,6 +905,14 @@ export type StudentUncheckedUpdateManyWithoutUniversityNestedInput = {
   deleteMany?: Prisma.StudentScalarWhereInput | Prisma.StudentScalarWhereInput[]
 }
 
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type FloatFieldUpdateOperationsInput = {
   set?: number
   increment?: number
@@ -680,10 +980,23 @@ export type StudentUpdateOneRequiredWithoutInterviewsNestedInput = {
 export type StudentCreateWithoutUserInput = {
   id?: string
   name: string
+  age?: number | null
+  phone?: string | null
   branch: string
   cgpa: number
   specialization?: string | null
   gender?: string | null
+  registrationNumber?: string | null
+  codeNexusId?: string | null
+  parentsName?: string | null
+  parentContactNo?: string | null
+  parentEmail?: string | null
+  address?: string | null
+  xSchool?: string | null
+  xPercentage?: string | null
+  xiiSchool?: string | null
+  xiiPercentage?: string | null
+  otherInfo?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -698,10 +1011,23 @@ export type StudentUncheckedCreateWithoutUserInput = {
   id?: string
   universityId: string
   name: string
+  age?: number | null
+  phone?: string | null
   branch: string
   cgpa: number
   specialization?: string | null
   gender?: string | null
+  registrationNumber?: string | null
+  codeNexusId?: string | null
+  parentsName?: string | null
+  parentContactNo?: string | null
+  parentEmail?: string | null
+  address?: string | null
+  xSchool?: string | null
+  xPercentage?: string | null
+  xiiSchool?: string | null
+  xiiPercentage?: string | null
+  otherInfo?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -730,10 +1056,23 @@ export type StudentUpdateToOneWithWhereWithoutUserInput = {
 export type StudentUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branch?: Prisma.StringFieldUpdateOperationsInput | string
   cgpa?: Prisma.FloatFieldUpdateOperationsInput | number
   specialization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codeNexusId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentsName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentContactNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -748,10 +1087,23 @@ export type StudentUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   universityId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branch?: Prisma.StringFieldUpdateOperationsInput | string
   cgpa?: Prisma.FloatFieldUpdateOperationsInput | number
   specialization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codeNexusId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentsName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentContactNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -764,10 +1116,23 @@ export type StudentUncheckedUpdateWithoutUserInput = {
 export type StudentCreateWithoutUniversityInput = {
   id?: string
   name: string
+  age?: number | null
+  phone?: string | null
   branch: string
   cgpa: number
   specialization?: string | null
   gender?: string | null
+  registrationNumber?: string | null
+  codeNexusId?: string | null
+  parentsName?: string | null
+  parentContactNo?: string | null
+  parentEmail?: string | null
+  address?: string | null
+  xSchool?: string | null
+  xPercentage?: string | null
+  xiiSchool?: string | null
+  xiiPercentage?: string | null
+  otherInfo?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -782,10 +1147,23 @@ export type StudentUncheckedCreateWithoutUniversityInput = {
   id?: string
   userId: string
   name: string
+  age?: number | null
+  phone?: string | null
   branch: string
   cgpa: number
   specialization?: string | null
   gender?: string | null
+  registrationNumber?: string | null
+  codeNexusId?: string | null
+  parentsName?: string | null
+  parentContactNo?: string | null
+  parentEmail?: string | null
+  address?: string | null
+  xSchool?: string | null
+  xPercentage?: string | null
+  xiiSchool?: string | null
+  xiiPercentage?: string | null
+  otherInfo?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -829,10 +1207,23 @@ export type StudentScalarWhereInput = {
   userId?: Prisma.StringFilter<"Student"> | string
   universityId?: Prisma.StringFilter<"Student"> | string
   name?: Prisma.StringFilter<"Student"> | string
+  age?: Prisma.IntNullableFilter<"Student"> | number | null
+  phone?: Prisma.StringNullableFilter<"Student"> | string | null
   branch?: Prisma.StringFilter<"Student"> | string
   cgpa?: Prisma.FloatFilter<"Student"> | number
   specialization?: Prisma.StringNullableFilter<"Student"> | string | null
   gender?: Prisma.StringNullableFilter<"Student"> | string | null
+  registrationNumber?: Prisma.StringNullableFilter<"Student"> | string | null
+  codeNexusId?: Prisma.StringNullableFilter<"Student"> | string | null
+  parentsName?: Prisma.StringNullableFilter<"Student"> | string | null
+  parentContactNo?: Prisma.StringNullableFilter<"Student"> | string | null
+  parentEmail?: Prisma.StringNullableFilter<"Student"> | string | null
+  address?: Prisma.StringNullableFilter<"Student"> | string | null
+  xSchool?: Prisma.StringNullableFilter<"Student"> | string | null
+  xPercentage?: Prisma.StringNullableFilter<"Student"> | string | null
+  xiiSchool?: Prisma.StringNullableFilter<"Student"> | string | null
+  xiiPercentage?: Prisma.StringNullableFilter<"Student"> | string | null
+  otherInfo?: Prisma.StringNullableFilter<"Student"> | string | null
   status?: Prisma.StringFilter<"Student"> | string
   codeArenaScore?: Prisma.IntFilter<"Student"> | number
   createdAt?: Prisma.DateTimeFilter<"Student"> | Date | string
@@ -841,10 +1232,23 @@ export type StudentScalarWhereInput = {
 export type StudentCreateWithoutProjectsInput = {
   id?: string
   name: string
+  age?: number | null
+  phone?: string | null
   branch: string
   cgpa: number
   specialization?: string | null
   gender?: string | null
+  registrationNumber?: string | null
+  codeNexusId?: string | null
+  parentsName?: string | null
+  parentContactNo?: string | null
+  parentEmail?: string | null
+  address?: string | null
+  xSchool?: string | null
+  xPercentage?: string | null
+  xiiSchool?: string | null
+  xiiPercentage?: string | null
+  otherInfo?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -860,10 +1264,23 @@ export type StudentUncheckedCreateWithoutProjectsInput = {
   userId: string
   universityId: string
   name: string
+  age?: number | null
+  phone?: string | null
   branch: string
   cgpa: number
   specialization?: string | null
   gender?: string | null
+  registrationNumber?: string | null
+  codeNexusId?: string | null
+  parentsName?: string | null
+  parentContactNo?: string | null
+  parentEmail?: string | null
+  address?: string | null
+  xSchool?: string | null
+  xPercentage?: string | null
+  xiiSchool?: string | null
+  xiiPercentage?: string | null
+  otherInfo?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -891,10 +1308,23 @@ export type StudentUpdateToOneWithWhereWithoutProjectsInput = {
 export type StudentUpdateWithoutProjectsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branch?: Prisma.StringFieldUpdateOperationsInput | string
   cgpa?: Prisma.FloatFieldUpdateOperationsInput | number
   specialization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codeNexusId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentsName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentContactNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -910,10 +1340,23 @@ export type StudentUncheckedUpdateWithoutProjectsInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   universityId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branch?: Prisma.StringFieldUpdateOperationsInput | string
   cgpa?: Prisma.FloatFieldUpdateOperationsInput | number
   specialization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codeNexusId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentsName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentContactNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -925,10 +1368,23 @@ export type StudentUncheckedUpdateWithoutProjectsInput = {
 export type StudentCreateWithoutSubmissionsInput = {
   id?: string
   name: string
+  age?: number | null
+  phone?: string | null
   branch: string
   cgpa: number
   specialization?: string | null
   gender?: string | null
+  registrationNumber?: string | null
+  codeNexusId?: string | null
+  parentsName?: string | null
+  parentContactNo?: string | null
+  parentEmail?: string | null
+  address?: string | null
+  xSchool?: string | null
+  xPercentage?: string | null
+  xiiSchool?: string | null
+  xiiPercentage?: string | null
+  otherInfo?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -944,10 +1400,23 @@ export type StudentUncheckedCreateWithoutSubmissionsInput = {
   userId: string
   universityId: string
   name: string
+  age?: number | null
+  phone?: string | null
   branch: string
   cgpa: number
   specialization?: string | null
   gender?: string | null
+  registrationNumber?: string | null
+  codeNexusId?: string | null
+  parentsName?: string | null
+  parentContactNo?: string | null
+  parentEmail?: string | null
+  address?: string | null
+  xSchool?: string | null
+  xPercentage?: string | null
+  xiiSchool?: string | null
+  xiiPercentage?: string | null
+  otherInfo?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -975,10 +1444,23 @@ export type StudentUpdateToOneWithWhereWithoutSubmissionsInput = {
 export type StudentUpdateWithoutSubmissionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branch?: Prisma.StringFieldUpdateOperationsInput | string
   cgpa?: Prisma.FloatFieldUpdateOperationsInput | number
   specialization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codeNexusId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentsName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentContactNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -994,10 +1476,23 @@ export type StudentUncheckedUpdateWithoutSubmissionsInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   universityId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branch?: Prisma.StringFieldUpdateOperationsInput | string
   cgpa?: Prisma.FloatFieldUpdateOperationsInput | number
   specialization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codeNexusId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentsName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentContactNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1009,10 +1504,23 @@ export type StudentUncheckedUpdateWithoutSubmissionsInput = {
 export type StudentCreateWithoutApplicationsInput = {
   id?: string
   name: string
+  age?: number | null
+  phone?: string | null
   branch: string
   cgpa: number
   specialization?: string | null
   gender?: string | null
+  registrationNumber?: string | null
+  codeNexusId?: string | null
+  parentsName?: string | null
+  parentContactNo?: string | null
+  parentEmail?: string | null
+  address?: string | null
+  xSchool?: string | null
+  xPercentage?: string | null
+  xiiSchool?: string | null
+  xiiPercentage?: string | null
+  otherInfo?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -1028,10 +1536,23 @@ export type StudentUncheckedCreateWithoutApplicationsInput = {
   userId: string
   universityId: string
   name: string
+  age?: number | null
+  phone?: string | null
   branch: string
   cgpa: number
   specialization?: string | null
   gender?: string | null
+  registrationNumber?: string | null
+  codeNexusId?: string | null
+  parentsName?: string | null
+  parentContactNo?: string | null
+  parentEmail?: string | null
+  address?: string | null
+  xSchool?: string | null
+  xPercentage?: string | null
+  xiiSchool?: string | null
+  xiiPercentage?: string | null
+  otherInfo?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -1059,10 +1580,23 @@ export type StudentUpdateToOneWithWhereWithoutApplicationsInput = {
 export type StudentUpdateWithoutApplicationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branch?: Prisma.StringFieldUpdateOperationsInput | string
   cgpa?: Prisma.FloatFieldUpdateOperationsInput | number
   specialization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codeNexusId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentsName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentContactNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1078,10 +1612,23 @@ export type StudentUncheckedUpdateWithoutApplicationsInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   universityId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branch?: Prisma.StringFieldUpdateOperationsInput | string
   cgpa?: Prisma.FloatFieldUpdateOperationsInput | number
   specialization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codeNexusId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentsName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentContactNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1093,10 +1640,23 @@ export type StudentUncheckedUpdateWithoutApplicationsInput = {
 export type StudentCreateWithoutInterviewsInput = {
   id?: string
   name: string
+  age?: number | null
+  phone?: string | null
   branch: string
   cgpa: number
   specialization?: string | null
   gender?: string | null
+  registrationNumber?: string | null
+  codeNexusId?: string | null
+  parentsName?: string | null
+  parentContactNo?: string | null
+  parentEmail?: string | null
+  address?: string | null
+  xSchool?: string | null
+  xPercentage?: string | null
+  xiiSchool?: string | null
+  xiiPercentage?: string | null
+  otherInfo?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -1112,10 +1672,23 @@ export type StudentUncheckedCreateWithoutInterviewsInput = {
   userId: string
   universityId: string
   name: string
+  age?: number | null
+  phone?: string | null
   branch: string
   cgpa: number
   specialization?: string | null
   gender?: string | null
+  registrationNumber?: string | null
+  codeNexusId?: string | null
+  parentsName?: string | null
+  parentContactNo?: string | null
+  parentEmail?: string | null
+  address?: string | null
+  xSchool?: string | null
+  xPercentage?: string | null
+  xiiSchool?: string | null
+  xiiPercentage?: string | null
+  otherInfo?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -1143,10 +1716,23 @@ export type StudentUpdateToOneWithWhereWithoutInterviewsInput = {
 export type StudentUpdateWithoutInterviewsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branch?: Prisma.StringFieldUpdateOperationsInput | string
   cgpa?: Prisma.FloatFieldUpdateOperationsInput | number
   specialization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codeNexusId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentsName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentContactNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1162,10 +1748,23 @@ export type StudentUncheckedUpdateWithoutInterviewsInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   universityId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branch?: Prisma.StringFieldUpdateOperationsInput | string
   cgpa?: Prisma.FloatFieldUpdateOperationsInput | number
   specialization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codeNexusId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentsName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentContactNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1178,10 +1777,23 @@ export type StudentCreateManyUniversityInput = {
   id?: string
   userId: string
   name: string
+  age?: number | null
+  phone?: string | null
   branch: string
   cgpa: number
   specialization?: string | null
   gender?: string | null
+  registrationNumber?: string | null
+  codeNexusId?: string | null
+  parentsName?: string | null
+  parentContactNo?: string | null
+  parentEmail?: string | null
+  address?: string | null
+  xSchool?: string | null
+  xPercentage?: string | null
+  xiiSchool?: string | null
+  xiiPercentage?: string | null
+  otherInfo?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -1190,10 +1802,23 @@ export type StudentCreateManyUniversityInput = {
 export type StudentUpdateWithoutUniversityInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branch?: Prisma.StringFieldUpdateOperationsInput | string
   cgpa?: Prisma.FloatFieldUpdateOperationsInput | number
   specialization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codeNexusId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentsName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentContactNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1208,10 +1833,23 @@ export type StudentUncheckedUpdateWithoutUniversityInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branch?: Prisma.StringFieldUpdateOperationsInput | string
   cgpa?: Prisma.FloatFieldUpdateOperationsInput | number
   specialization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codeNexusId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentsName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentContactNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1225,10 +1863,23 @@ export type StudentUncheckedUpdateManyWithoutUniversityInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branch?: Prisma.StringFieldUpdateOperationsInput | string
   cgpa?: Prisma.FloatFieldUpdateOperationsInput | number
   specialization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codeNexusId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentsName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentContactNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1297,10 +1948,23 @@ export type StudentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   userId?: boolean
   universityId?: boolean
   name?: boolean
+  age?: boolean
+  phone?: boolean
   branch?: boolean
   cgpa?: boolean
   specialization?: boolean
   gender?: boolean
+  registrationNumber?: boolean
+  codeNexusId?: boolean
+  parentsName?: boolean
+  parentContactNo?: boolean
+  parentEmail?: boolean
+  address?: boolean
+  xSchool?: boolean
+  xPercentage?: boolean
+  xiiSchool?: boolean
+  xiiPercentage?: boolean
+  otherInfo?: boolean
   status?: boolean
   codeArenaScore?: boolean
   createdAt?: boolean
@@ -1318,10 +1982,23 @@ export type StudentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   userId?: boolean
   universityId?: boolean
   name?: boolean
+  age?: boolean
+  phone?: boolean
   branch?: boolean
   cgpa?: boolean
   specialization?: boolean
   gender?: boolean
+  registrationNumber?: boolean
+  codeNexusId?: boolean
+  parentsName?: boolean
+  parentContactNo?: boolean
+  parentEmail?: boolean
+  address?: boolean
+  xSchool?: boolean
+  xPercentage?: boolean
+  xiiSchool?: boolean
+  xiiPercentage?: boolean
+  otherInfo?: boolean
   status?: boolean
   codeArenaScore?: boolean
   createdAt?: boolean
@@ -1334,10 +2011,23 @@ export type StudentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   userId?: boolean
   universityId?: boolean
   name?: boolean
+  age?: boolean
+  phone?: boolean
   branch?: boolean
   cgpa?: boolean
   specialization?: boolean
   gender?: boolean
+  registrationNumber?: boolean
+  codeNexusId?: boolean
+  parentsName?: boolean
+  parentContactNo?: boolean
+  parentEmail?: boolean
+  address?: boolean
+  xSchool?: boolean
+  xPercentage?: boolean
+  xiiSchool?: boolean
+  xiiPercentage?: boolean
+  otherInfo?: boolean
   status?: boolean
   codeArenaScore?: boolean
   createdAt?: boolean
@@ -1350,16 +2040,29 @@ export type StudentSelectScalar = {
   userId?: boolean
   universityId?: boolean
   name?: boolean
+  age?: boolean
+  phone?: boolean
   branch?: boolean
   cgpa?: boolean
   specialization?: boolean
   gender?: boolean
+  registrationNumber?: boolean
+  codeNexusId?: boolean
+  parentsName?: boolean
+  parentContactNo?: boolean
+  parentEmail?: boolean
+  address?: boolean
+  xSchool?: boolean
+  xPercentage?: boolean
+  xiiSchool?: boolean
+  xiiPercentage?: boolean
+  otherInfo?: boolean
   status?: boolean
   codeArenaScore?: boolean
   createdAt?: boolean
 }
 
-export type StudentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "universityId" | "name" | "branch" | "cgpa" | "specialization" | "gender" | "status" | "codeArenaScore" | "createdAt", ExtArgs["result"]["student"]>
+export type StudentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "universityId" | "name" | "age" | "phone" | "branch" | "cgpa" | "specialization" | "gender" | "registrationNumber" | "codeNexusId" | "parentsName" | "parentContactNo" | "parentEmail" | "address" | "xSchool" | "xPercentage" | "xiiSchool" | "xiiPercentage" | "otherInfo" | "status" | "codeArenaScore" | "createdAt", ExtArgs["result"]["student"]>
 export type StudentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   university?: boolean | Prisma.UniversityDefaultArgs<ExtArgs>
@@ -1393,10 +2096,23 @@ export type $StudentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     userId: string
     universityId: string
     name: string
+    age: number | null
+    phone: string | null
     branch: string
     cgpa: number
     specialization: string | null
     gender: string | null
+    registrationNumber: string | null
+    codeNexusId: string | null
+    parentsName: string | null
+    parentContactNo: string | null
+    parentEmail: string | null
+    address: string | null
+    xSchool: string | null
+    xPercentage: string | null
+    xiiSchool: string | null
+    xiiPercentage: string | null
+    otherInfo: string | null
     status: string
     codeArenaScore: number
     createdAt: Date
@@ -1833,10 +2549,23 @@ export interface StudentFieldRefs {
   readonly userId: Prisma.FieldRef<"Student", 'String'>
   readonly universityId: Prisma.FieldRef<"Student", 'String'>
   readonly name: Prisma.FieldRef<"Student", 'String'>
+  readonly age: Prisma.FieldRef<"Student", 'Int'>
+  readonly phone: Prisma.FieldRef<"Student", 'String'>
   readonly branch: Prisma.FieldRef<"Student", 'String'>
   readonly cgpa: Prisma.FieldRef<"Student", 'Float'>
   readonly specialization: Prisma.FieldRef<"Student", 'String'>
   readonly gender: Prisma.FieldRef<"Student", 'String'>
+  readonly registrationNumber: Prisma.FieldRef<"Student", 'String'>
+  readonly codeNexusId: Prisma.FieldRef<"Student", 'String'>
+  readonly parentsName: Prisma.FieldRef<"Student", 'String'>
+  readonly parentContactNo: Prisma.FieldRef<"Student", 'String'>
+  readonly parentEmail: Prisma.FieldRef<"Student", 'String'>
+  readonly address: Prisma.FieldRef<"Student", 'String'>
+  readonly xSchool: Prisma.FieldRef<"Student", 'String'>
+  readonly xPercentage: Prisma.FieldRef<"Student", 'String'>
+  readonly xiiSchool: Prisma.FieldRef<"Student", 'String'>
+  readonly xiiPercentage: Prisma.FieldRef<"Student", 'String'>
+  readonly otherInfo: Prisma.FieldRef<"Student", 'String'>
   readonly status: Prisma.FieldRef<"Student", 'String'>
   readonly codeArenaScore: Prisma.FieldRef<"Student", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Student", 'DateTime'>

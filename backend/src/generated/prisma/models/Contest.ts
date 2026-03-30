@@ -28,10 +28,12 @@ export type AggregateContest = {
 
 export type ContestAvgAggregateOutputType = {
   durationMins: number | null
+  timeLimitMinutes: number | null
 }
 
 export type ContestSumAggregateOutputType = {
   durationMins: number | null
+  timeLimitMinutes: number | null
 }
 
 export type ContestMinAggregateOutputType = {
@@ -41,6 +43,7 @@ export type ContestMinAggregateOutputType = {
   description: string | null
   date: Date | null
   durationMins: number | null
+  timeLimitMinutes: number | null
   status: string | null
 }
 
@@ -51,6 +54,7 @@ export type ContestMaxAggregateOutputType = {
   description: string | null
   date: Date | null
   durationMins: number | null
+  timeLimitMinutes: number | null
   status: string | null
 }
 
@@ -61,6 +65,8 @@ export type ContestCountAggregateOutputType = {
   description: number
   date: number
   durationMins: number
+  timeLimitMinutes: number
+  languages: number
   status: number
   _all: number
 }
@@ -68,10 +74,12 @@ export type ContestCountAggregateOutputType = {
 
 export type ContestAvgAggregateInputType = {
   durationMins?: true
+  timeLimitMinutes?: true
 }
 
 export type ContestSumAggregateInputType = {
   durationMins?: true
+  timeLimitMinutes?: true
 }
 
 export type ContestMinAggregateInputType = {
@@ -81,6 +89,7 @@ export type ContestMinAggregateInputType = {
   description?: true
   date?: true
   durationMins?: true
+  timeLimitMinutes?: true
   status?: true
 }
 
@@ -91,6 +100,7 @@ export type ContestMaxAggregateInputType = {
   description?: true
   date?: true
   durationMins?: true
+  timeLimitMinutes?: true
   status?: true
 }
 
@@ -101,6 +111,8 @@ export type ContestCountAggregateInputType = {
   description?: true
   date?: true
   durationMins?: true
+  timeLimitMinutes?: true
+  languages?: true
   status?: true
   _all?: true
 }
@@ -198,6 +210,8 @@ export type ContestGroupByOutputType = {
   description: string | null
   date: Date
   durationMins: number
+  timeLimitMinutes: number
+  languages: string[]
   status: string
   _count: ContestCountAggregateOutputType | null
   _avg: ContestAvgAggregateOutputType | null
@@ -231,6 +245,8 @@ export type ContestWhereInput = {
   description?: Prisma.StringNullableFilter<"Contest"> | string | null
   date?: Prisma.DateTimeFilter<"Contest"> | Date | string
   durationMins?: Prisma.IntFilter<"Contest"> | number
+  timeLimitMinutes?: Prisma.IntFilter<"Contest"> | number
+  languages?: Prisma.StringNullableListFilter<"Contest">
   status?: Prisma.StringFilter<"Contest"> | string
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
   problems?: Prisma.ProblemListRelationFilter
@@ -243,6 +259,8 @@ export type ContestOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   date?: Prisma.SortOrder
   durationMins?: Prisma.SortOrder
+  timeLimitMinutes?: Prisma.SortOrder
+  languages?: Prisma.SortOrder
   status?: Prisma.SortOrder
   company?: Prisma.CompanyOrderByWithRelationInput
   problems?: Prisma.ProblemOrderByRelationAggregateInput
@@ -258,6 +276,8 @@ export type ContestWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringNullableFilter<"Contest"> | string | null
   date?: Prisma.DateTimeFilter<"Contest"> | Date | string
   durationMins?: Prisma.IntFilter<"Contest"> | number
+  timeLimitMinutes?: Prisma.IntFilter<"Contest"> | number
+  languages?: Prisma.StringNullableListFilter<"Contest">
   status?: Prisma.StringFilter<"Contest"> | string
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
   problems?: Prisma.ProblemListRelationFilter
@@ -270,6 +290,8 @@ export type ContestOrderByWithAggregationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   date?: Prisma.SortOrder
   durationMins?: Prisma.SortOrder
+  timeLimitMinutes?: Prisma.SortOrder
+  languages?: Prisma.SortOrder
   status?: Prisma.SortOrder
   _count?: Prisma.ContestCountOrderByAggregateInput
   _avg?: Prisma.ContestAvgOrderByAggregateInput
@@ -288,6 +310,8 @@ export type ContestScalarWhereWithAggregatesInput = {
   description?: Prisma.StringNullableWithAggregatesFilter<"Contest"> | string | null
   date?: Prisma.DateTimeWithAggregatesFilter<"Contest"> | Date | string
   durationMins?: Prisma.IntWithAggregatesFilter<"Contest"> | number
+  timeLimitMinutes?: Prisma.IntWithAggregatesFilter<"Contest"> | number
+  languages?: Prisma.StringNullableListFilter<"Contest">
   status?: Prisma.StringWithAggregatesFilter<"Contest"> | string
 }
 
@@ -297,6 +321,8 @@ export type ContestCreateInput = {
   description?: string | null
   date: Date | string
   durationMins: number
+  timeLimitMinutes?: number
+  languages?: Prisma.ContestCreatelanguagesInput | string[]
   status?: string
   company: Prisma.CompanyCreateNestedOneWithoutContestsInput
   problems?: Prisma.ProblemCreateNestedManyWithoutContestInput
@@ -309,6 +335,8 @@ export type ContestUncheckedCreateInput = {
   description?: string | null
   date: Date | string
   durationMins: number
+  timeLimitMinutes?: number
+  languages?: Prisma.ContestCreatelanguagesInput | string[]
   status?: string
   problems?: Prisma.ProblemUncheckedCreateNestedManyWithoutContestInput
 }
@@ -319,6 +347,8 @@ export type ContestUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMins?: Prisma.IntFieldUpdateOperationsInput | number
+  timeLimitMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  languages?: Prisma.ContestUpdatelanguagesInput | string[]
   status?: Prisma.StringFieldUpdateOperationsInput | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutContestsNestedInput
   problems?: Prisma.ProblemUpdateManyWithoutContestNestedInput
@@ -331,6 +361,8 @@ export type ContestUncheckedUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMins?: Prisma.IntFieldUpdateOperationsInput | number
+  timeLimitMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  languages?: Prisma.ContestUpdatelanguagesInput | string[]
   status?: Prisma.StringFieldUpdateOperationsInput | string
   problems?: Prisma.ProblemUncheckedUpdateManyWithoutContestNestedInput
 }
@@ -342,6 +374,8 @@ export type ContestCreateManyInput = {
   description?: string | null
   date: Date | string
   durationMins: number
+  timeLimitMinutes?: number
+  languages?: Prisma.ContestCreatelanguagesInput | string[]
   status?: string
 }
 
@@ -351,6 +385,8 @@ export type ContestUpdateManyMutationInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMins?: Prisma.IntFieldUpdateOperationsInput | number
+  timeLimitMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  languages?: Prisma.ContestUpdatelanguagesInput | string[]
   status?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -361,6 +397,8 @@ export type ContestUncheckedUpdateManyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMins?: Prisma.IntFieldUpdateOperationsInput | number
+  timeLimitMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  languages?: Prisma.ContestUpdatelanguagesInput | string[]
   status?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -374,6 +412,14 @@ export type ContestOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type StringNullableListFilter<$PrismaModel = never> = {
+  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
+  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
+  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
+}
+
 export type ContestCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   companyId?: Prisma.SortOrder
@@ -381,11 +427,14 @@ export type ContestCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   date?: Prisma.SortOrder
   durationMins?: Prisma.SortOrder
+  timeLimitMinutes?: Prisma.SortOrder
+  languages?: Prisma.SortOrder
   status?: Prisma.SortOrder
 }
 
 export type ContestAvgOrderByAggregateInput = {
   durationMins?: Prisma.SortOrder
+  timeLimitMinutes?: Prisma.SortOrder
 }
 
 export type ContestMaxOrderByAggregateInput = {
@@ -395,6 +444,7 @@ export type ContestMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder
   date?: Prisma.SortOrder
   durationMins?: Prisma.SortOrder
+  timeLimitMinutes?: Prisma.SortOrder
   status?: Prisma.SortOrder
 }
 
@@ -405,11 +455,13 @@ export type ContestMinOrderByAggregateInput = {
   description?: Prisma.SortOrder
   date?: Prisma.SortOrder
   durationMins?: Prisma.SortOrder
+  timeLimitMinutes?: Prisma.SortOrder
   status?: Prisma.SortOrder
 }
 
 export type ContestSumOrderByAggregateInput = {
   durationMins?: Prisma.SortOrder
+  timeLimitMinutes?: Prisma.SortOrder
 }
 
 export type ContestNullableScalarRelationFilter = {
@@ -459,6 +511,15 @@ export type ContestUncheckedUpdateManyWithoutCompanyNestedInput = {
   deleteMany?: Prisma.ContestScalarWhereInput | Prisma.ContestScalarWhereInput[]
 }
 
+export type ContestCreatelanguagesInput = {
+  set: string[]
+}
+
+export type ContestUpdatelanguagesInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
 export type ContestCreateNestedOneWithoutProblemsInput = {
   create?: Prisma.XOR<Prisma.ContestCreateWithoutProblemsInput, Prisma.ContestUncheckedCreateWithoutProblemsInput>
   connectOrCreate?: Prisma.ContestCreateOrConnectWithoutProblemsInput
@@ -481,6 +542,8 @@ export type ContestCreateWithoutCompanyInput = {
   description?: string | null
   date: Date | string
   durationMins: number
+  timeLimitMinutes?: number
+  languages?: Prisma.ContestCreatelanguagesInput | string[]
   status?: string
   problems?: Prisma.ProblemCreateNestedManyWithoutContestInput
 }
@@ -491,6 +554,8 @@ export type ContestUncheckedCreateWithoutCompanyInput = {
   description?: string | null
   date: Date | string
   durationMins: number
+  timeLimitMinutes?: number
+  languages?: Prisma.ContestCreatelanguagesInput | string[]
   status?: string
   problems?: Prisma.ProblemUncheckedCreateNestedManyWithoutContestInput
 }
@@ -531,6 +596,8 @@ export type ContestScalarWhereInput = {
   description?: Prisma.StringNullableFilter<"Contest"> | string | null
   date?: Prisma.DateTimeFilter<"Contest"> | Date | string
   durationMins?: Prisma.IntFilter<"Contest"> | number
+  timeLimitMinutes?: Prisma.IntFilter<"Contest"> | number
+  languages?: Prisma.StringNullableListFilter<"Contest">
   status?: Prisma.StringFilter<"Contest"> | string
 }
 
@@ -540,6 +607,8 @@ export type ContestCreateWithoutProblemsInput = {
   description?: string | null
   date: Date | string
   durationMins: number
+  timeLimitMinutes?: number
+  languages?: Prisma.ContestCreatelanguagesInput | string[]
   status?: string
   company: Prisma.CompanyCreateNestedOneWithoutContestsInput
 }
@@ -551,6 +620,8 @@ export type ContestUncheckedCreateWithoutProblemsInput = {
   description?: string | null
   date: Date | string
   durationMins: number
+  timeLimitMinutes?: number
+  languages?: Prisma.ContestCreatelanguagesInput | string[]
   status?: string
 }
 
@@ -576,6 +647,8 @@ export type ContestUpdateWithoutProblemsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMins?: Prisma.IntFieldUpdateOperationsInput | number
+  timeLimitMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  languages?: Prisma.ContestUpdatelanguagesInput | string[]
   status?: Prisma.StringFieldUpdateOperationsInput | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutContestsNestedInput
 }
@@ -587,6 +660,8 @@ export type ContestUncheckedUpdateWithoutProblemsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMins?: Prisma.IntFieldUpdateOperationsInput | number
+  timeLimitMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  languages?: Prisma.ContestUpdatelanguagesInput | string[]
   status?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -596,6 +671,8 @@ export type ContestCreateManyCompanyInput = {
   description?: string | null
   date: Date | string
   durationMins: number
+  timeLimitMinutes?: number
+  languages?: Prisma.ContestCreatelanguagesInput | string[]
   status?: string
 }
 
@@ -605,6 +682,8 @@ export type ContestUpdateWithoutCompanyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMins?: Prisma.IntFieldUpdateOperationsInput | number
+  timeLimitMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  languages?: Prisma.ContestUpdatelanguagesInput | string[]
   status?: Prisma.StringFieldUpdateOperationsInput | string
   problems?: Prisma.ProblemUpdateManyWithoutContestNestedInput
 }
@@ -615,6 +694,8 @@ export type ContestUncheckedUpdateWithoutCompanyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMins?: Prisma.IntFieldUpdateOperationsInput | number
+  timeLimitMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  languages?: Prisma.ContestUpdatelanguagesInput | string[]
   status?: Prisma.StringFieldUpdateOperationsInput | string
   problems?: Prisma.ProblemUncheckedUpdateManyWithoutContestNestedInput
 }
@@ -625,6 +706,8 @@ export type ContestUncheckedUpdateManyWithoutCompanyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMins?: Prisma.IntFieldUpdateOperationsInput | number
+  timeLimitMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  languages?: Prisma.ContestUpdatelanguagesInput | string[]
   status?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -666,6 +749,8 @@ export type ContestSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   description?: boolean
   date?: boolean
   durationMins?: boolean
+  timeLimitMinutes?: boolean
+  languages?: boolean
   status?: boolean
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   problems?: boolean | Prisma.Contest$problemsArgs<ExtArgs>
@@ -679,6 +764,8 @@ export type ContestSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   description?: boolean
   date?: boolean
   durationMins?: boolean
+  timeLimitMinutes?: boolean
+  languages?: boolean
   status?: boolean
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["contest"]>
@@ -690,6 +777,8 @@ export type ContestSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   description?: boolean
   date?: boolean
   durationMins?: boolean
+  timeLimitMinutes?: boolean
+  languages?: boolean
   status?: boolean
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["contest"]>
@@ -701,10 +790,12 @@ export type ContestSelectScalar = {
   description?: boolean
   date?: boolean
   durationMins?: boolean
+  timeLimitMinutes?: boolean
+  languages?: boolean
   status?: boolean
 }
 
-export type ContestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "companyId" | "title" | "description" | "date" | "durationMins" | "status", ExtArgs["result"]["contest"]>
+export type ContestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "companyId" | "title" | "description" | "date" | "durationMins" | "timeLimitMinutes" | "languages" | "status", ExtArgs["result"]["contest"]>
 export type ContestInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   problems?: boolean | Prisma.Contest$problemsArgs<ExtArgs>
@@ -730,6 +821,8 @@ export type $ContestPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     description: string | null
     date: Date
     durationMins: number
+    timeLimitMinutes: number
+    languages: string[]
     status: string
   }, ExtArgs["result"]["contest"]>
   composites: {}
@@ -1162,6 +1255,8 @@ export interface ContestFieldRefs {
   readonly description: Prisma.FieldRef<"Contest", 'String'>
   readonly date: Prisma.FieldRef<"Contest", 'DateTime'>
   readonly durationMins: Prisma.FieldRef<"Contest", 'Int'>
+  readonly timeLimitMinutes: Prisma.FieldRef<"Contest", 'Int'>
+  readonly languages: Prisma.FieldRef<"Contest", 'String[]'>
   readonly status: Prisma.FieldRef<"Contest", 'String'>
 }
     

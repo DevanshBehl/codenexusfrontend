@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { contestApi } from '../../lib/api';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -182,11 +183,46 @@ const CreateContest = () => {
         }
     };
 
-    const handleCreate = () => {
-        setShowSuccess(true);
-        setTimeout(() => {
-            navigate('/company/dashboard');
-        }, 2000);
+    const handleCreate = async () => {
+        try {
+            // Parse duration string (e.g. "2 hours") into minutes
+            const durationMap: Record<string, number> = {
+                '1 hour': 60,
+                '1.5 hours': 90,
+                '2 hours': 120,
+                '3 hours': 180,
+                '4 hours': 240,
+            };
+            const durationMins = durationMap[contest.duration] || 120;
+
+            await contestApi.create({
+                title: contest.title,
+                description: contest.description || undefined,
+                scheduledDate: contest.scheduledDate,
+                durationMins,
+                timeLimitMinutes: contest.timeLimitMinutes,
+                languages: contest.languages,
+                questions: contest.questions.map(q => ({
+                    title: q.title,
+                    difficulty: q.difficulty,
+                    points: q.points,
+                    statement: q.statement,
+                    constraints: q.constraints || undefined,
+                    testCases: q.testCases.map(tc => ({
+                        input: tc.input,
+                        expectedOutput: tc.expectedOutput,
+                    })),
+                })),
+            });
+
+            setShowSuccess(true);
+            setTimeout(() => {
+                navigate('/company/dashboard');
+            }, 2000);
+        } catch (err: any) {
+            console.error('Failed to create contest:', err);
+            alert(err.message || 'Failed to create contest');
+        }
     };
 
     /* ────────── Render helpers ────────── */

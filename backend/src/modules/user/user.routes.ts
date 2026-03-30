@@ -6,6 +6,7 @@ import { authorize } from "../../middleware/authorize.js";
 
 import {
     createStundetProfileSchema,
+    updateStudentProfileSchema,
     createCompanyProfileSchema,
     createUniversityProfileSchema
 } from "./user.schema.js";
@@ -23,11 +24,12 @@ router.post("/profile/student", authorize(['STUDENT']) as RequestHandler,
     userController.setupStudentProfile as RequestHandler
 )
 router.patch("/profile/student", authorize(['STUDENT']) as RequestHandler,
+    validate(updateStudentProfileSchema) as RequestHandler,
     userController.updateStudentProfile as RequestHandler
 )
 
 // Company profile
-router.post("/profile/company", authorize(['COMPANY']) as RequestHandler,
+router.post("/profile/company", authorize(['COMPANY_ADMIN']) as RequestHandler,
     validate(createCompanyProfileSchema) as RequestHandler,
     userController.setupCompanyProfile as RequestHandler
 )

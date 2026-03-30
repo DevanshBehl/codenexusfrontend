@@ -14,7 +14,7 @@ router.get("/:id", contestController.getContestById as RequestHandler);
 // Protected routes - create contest (COMPANY_ADMIN only)
 router.post("/",
     authenticate as RequestHandler,
-    authorize(["COMPANY"]) as RequestHandler,
+    authorize(["COMPANY_ADMIN"]) as RequestHandler,
     validate(createContestSchema) as RequestHandler,
     contestController.createcontest as RequestHandler
 );

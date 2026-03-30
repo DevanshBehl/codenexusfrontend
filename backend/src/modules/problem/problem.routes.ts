@@ -14,7 +14,7 @@ router.get("/:id", problemController.getProblemById as RequestHandler);
 // Protected routes - create problem (COMPANY_ADMIN only)
 router.post("/",
     authenticate as RequestHandler,
-    authorize(["COMPANY"]) as RequestHandler,
+    authorize(["COMPANY_ADMIN"]) as RequestHandler,
     validate(createProblemSchema) as RequestHandler,
     problemController.createProblem as RequestHandler
 );

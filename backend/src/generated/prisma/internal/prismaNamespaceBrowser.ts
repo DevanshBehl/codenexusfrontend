@@ -146,10 +146,23 @@ export const StudentScalarFieldEnum = {
   userId: 'userId',
   universityId: 'universityId',
   name: 'name',
+  age: 'age',
+  phone: 'phone',
   branch: 'branch',
   cgpa: 'cgpa',
   specialization: 'specialization',
   gender: 'gender',
+  registrationNumber: 'registrationNumber',
+  codeNexusId: 'codeNexusId',
+  parentsName: 'parentsName',
+  parentContactNo: 'parentContactNo',
+  parentEmail: 'parentEmail',
+  address: 'address',
+  xSchool: 'xSchool',
+  xPercentage: 'xPercentage',
+  xiiSchool: 'xiiSchool',
+  xiiPercentage: 'xiiPercentage',
+  otherInfo: 'otherInfo',
   status: 'status',
   codeArenaScore: 'codeArenaScore',
   createdAt: 'createdAt'
@@ -164,7 +177,8 @@ export const ProjectScalarFieldEnum = {
   title: 'title',
   description: 'description',
   techStack: 'techStack',
-  url: 'url'
+  githubLink: 'githubLink',
+  liveLink: 'liveLink'
 } as const
 
 export type ProjectScalarFieldEnum = (typeof ProjectScalarFieldEnum)[keyof typeof ProjectScalarFieldEnum]
@@ -177,6 +191,8 @@ export const ContestScalarFieldEnum = {
   description: 'description',
   date: 'date',
   durationMins: 'durationMins',
+  timeLimitMinutes: 'timeLimitMinutes',
+  languages: 'languages',
   status: 'status'
 } as const
 
@@ -188,7 +204,10 @@ export const ProblemScalarFieldEnum = {
   contestId: 'contestId',
   title: 'title',
   description: 'description',
-  difficulty: 'difficulty'
+  difficulty: 'difficulty',
+  topic: 'topic',
+  points: 'points',
+  constraints: 'constraints'
 } as const
 
 export type ProblemScalarFieldEnum = (typeof ProblemScalarFieldEnum)[keyof typeof ProblemScalarFieldEnum]

@@ -31,12 +31,14 @@ export const createProblem = async (userId: string, data: CreateProblemInput) =>
             title: data.title,
             description: data.description,
             difficulty: data.difficulty,
+            points: data.points ?? 100,
+            constraints: data.constraints ?? null,
             contestId: data.contestId ?? null,
             testCases: {
                 create: data.testCases.map(tc => ({
                     input: tc.input,
-                    output: tc.output,
-                    isHidden: tc.isHidden
+                    output: tc.output || tc.expectedOutput || "",
+                    isHidden: tc.isHidden ?? false
                 }))
             }
         },
@@ -60,6 +62,8 @@ export const getProblems = async (difficulty?: string, page: number = 1, limit: 
                 id: true,
                 title: true,
                 difficulty: true,
+                points: true,
+                topic: true,
                 contestId: true,
                 _count: {
                     select: {

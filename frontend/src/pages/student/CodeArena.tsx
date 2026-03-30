@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { problemApi } from '../../lib/api';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -24,6 +25,28 @@ import AskAI from '../../components/CodeArena/AskAI';
 const CodeArena = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [activeTopic, setActiveTopic] = useState('All');
+    const [problems, setProblems] = useState<{id: string; title: string; difficulty: string; points: number; topic: string; status: string;}[]>([]);
+
+    useEffect(() => {
+        const fetchProblems = async () => {
+            try {
+                const res = await problemApi.getAll({ limit: 200 });
+                const data = res.data as any;
+                const list = (data.problems || data || []) as any[];
+                setProblems(list.map((p: any) => ({
+                    id: p.id,
+                    title: p.title,
+                    difficulty: p.difficulty === 'EASY' ? 'Easy' : p.difficulty === 'MEDIUM' ? 'Medium' : 'Hard',
+                    points: p.points || 100,
+                    topic: p.topic || 'General',
+                    status: 'Unsolved',
+                })));
+            } catch (err) {
+                console.error('Failed to fetch problems:', err);
+            }
+        };
+        fetchProblems();
+    }, []);
 
     const sidebarItems = [
         { icon: Mail, label: 'MAIL', path: '/student/mail' },
@@ -38,20 +61,6 @@ const CodeArena = () => {
 
     const topics = [
         'All', 'Arrays', 'Strings', 'Linked Lists', 'Trees', 'Graphs', 'Dynamic Programming', 'Backtracking', 'Math'
-    ];
-
-    const problems = [
-        { id: '1', title: 'Two Sum', difficulty: 'Easy', topic: 'Arrays', acceptance: '51.2%', status: 'Solved' },
-        { id: '2', title: 'Add Two Numbers', difficulty: 'Medium', topic: 'Linked Lists', acceptance: '42.1%', status: 'Attempted' },
-        { id: '3', title: 'Longest Substring Without Repeating Characters', difficulty: 'Medium', topic: 'Strings', acceptance: '34.8%', status: 'Unsolved' },
-        { id: '4', title: 'Median of Two Sorted Arrays', difficulty: 'Hard', topic: 'Arrays', acceptance: '40.2%', status: 'Unsolved' },
-        { id: '5', title: 'Longest Palindromic Substring', difficulty: 'Medium', topic: 'Strings', acceptance: '33.5%', status: 'Unsolved' },
-        { id: '10', title: 'Regular Expression Matching', difficulty: 'Hard', topic: 'Strings', acceptance: '28.4%', status: 'Unsolved' },
-        { id: '11', title: 'Container With Most Water', difficulty: 'Medium', topic: 'Arrays', acceptance: '55.1%', status: 'Solved' },
-        { id: '15', title: '3Sum', difficulty: 'Medium', topic: 'Arrays', acceptance: '34.6%', status: 'Unsolved' },
-        { id: '20', title: 'Valid Parentheses', difficulty: 'Easy', topic: 'Strings', acceptance: '41.3%', status: 'Solved' },
-        { id: '21', title: 'Merge Two Sorted Lists', difficulty: 'Easy', topic: 'Linked Lists', acceptance: '64.2%', status: 'Unsolved' },
-        { id: '23', title: 'Merge k Sorted Lists', difficulty: 'Hard', topic: 'Linked Lists', acceptance: '52.4%', status: 'Unsolved' },
     ];
 
     const filteredProblems = activeTopic === 'All'
@@ -274,7 +283,7 @@ const CodeArena = () => {
                                             <th className="py-3 px-4 font-mono text-[10px] uppercase tracking-widest text-[#666] font-normal w-12 text-center">Status</th>
                                             <th className="py-3 px-4 font-mono text-[10px] uppercase tracking-widest text-[#666] font-normal">Title</th>
                                             <th className="py-3 px-4 font-mono text-[10px] uppercase tracking-widest text-[#666] font-normal w-32">Topic</th>
-                                            <th className="py-3 px-4 font-mono text-[10px] uppercase tracking-widest text-[#666] font-normal w-24">Acceptance</th>
+                                            <th className="py-3 px-4 font-mono text-[10px] uppercase tracking-widest text-[#666] font-normal w-24">Points</th>
                                             <th className="py-3 px-4 font-mono text-[10px] uppercase tracking-widest text-[#666] font-normal w-28">Difficulty</th>
                                         </tr>
                                     </thead>
@@ -297,7 +306,7 @@ const CodeArena = () => {
                                                     </span>
                                                 </td>
                                                 <td className="py-4 px-4 font-mono text-xs text-[#aaa]">
-                                                    {problem.acceptance}
+                                                    {problem.points} pts
                                                 </td>
                                                 <td className="py-4 px-4">
                                                     <span className={`text-[9px] font-mono uppercase tracking-widest px-2 py-0.5 border rounded-sm ${getDifficultyColor(problem.difficulty)}`}>
