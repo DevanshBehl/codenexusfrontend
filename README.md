@@ -88,16 +88,16 @@ graph TB
 erDiagram
     User {
         string id PK
-        string email UK
+        string email
         string password
-        enum role
+        string role
         datetime createdAt
         datetime updatedAt
     }
 
     University {
         string id PK
-        string userId FK UK
+        string userId
         string name
         string location
         int tier
@@ -107,7 +107,7 @@ erDiagram
 
     Company {
         string id PK
-        string userId FK UK
+        string userId
         string name
         string description
         string industry
@@ -115,22 +115,22 @@ erDiagram
     }
 
     CompanyUniversity {
-        string companyId FK PK
-        string universityId FK PK
+        string companyId
+        string universityId
         datetime createdAt
     }
 
     Recruiter {
         string id PK
-        string userId FK UK
-        string companyId FK
+        string userId
+        string companyId
         string name
     }
 
     Student {
         string id PK
-        string userId FK UK
-        string universityId FK
+        string userId
+        string universityId
         string name
         int age
         string phone
@@ -156,7 +156,7 @@ erDiagram
 
     Project {
         string id PK
-        string studentId FK
+        string studentId
         string title
         string description
         string techStack
@@ -166,19 +166,19 @@ erDiagram
 
     Contest {
         string id PK
-        string companyId FK
+        string companyId
         string title
         string description
         datetime date
         int durationMins
         int timeLimitMinutes
-        string[] languages
+        string languages
         string status
     }
 
     Problem {
         string id PK
-        string contestId FK
+        string contestId
         string title
         string description
         string difficulty
@@ -189,7 +189,7 @@ erDiagram
 
     TestCase {
         string id PK
-        string problemId FK
+        string problemId
         string input
         string output
         boolean isHidden
@@ -197,8 +197,8 @@ erDiagram
 
     Submission {
         string id PK
-        string studentId FK
-        string problemId FK
+        string studentId
+        string problemId
         string code
         string language
         int passed
@@ -209,7 +209,7 @@ erDiagram
 
     JobApplication {
         string id PK
-        string studentId FK
+        string studentId
         string companyId
         string status
         datetime createdAt
@@ -217,8 +217,8 @@ erDiagram
 
     Interview {
         string id PK
-        string recruiterId FK
-        string studentId FK
+        string recruiterId
+        string studentId
         string role
         datetime scheduledAt
         string type
@@ -227,7 +227,7 @@ erDiagram
 
     Recording {
         string id PK
-        string interviewId FK UK
+        string interviewId
         string videoUrl
         string durationStr
         float rating
@@ -238,7 +238,7 @@ erDiagram
 
     Webinar {
         string id PK
-        string companyId FK
+        string companyId
         string title
         string agenda
         datetime scheduledAt
@@ -248,8 +248,8 @@ erDiagram
     }
 
     WebinarTargetUniversity {
-        string webinarId FK PK
-        string universityId FK PK
+        string webinarId
+        string universityId
     }
 
     User ||--o| Student : "studentProfile"
