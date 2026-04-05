@@ -21,6 +21,7 @@ import {
     Presentation,
     PenTool,
     CheckCircle,
+    XCircle,
     Loader2
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
@@ -496,15 +497,15 @@ const CodeArenaProblem = () => {
                                         ) : (
                                             <div className="flex flex-col gap-4">
                                                 <div className="flex items-center gap-2">
-                                                    <h3 className="text-green-500 font-sans font-bold text-xl tracking-tight uppercase">Accepted</h3>
-                                                    <span className="bg-green-500/10 text-green-500 border border-green-500/20 px-2 py-0.5 text-[9px] font-mono uppercase tracking-widest rounded-sm">Example Test Cases</span>
+                                                    <h3 className="text-red-500 font-sans font-bold text-xl tracking-tight uppercase">Wrong Answer</h3>
+                                                    <span className="bg-red-500/10 text-red-500 border border-red-500/20 px-2 py-0.5 text-[9px] font-mono uppercase tracking-widest rounded-sm">Example Test Cases</span>
                                                 </div>
                                                 <div className="flex gap-4 border-b border-[#222] pb-4 overflow-x-auto custom-scrollbar">
                                                     {problem?.testCases?.map((tc: any, idx: number) => (
                                                         <div key={idx} className="bg-[#111] border border-[#222] rounded-sm p-3 min-w-[200px] flex-shrink-0">
                                                             <div className="flex justify-between items-center mb-2">
                                                                 <span className="text-[#888] font-mono text-[9px] uppercase tracking-widest">Case {idx + 1}</span>
-                                                                <CheckCircle size={10} className="text-green-500" />
+                                                                <XCircle size={10} className="text-red-500" />
                                                             </div>
                                                             <div className="flex flex-col gap-2">
                                                                 <div>
@@ -519,7 +520,7 @@ const CodeArenaProblem = () => {
                                                         </div>
                                                     ))}
                                                     {(!problem?.testCases || problem.testCases.length === 0) && (
-                                                       <div className="text-[#888] font-mono text-[10px] uppercase">All 3 internal tests passed successfully.</div>
+                                                       <div className="text-red-400 font-mono text-[10px] uppercase">Internal tests failed. Please try again.</div>
                                                     )}
                                                 </div>
                                                 <div className="font-mono text-[10px] text-[#555] uppercase tracking-widest">Done in 0ms</div>

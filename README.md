@@ -82,6 +82,210 @@ graph TB
 
 ---
 
+## 🗃️ Database Schema
+
+```mermaid
+erDiagram
+    User {
+        string id PK
+        string email UK
+        string password
+        enum role
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    University {
+        string id PK
+        string userId FK UK
+        string name
+        string location
+        int tier
+        string status
+        datetime createdAt
+    }
+
+    Company {
+        string id PK
+        string userId FK UK
+        string name
+        string description
+        string industry
+        datetime createdAt
+    }
+
+    CompanyUniversity {
+        string companyId FK PK
+        string universityId FK PK
+        datetime createdAt
+    }
+
+    Recruiter {
+        string id PK
+        string userId FK UK
+        string companyId FK
+        string name
+    }
+
+    Student {
+        string id PK
+        string userId FK UK
+        string universityId FK
+        string name
+        int age
+        string phone
+        string branch
+        float cgpa
+        string specialization
+        string gender
+        string registrationNumber
+        string codeNexusId
+        string parentsName
+        string parentContactNo
+        string parentEmail
+        string address
+        string xSchool
+        string xPercentage
+        string xiiSchool
+        string xiiPercentage
+        string otherInfo
+        string status
+        int codeArenaScore
+        datetime createdAt
+    }
+
+    Project {
+        string id PK
+        string studentId FK
+        string title
+        string description
+        string techStack
+        string githubLink
+        string liveLink
+    }
+
+    Contest {
+        string id PK
+        string companyId FK
+        string title
+        string description
+        datetime date
+        int durationMins
+        int timeLimitMinutes
+        string[] languages
+        string status
+    }
+
+    Problem {
+        string id PK
+        string contestId FK
+        string title
+        string description
+        string difficulty
+        string topic
+        int points
+        string constraints
+    }
+
+    TestCase {
+        string id PK
+        string problemId FK
+        string input
+        string output
+        boolean isHidden
+    }
+
+    Submission {
+        string id PK
+        string studentId FK
+        string problemId FK
+        string code
+        string language
+        int passed
+        int total
+        string status
+        datetime createdAt
+    }
+
+    JobApplication {
+        string id PK
+        string studentId FK
+        string companyId
+        string status
+        datetime createdAt
+    }
+
+    Interview {
+        string id PK
+        string recruiterId FK
+        string studentId FK
+        string role
+        datetime scheduledAt
+        string type
+        string status
+    }
+
+    Recording {
+        string id PK
+        string interviewId FK UK
+        string videoUrl
+        string durationStr
+        float rating
+        string verdict
+        string notes
+        datetime createdAt
+    }
+
+    Webinar {
+        string id PK
+        string companyId FK
+        string title
+        string agenda
+        datetime scheduledAt
+        int durationMins
+        string meetingLink
+        string status
+    }
+
+    WebinarTargetUniversity {
+        string webinarId FK PK
+        string universityId FK PK
+    }
+
+    User ||--o| Student : "studentProfile"
+    User ||--o| University : "universityProfile"
+    User ||--o| Company : "companyProfile"
+    User ||--o| Recruiter : "recruiterProfile"
+
+    University ||--o{ Student : "has"
+    University ||--o{ CompanyUniversity : "partners"
+    University ||--o{ WebinarTargetUniversity : "targeted"
+
+    Company ||--o{ Recruiter : "employs"
+    Company ||--o{ Contest : "hosts"
+    Company ||--o{ Webinar : "organizes"
+    Company ||--o{ CompanyUniversity : "partners"
+    Company ||--o{ JobApplication : "receives"
+
+    Recruiter ||--o{ Interview : "conducts"
+
+    Student ||--o{ Project : "creates"
+    Student ||--o{ Submission : "submits"
+    Student ||--o{ Interview : "attends"
+    Student ||--o{ JobApplication : "applies"
+
+    Contest ||--o{ Problem : "contains"
+
+    Problem ||--o{ TestCase : "has"
+    Problem ||--o{ Submission : "receives"
+
+    Interview ||--o| Recording : "has"
+
+    Webinar ||--o{ WebinarTargetUniversity : "targets"
+```
+
+---
+
 ## ✨ Features by Role
 
 ### 🎓 Student Portal
