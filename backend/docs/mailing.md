@@ -36,52 +36,52 @@ The CodeNexus Internal Mail System is a self-contained messaging module that ena
 
 ## Architecture
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                         CLIENTS                                      │
-│  ┌──────────┐  ┌──────────────┐  ┌───────────┐  ┌────────────┐    │
-│  │ Student  │  │  University  │  │  Company  │  │  Recruiter │    │
-│  └────┬─────┘  └──────┬───────┘  └─────┬─────┘  └─────┬──────┘    │
-└───────┼────────────────┼────────────────┼─────────────┼────────────┘
-        │                │                │             │
-        └────────────────┴────────────────┴─────────────┘
-                              │
-                              ▼
-                   ┌──────────────────────┐
-                   │    Express API       │
-                   │  /api/v1/mail/*      │
-                   └──────────┬───────────┘
-                              │
-        ┌─────────────────────┼─────────────────────┐
-        │                     │                     │
-        ▼                     ▼                     ▼
-┌───────────────┐    ┌───────────────┐    ┌───────────────┐
-│  PostgreSQL   │    │  In-Memory    │    │     SSE       │
-│  Mail Table   │    │    Cache      │    │   Stream      │
-└───────────────┘    └───────────────┘    └───────────────┘
+### High-Level Architecture
+
+```mermaid
+graph TB
+    subgraph Clients
+        Student["👤 Student"]
+        University["🏛️ University"]
+        Company["🏢 Company"]
+        Recruiter["👔 Recruiter"]
+    end
+
+    subgraph "API Layer"
+        API["Express API<br/>/api/v1/mail/*"]
+    end
+
+    subgraph Data
+        DB["🐘 PostgreSQL<br/>Mail Table"]
+        Cache["⚡ In-Memory Cache<br/>Unread Count"]
+        SSE["📡 SSE Stream<br/>Real-Time"]
+    end
+
+    Student & University & Company & Recruiter --> API
+    API --> DB
+    API --> Cache
+    API --> SSE
+
+    style API fill:#1a1a2e,stroke:#06b6d4,color:#fff
+    style DB fill:#1a1a2e,stroke:#4169E1,color:#fff
+    style Cache fill:#1a1a2e,stroke:#DC382D,color:#fff
+    style SSE fill:#1a1a2e,stroke:#22c55e,color:#fff
 ```
 
 ### Component Diagram
 
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                         MAIL SYSTEM COMPONENTS                        │
-├──────────────────────────────────────────────────────────────────────┤
-│                                                                       │
-│  ┌─────────────┐     ┌──────────────┐     ┌─────────────────────┐     │
-│  │   Client    │────▶│  Controller  │────▶│      Service       │     │
-│  │  (Express)  │     │  (Routes)    │     │  (Business Logic)  │     │
-│  └─────────────┘     └──────────────┘     └──────────┬──────────┘     │
-│                                                      │                │
-│         ┌───────────────────────────────────────────┼────────┐       │
-│         │                    │                      │        │       │
-│         ▼                    ▼                      ▼        ▼       │
-│  ┌────────────┐     ┌───────────────┐     ┌─────────────┐ ┌──────┐  │
-│  │ Permission │     │   Sanitizer   │     │  Rate       │ │ SSE  │  │
-│  │  Matrix    │     │  (Content)    │     │  Limiter    │ │Mgr    │  │
-│  └────────────┘     └───────────────┘     └─────────────┘ └──────┘  │
-│                                                                       │
-└───────────────────────────────────────────────────────────────────────┘
+```mermaid
+graph LR
+    Client["🌐 Client"] --> Controller["📝 Controller<br/>Routes"]
+    Controller --> Service["⚙️ Service<br/>Business Logic"]
+    
+    Service --> Permission["🔐 Permission<br/>Matrix"]
+    Service --> Sanitizer["🧹 Sanitizer<br/>Content"]
+    Service --> RateLimiter["⏱️ Rate<br/>Limiter"]
+    Service --> SSE["📡 SSE<br/>Manager"]
+
+    Service --> DB["🐘 Database"]
+    Service --> Cache["⚡ Cache"]
 ```
 
 ---
@@ -96,52 +96,25 @@ CN-{PREFIX}-{6 RANDOM CHARS}
 
 ### Prefix Mapping
 
-| Role           | Prefix | Example CNID           |
-|----------------|--------|------------------------|
-| Student        | STU    | `CN-STU-A1B2C3`        |
-| University     | UNI    | `CN-UNI-X7Y8Z9`        |
-| Company        | COM    | `CN-COM-M4N5O6`        |
-| Recruiter      | REC    | `CN-REC-P1Q2R3`        |
+| Role | Prefix | Example CNID |
+|------|--------|--------------|
+| Student | STU | `CN-STU-A1B2C3` |
+| University | UNI | `CN-UNI-X7Y8Z9` |
+| Company | COM | `CN-COM-M4N5O6` |
+| Recruiter | REC | `CN-REC-P1Q2R3` |
 
 ### CNID Generation Flow
 
-```
-┌─────────────────┐
-│  User Registers │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────────────┐
-│  Get User Role (R)      │
-└────────┬────────────────┘
-         │
-         ▼
-┌─────────────────────────┐
-│  prefix = PREFIX_MAP[R] │
-└────────┬────────────────┘
-         │
-         ▼
-┌─────────────────────────┐
-│  random = 6 alphanum    │
-└────────┬────────────────┘
-         │
-         ▼
-┌─────────────────────────┐
-│  cnid = "CN-{prefix}-  │
-│          {random}"      │
-└────────┬────────────────┘
-         │
-         ▼
-┌─────────────────────────┐
-│  Check uniqueness in    │──── Duplicate? ───▶ Retry (max 5)
-│  database                │
-└────────┬────────────────┘
-         │
-         │ Unique
-         ▼
-┌─────────────────────────┐
-│  Assign to User         │
-└─────────────────────────┘
+```mermaid
+flowchart TD
+    A["User Registers"] --> B["Get User Role (R)"]
+    B --> C["prefix = PREFIX_MAP[R]"]
+    C --> D["random = 6 alphanumeric chars"]
+    D --> E["cnid = CN-{prefix}-{random}"]
+    E --> F{"Check uniqueness<br/>in database"}
+    F -->|Unique| G["Assign to User"]
+    F -->|Duplicate| H["Retry (max 5)"]
+    H --> D
 ```
 
 ### Implementation
@@ -157,7 +130,7 @@ const PREFIX_MAP = {
 
 export function generateCnid(role: Role): string {
     const prefix = PREFIX_MAP[role];
-    const randomPart = generateRandomString(); // 6 uppercase alphanumeric
+    const randomPart = generateRandomString();
     return `CN-${prefix}-${randomPart}`;
 }
 
@@ -179,15 +152,12 @@ export async function generateUniqueCnid(role: Role): Promise<string> {
 
 ### Communication Rules
 
-```
-     TO
-FROM   │ Student │ University │ Company │ Recruiter
-───────┼─────────┼────────────┼─────────┼───────────
-Student│   ❌    │     ✅     │   ❌    │     ❌
-Uni    │   ✅    │     ❌     │   ✅    │     ❌
-Company│   ✅    │     ✅     │   ❌    │     ✅
-Recruiter│  ❌   │     ❌     │   ✅    │     ❌
-```
+| From \ To | Student | University | Company | Recruiter |
+|-----------|---------|------------|---------|-----------|
+| **Student** | ❌ | ✅ | ❌ | ❌ |
+| **University** | ✅ | ❌ | ✅ | ❌ |
+| **Company** | ✅ | ✅ | ❌ | ✅ |
+| **Recruiter** | ❌ | ❌ | ✅ | ❌ |
 
 ### Matrix Implementation
 
@@ -208,43 +178,14 @@ export function canSendMail(senderRole: Role, recipientRole: Role): boolean {
 
 ### Validation Flow
 
-```
-┌──────────────────────────────────────────────────────────┐
-│                    SEND MAIL VALIDATION                   │
-└──────────────────────────────────────────────────────────┘
-
-   Request: { sender_cnid, recipient_cnid, subject, body }
-                        │
-                        ▼
-              ┌──────────────────┐
-              │ Parse sender CNID │
-              │ Get sender role   │
-              └────────┬─────────┘
-                       │
-                       ▼
-              ┌──────────────────┐
-              │ Parse recipient  │
-              │ CNID             │
-              │ Get recipient    │
-              │ role             │
-              └────────┬─────────┘
-                       │
-                       ▼
-              ┌─────────────────────────┐
-              │ Check: canSendMail(    │ ◀── Permission Matrix
-              │   senderRole,          │
-              │   recipientRole)       │
-              └────────┬────────────────┘
-                       │
-              ┌────────┴────────┐
-              │                 │
-           ALLOWED         DENIED
-              │                 │
-              ▼                 ▼
-        Proceed to      ┌─────────────────┐
-        send mail       │ 403 Forbidden   │
-                        │ Log violation   │
-                        └─────────────────┘
+```mermaid
+flowchart TD
+    Start["Request:<br/>sender_cnid, recipient_cnid,<br/>subject, body"] --> Parse["Parse sender CNID<br/>Get sender role"]
+    Parse --> ParseR["Parse recipient CNID<br/>Get recipient role"]
+    ParseR --> Check["Check: canSendMail<br/>senderRole, recipientRole"]
+    Check --> Decision{"Allowed?"}
+    Decision -->|Yes| Proceed["Proceed to send mail"]
+    Decision -->|No| Denied["Return 403 Forbidden<br/>Log violation"]
 ```
 
 ---
@@ -273,54 +214,52 @@ CREATE TABLE "Mail" (
 
 ### ER Diagram
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                         MAIL SYSTEM ERD                              │
-├─────────────────────────────────────────────────────────────────────┤
-│                                                                      │
-│   ┌──────────────┐         ┌──────────────┐         ┌───────────┐ │
-│   │    User      │         │     Mail     │         │   User    │ │
-│   ├──────────────┤         ├──────────────┤         ├───────────┤ │
-│   │ id (PK)      │         │ id (PK)      │         │ id (PK)   │ │
-│   │ cnid (UNIQUE)│◀───┐    │ sender_cnid  │    ┌───▶│ cnid      │ │
-│   │ email        │    │    │ recipient_cn │◀───┘    │ (UNIQUE)  │ │
-│   │ role         │    │    │ subject      │         │ email     │ │
-│   │ password     │    │    │ body         │         │ role      │ │
-│   └──────────────┘    │    │ sent_at      │         └───────────┘ │
-│          │            │    │ is_read      │                         │
-│          │            │    │ thread_id    │                         │
-│          │            │    │ parent_mail  │──┐                      │
-│          │            │    │ _id          │  │                      │
-│          │            │    └──────────────┘  │                      │
-│          │            │           │         │                      │
-│          │            │           │         │                      │
-│          │            │    ┌──────┴──────┐  │                      │
-│          │            └───▶│ MailReply   │──┘                      │
-│          │                 │ (self-ref)  │                         │
-│          │                 └─────────────┘                          │
-│          │                                                           │
-│          │           ┌──────────────────────────────┐              │
-│          └──────────▶│ MailPermissionViolation        │              │
-│                      ├──────────────────────────────┤              │
-│                      │ id (PK)                       │              │
-│                      │ sender_cnid                   │              │
-│                      │ attempted_recipient_cnid      │              │
-│                      │ action                        │              │
-│                      │ timestamp                     │              │
-│                      │ ip_address                    │              │
-│                      │ user_agent                    │              │
-│                      └──────────────────────────────┘              │
-│                                                                      │
-└──────────────────────────────────────────────────────────────────────┘
+```mermaid
+erDiagram
+    User {
+        string id PK
+        string cnid UK
+        string email
+        string role
+    }
+
+    Mail {
+        string id PK
+        string sender_cnid
+        string recipient_cnid
+        string subject
+        string body
+        datetime sent_at
+        boolean is_read
+        boolean is_deleted_sender
+        boolean is_deleted_recipient
+        string thread_id
+        string parent_mail_id FK
+    }
+
+    MailPermissionViolation {
+        string id PK
+        string sender_cnid
+        string attempted_recipient_cnid
+        string action
+        datetime timestamp
+        string ip_address
+        string user_agent
+    }
+
+    User ||--o{ Mail : "sentMails"
+    User ||--o{ Mail : "receivedMails"
+    Mail ||--o| Mail : "parent"
+    Mail ||--o{ Mail : "replies"
 ```
 
 ### Indexes
 
-```sql
-CREATE INDEX idx_mails_recipient ON "Mail"(recipient_cnid, is_read, is_deleted_recipient);
-CREATE INDEX idx_mails_sender ON "Mail"(sender_cnid, is_deleted_sender);
-CREATE INDEX idx_mails_thread ON "Mail"(thread_id);
-```
+| Index Name | Columns | Purpose |
+|------------|---------|---------|
+| `idx_mails_recipient` | `recipient_cnid, is_read, is_deleted_recipient` | Fast inbox queries |
+| `idx_mails_sender` | `sender_cnid, is_deleted_sender` | Fast sent box queries |
+| `idx_mails_thread` | `thread_id` | Fast thread loading |
 
 ---
 
@@ -328,24 +267,18 @@ CREATE INDEX idx_mails_thread ON "Mail"(thread_id);
 
 ### Endpoint Overview
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                     MAIL API ENDPOINTS                           │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                  │
-│  POST   /api/v1/mail/send              → Send a new mail       │
-│  GET    /api/v1/mail/inbox             → Get inbox (paginated)  │
-│  GET    /api/v1/mail/sent              → Get sent box           │
-│  GET    /api/v1/mail/:id               → Get single mail        │
-│  GET    /api/v1/mail/thread/:thread_id → Get full thread        │
-│  PATCH  /api/v1/mail/:id/read          → Mark as read           │
-│  DELETE /api/v1/mail/:id               → Delete mail            │
-│  GET    /api/v1/mail/unread-count      → Get unread count       │
-│  GET    /api/v1/mail/search-recipients → Search recipients      │
-│  GET    /api/v1/mail/events            → SSE notification stream│
-│                                                                  │
-└─────────────────────────────────────────────────────────────────┘
-```
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/v1/mail/send` | Send a new mail |
+| `GET` | `/api/v1/mail/inbox` | Get inbox (paginated) |
+| `GET` | `/api/v1/mail/sent` | Get sent box |
+| `GET` | `/api/v1/mail/:id` | Get single mail |
+| `GET` | `/api/v1/mail/thread/:thread_id` | Get full thread |
+| `PATCH` | `/api/v1/mail/:id/read` | Mark as read |
+| `DELETE` | `/api/v1/mail/:id` | Delete mail |
+| `GET` | `/api/v1/mail/unread-count` | Get unread count |
+| `GET` | `/api/v1/mail/search-recipients` | Search recipients |
+| `GET` | `/api/v1/mail/events` | SSE notification stream |
 
 ### 1. Send Mail
 
@@ -358,11 +291,12 @@ Content-Type: application/json
     "recipient_cnid": "CN-UNI-X7Y8Z9",
     "subject": "Placement Drive 2026",
     "body": "Dear students, the placement drive is scheduled for...",
-    "parent_mail_id": "uuid-optional"  // for replies
+    "parent_mail_id": "uuid-optional"
 }
 ```
 
 **Response (201 Created):**
+
 ```json
 {
     "success": true,
@@ -389,6 +323,7 @@ Authorization: Bearer <token>
 ```
 
 **Response:**
+
 ```json
 {
     "success": true,
@@ -451,10 +386,11 @@ DELETE /api/v1/mail/:id
 Authorization: Bearer <token>
 ```
 
-**Logic:**
-- If sender → sets `is_deleted_sender = true`
-- If recipient → sets `is_deleted_recipient = true`
-- Mail is only truly deleted when both parties have deleted
+| Condition | Action |
+|-----------|--------|
+| User is sender | Sets `is_deleted_sender = true` |
+| User is recipient | Sets `is_deleted_recipient = true` |
+| Both deleted | Mail is truly deleted |
 
 ### 8. Get Unread Count
 
@@ -464,6 +400,7 @@ Authorization: Bearer <token>
 ```
 
 **Response:**
+
 ```json
 {
     "success": true,
@@ -480,6 +417,7 @@ Authorization: Bearer <token>
 ```
 
 **Response:**
+
 ```json
 {
     "success": true,
@@ -499,6 +437,7 @@ Authorization: Bearer <token>
 ```
 
 **Event Format:**
+
 ```
 event: new_mail
 data: {"type":"new_mail","sender_name":"IIT Delhi","sender_cnid":"CN-UNI-X7Y8Z9","subject":"Update","thread_id":"uuid","mail_id":"uuid","sent_at":"2026-04-05T10:30:00Z"}
@@ -508,40 +447,29 @@ data: {"type":"new_mail","sender_name":"IIT Delhi","sender_cnid":"CN-UNI-X7Y8Z9"
 
 ## Message Flow
 
-### Send Message Flow
+### Send Message Sequence
 
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                     SEND MESSAGE SEQUENCE                             │
-└──────────────────────────────────────────────────────────────────────┘
+```mermaid
+sequenceDiagram
+    participant Client
+    participant API as API Server
+    participant DB as Database
+    participant Cache
+    participant SSE
 
-  Client          API Server         Database         Cache          SSE
-    │                │                 │              │             │
-    │──POST /send────▶│                 │              │             │
-    │                 │                 │              │             │
-    │                 │──Validate CNID──▶│              │             │
-    │                 │                 │              │             │
-    │                 │◀──User found────│              │             │
-    │                 │                 │              │             │
-    │                 │──Check perm─────▶│              │             │
-    │                 │◀──Allowed/Denied─│              │             │
-    │                 │                 │              │             │
-    │                 │──Rate limit──────│              │             │
-    │                 │◀──OK────────────│              │             │
-    │                 │                 │              │             │
-    │                 │──Sanitize body──▶│              │             │
-    │                 │◀──Clean body─────│              │             │
-    │                 │                 │              │             │
-    │                 │──INSERT mail────▶│              │             │
-    │                 │◀──Mail created───│              │             │
-    │                 │                 │              │             │
-    │                 │─────────────────│──Invalidate──▶│             │
-    │                 │                 │              │             │
-    │                 │─────────────────────────────▶│  Emit event  │
-    │                 │◀────────────────────────────────────────────│
-    │                 │                 │              │             │
-    │◀──201 Created───│                 │              │             │
-    │                 │                 │              │             │
+    Client->>API: POST /mail/send
+    API->>API: Validate CNID format
+    API->>DB: Lookup recipient by cnid
+    DB-->>API: User found
+    API->>API: Check permission matrix
+    API->>API: Check rate limit
+    API->>API: Sanitize body content
+    API->>DB: INSERT mail
+    DB-->>API: Mail created
+    API->>Cache: Invalidate unread:{recipientCnid}
+    API->>SSE: emitNewMailEvent
+    SSE-->>Client: new_mail event
+    API-->>Client: 201 Created
 ```
 
 ---
@@ -550,60 +478,23 @@ data: {"type":"new_mail","sender_name":"IIT Delhi","sender_cnid":"CN-UNI-X7Y8Z9"
 
 ### Thread Model
 
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                        THREAD STRUCTURE                              │
-└──────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph "Thread ID: 550e8400-e29b-41d4-a716-446655440000"
+        M1["📧 Mail #1 (Original)<br/>sender: CN-STU-A1B2C3<br/>recipient: CN-UNI-X7Y8Z9<br/>subject: Placement Drive Inquiry<br/>parent_mail_id: null"]
+        
+        M2["📧 Mail #2 (Reply)<br/>sender: CN-UNI-X7Y8Z9<br/>recipient: CN-STU-A1B2C3<br/>subject: Re: Placement Drive Inquiry<br/>parent_mail_id: M1"]
+        
+        M3["📧 Mail #3 (Reply)<br/>sender: CN-STU-A1B2C3<br/>recipient: CN-UNI-X7Y8Z9<br/>subject: Re: Placement Drive Inquiry<br/>parent_mail_id: M2"]
+    end
 
-  Thread ID: 550e8400-e29b-41d4-a716-446655440000
-
-  ┌──────────────────────────────────────────────────────────────────┐
-  │ Mail #1 (Original)                                                │
-  │ ┌──────────────────────────────────────────────────────────────┐ │
-  │ │ id: uuid-1                                                   │ │
-  │ │ sender_cnid: CN-STU-A1B2C3                                   │ │
-  │ │ recipient_cnid: CN-UNI-X7Y8Z9                                │ │
-  │ │ subject: Placement Drive Inquiry                             │ │
-  │ │ thread_id: 550e8400-... (new UUID generated)                 │ │
-  │ │ parent_mail_id: null                                        │ │
-  │ │ sent_at: 2026-04-05T10:00:00Z                               │ │
-  │ └──────────────────────────────────────────────────────────────┘ │
-  └──────────────────────────────────────────────────────────────────┘
-                               │
-                               │ Reply
-                               ▼
-  ┌──────────────────────────────────────────────────────────────────┐
-  │ Mail #2 (Reply)                                                  │
-  │ ┌──────────────────────────────────────────────────────────────┐ │
-  │ │ id: uuid-2                                                   │ │
-  │ │ sender_cnid: CN-UNI-X7Y8Z9                                   │ │
-  │ │ recipient_cnid: CN-STU-A1B2C3                                │ │
-  │ │ subject: Re: Placement Drive Inquiry                         │ │
-  │ │ thread_id: 550e8400-... (inherited from parent)              │ │
-  │ │ parent_mail_id: uuid-1                                       │ │
-  │ │ sent_at: 2026-04-05T11:00:00Z                               │ │
-  │ └──────────────────────────────────────────────────────────────┘ │
-  └──────────────────────────────────────────────────────────────────┘
-                               │
-                               │ Reply
-                               ▼
-  ┌──────────────────────────────────────────────────────────────────┐
-  │ Mail #3 (Reply to Reply)                                         │
-  │ ┌──────────────────────────────────────────────────────────────┐ │
-  │ │ id: uuid-3                                                   │ │
-  │ │ sender_cnid: CN-STU-A1B2C3                                   │ │
-  │ │ recipient_cnid: CN-UNI-X7Y8Z9                                │ │
-  │ │ subject: Re: Placement Drive Inquiry                         │ │
-  │ │ thread_id: 550e8400-... (inherited from parent)              │ │
-  │ │ parent_mail_id: uuid-2                                       │ │
-  │ │ sent_at: 2026-04-05T12:00:00Z                               │ │
-  │ └──────────────────────────────────────────────────────────────┘ │
-  └──────────────────────────────────────────────────────────────────┘
+    M1 -->|Reply| M2
+    M2 -->|Reply| M3
 ```
 
 ### Thread Retrieval
 
-```
+```json
 GET /api/v1/mail/thread/550e8400-e29b-41d4-a716-446655440000
 
 Response: [
@@ -614,7 +505,6 @@ Response: [
         "recipient_cnid": "CN-UNI-X7Y8Z9",
         "recipient_name": "IIT Delhi",
         "subject": "Placement Drive Inquiry",
-        "body": "...",
         "sent_at": "2026-04-05T10:00:00Z",
         "is_read": true,
         "thread_id": "550e8400-...",
@@ -627,7 +517,6 @@ Response: [
         "recipient_cnid": "CN-STU-A1B2C3",
         "recipient_name": "John Doe",
         "subject": "Re: Placement Drive Inquiry",
-        "body": "...",
         "sent_at": "2026-04-05T11:00:00Z",
         "is_read": true,
         "thread_id": "550e8400-...",
@@ -640,7 +529,6 @@ Response: [
         "recipient_cnid": "CN-UNI-X7Y8Z9",
         "recipient_name": "IIT Delhi",
         "subject": "Re: Placement Drive Inquiry",
-        "body": "...",
         "sent_at": "2026-04-05T12:00:00Z",
         "is_read": false,
         "thread_id": "550e8400-...",
@@ -655,50 +543,39 @@ Response: [
 
 ### SSE Architecture
 
+```mermaid
+flowchart TB
+    subgraph SSE["📡 SSE Manager (Singleton)"]
+        Manager["SSEManager<br/>clients: Map<cnid, Response[]>"]
+    end
+
+    subgraph Clients
+        C1["👤 Client 1<br/>CN-STU-A1B2C3"]
+        C2["🏛️ Client 2<br/>CN-UNI-X7Y8Z9"]
+        C3["🏢 Client N<br/>CN-COM-M4N5O6"]
+    end
+
+    C1 -->|GET /events| Manager
+    C2 -->|GET /events| Manager
+    C3 -->|GET /events| Manager
+
+    Manager -->|new_mail event| C1
+    Manager -->|new_mail event| C2
+    Manager -->|new_mail event| C3
 ```
-┌──────────────────────────────────────────────────────────────────────┐
-│                    SSE NOTIFICATION FLOW                              │
-└──────────────────────────────────────────────────────────────────────┘
 
-                    ┌─────────────────┐
-                    │   SSE Manager   │
-                    │  (Singleton)    │
-                    └────────┬────────┘
-                             │
-          ┌──────────────────┼──────────────────┐
-          │                  │                  │
-          ▼                  ▼                  ▼
-   ┌────────────┐    ┌────────────┐    ┌────────────┐
-   │  Client 1  │    │  Client 2  │    │  Client N  │
-   │  CN-STU-   │    │  CN-UNI-   │    │  CN-COM-   │
-   │  A1B2C3    │    │  X7Y8Z9    │    │  M4N5O6   │
-   └─────┬──────┘    └─────┬──────┘    └─────┬──────┘
-         │                  │                  │
-    GET /events         GET /events        GET /events
-         │                  │                  │
-         └──────────────────┴──────────────────┘
-                           │
-                    HTTP Keep-Alive
-                    Connection
+### SSE Flow
 
-  When new mail is sent:
-                    ┌─────────────────┐
-                    │  Mail Created   │
-                    └────────┬────────┘
-                             │
-                             ▼
-                    ┌─────────────────┐
-                    │ emitNewMailEvent│
-                    │ (recipientCnid) │
-                    └────────┬────────┘
-                             │
-              ┌──────────────┴──────────────┐
-              │                             │
-              ▼                             ▼
-    ┌─────────────────┐           ┌─────────────────┐
-    │ Find clients    │           │ Write to response│
-    │ for recipient   │──────────▶│ streams          │
-    └─────────────────┘           └─────────────────┘
+```mermaid
+sequenceDiagram
+    participant Client
+    participant SSE as SSE Manager
+    participant Mail as Mail Service
+
+    Mail->>SSE: emitNewMailEvent(recipientCnid, data)
+    SSE->>SSE: Find clients for recipientCnid
+    SSE->>Client: Write to response stream
+    Note over Client: Event: new_mail<br/>Data: {...}
 ```
 
 ### Implementation
@@ -763,47 +640,25 @@ useEffect(() => {
 
 ### Security Layers
 
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                      SECURITY LAYERS                                  │
-├──────────────────────────────────────────────────────────────────────┤
-│                                                                       │
-│   Layer 1: Authentication                                             │
-│   ┌──────────────────────────────────────────────────────────────┐   │
-│   │  JWT Token Validation                                         │   │
-│   │  • Verify token signature                                     │   │
-│   │  • Check expiration                                           │   │
-│   │  • Extract user cnid and role                                │   │
-│   └──────────────────────────────────────────────────────────────┘   │
-│                              │                                        │
-│                              ▼                                        │
-│   Layer 2: Authorization                                              │
-│   ┌──────────────────────────────────────────────────────────────┐   │
-│   │  Permission Matrix Check                                      │   │
-│   │  • Validate sender → recipient role pair                     │   │
-│   │  • Return 403 if not allowed                                 │   │
-│   │  • Log all violations                                        │   │
-│   └──────────────────────────────────────────────────────────────┘   │
-│                              │                                        │
-│                              ▼                                        │
-│   Layer 3: Content Sanitization                                       │
-│   ┌──────────────────────────────────────────────────────────────┐   │
-│   │  Input Validation & Sanitization                             │   │
-│   │  • Strip HTML tags                                           │   │
-│   │  • Validate URL format only                                   │   │
-│   │  • Enforce max lengths                                       │   │
-│   │  • Detect angle bracket abuse                                │   │
-│   └──────────────────────────────────────────────────────────────┘   │
-│                              │                                        │
-│                              ▼                                        │
-│   Layer 4: Rate Limiting                                              │
-│   ┌──────────────────────────────────────────────────────────────┐   │
-│   │  Throttling                                                  │   │
-│   │  • 20 mails/hour per user                                    │   │
-│   │  • 30 searches/minute per user                              │   │
-│   └──────────────────────────────────────────────────────────────┘   │
-│                                                                       │
-└──────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph L1["Layer 1: Authentication"]
+        A["JWT Token Validation<br/>• Verify signature<br/>• Check expiration<br/>• Extract cnid & role"]
+    end
+
+    subgraph L2["Layer 2: Authorization"]
+        P["Permission Matrix Check<br/>• Validate role pair<br/>• 403 if denied<br/>• Log violations"]
+    end
+
+    subgraph L3["Layer 3: Content Sanitization"]
+        S["Input Sanitization<br/>• Strip HTML tags<br/>• Validate URLs<br/>• Enforce max lengths"]
+    end
+
+    subgraph L4["Layer 4: Rate Limiting"]
+        R["Throttling<br/>• 20 mails/hour<br/>• 30 searches/minute"]
+    end
+
+    L1 --> L2 --> L3 --> L4
 ```
 
 ### Permission Violation Logging
@@ -837,7 +692,7 @@ await prisma.mailPermissionViolation.create({
 ```typescript
 // In mail.service.ts
 const SEND_RATE_LIMIT = 20;
-const SEND_RATE_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+const SEND_RATE_WINDOW_MS = 60 * 60 * 1000;
 
 async function checkSendRateLimit(senderCnid: string): Promise<void> {
     const windowStart = new Date(Date.now() - SEND_RATE_WINDOW_MS);
@@ -860,84 +715,37 @@ async function checkSendRateLimit(senderCnid: string): Promise<void> {
 
 ### Allowed Content
 
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                     ALLOWED CONTENT TYPES                            │
-├──────────────────────────────────────────────────────────────────────┤
-│                                                                       │
-│  ✅ Plain Text                                                        │
-│     "Hello, please check the following link: https://example.com"   │
-│                                                                       │
-│  ✅ URLs (auto-linkified on render)                                   │
-│     "Visit https://example.com for more info"                         │
-│                                                                       │
-│  ✅ Max subject length: 200 characters                                │
-│  ✅ Max body length: 5000 characters                                  │
-│                                                                       │
-└──────────────────────────────────────────────────────────────────────┘
-```
+| Type | Example |
+|------|---------|
+| Plain Text | `Hello, please check the following link` |
+| URLs (auto-linkified) | `Visit https://example.com for more info` |
+| Max subject length | 200 characters |
+| Max body length | 5000 characters |
 
 ### Blocked Content
 
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                     BLOCKED CONTENT TYPES                             │
-├──────────────────────────────────────────────────────────────────────┤
-│                                                                       │
-│  ❌ HTML Tags                                                         │
-│     "<script>alert('xss')</script>"                                  │
-│     "<b>bold text</b>"                                               │
-│     "<a href='malicious.com'>click</a>"                              │
-│                                                                       │
-│  ❌ Angle Brackets Outside URLs                                       │
-│     "Array<string>" → Blocked (looks like HTML)                      │
-│     "https://example.com <script>" → Blocked                         │
-│                                                                       │
-│  ❌ File Attachments (not supported)                                  │
-│  ❌ Images (not supported)                                            │
-│  ❌ Rich Text Formatting                                              │
-│                                                                       │
-└──────────────────────────────────────────────────────────────────────┘
-```
+| Type | Example |
+|------|---------|
+| HTML Tags | `<script>alert('xss')</script>`, `<b>bold</b>` |
+| Angle brackets (non-URL) | `Array<string>` → Blocked |
+| File attachments | Not supported |
+| Images | Not supported |
+| Rich text | Not supported |
 
 ### Sanitization Algorithm
 
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                    SANITIZATION ALGORITHM                             │
-└──────────────────────────────────────────────────────────────────────┘
-
-Input: rawBody (string)
-Output: sanitizedBody (string)
-
-Step 1: Extract URLs using regex
-    URL_REGEX = /https?:\/\/[^\s<>"{}|\\^`\[\]]+/gi
-    urls = rawBody.match(URL_REGEX)
-
-Step 2: Check for HTML tags
-    HTML_TAG_REGEX = /<[^>]*>/g
-    if HTML_TAG_REGEX.test(rawBody):
-        REJECT with "HTML tags not allowed"
-
-Step 3: Remove URLs temporarily
-    textWithoutUrls = rawBody with URLs replaced by placeholder
-
-Step 4: Check for suspicious angle brackets
-    ANGLE_BRACKET_REGEX = /<[a-zA-Z][^>]*>/g
-    angleBrackets = textWithoutUrls.match(ANGLE_BRACKET_REGEX)
-    for each bracket in angleBrackets:
-        if not URL:
-            REJECT with "Angle brackets detected outside of URLs"
-
-Step 5: Strip any remaining HTML
-    sanitized = stripHtmlTags(rawBody)
-
-Step 6: Check length
-    if len(sanitized) > 5000:
-        REJECT with "Body exceeds 5000 characters"
-
-Step 7: Return sanitized content
-    return { body: sanitized, hasUrls: len(urls) > 0, urls }
+```mermaid
+flowchart TD
+    A["Input: rawBody"] --> B["Extract URLs using regex"]
+    B --> C{"HTML tags<br/>detected?"}
+    C -->|Yes| Reject1["REJECT:<br/>HTML tags not allowed"]
+    C -->|No| D["Check angle brackets<br/>outside URLs"]
+    D --> E{"Suspicious<br/>brackets?"}
+    E -->|Yes| Reject2["REJECT:<br/>Angle brackets detected"]
+    E -->|No| F["Strip remaining HTML"]
+    F --> G{"Length<br/>> 5000?"}
+    G -->|Yes| Reject3["REJECT:<br/>Body too long"]
+    G -->|No| H["Return sanitized content"]
 ```
 
 ---
@@ -946,44 +754,26 @@ Step 7: Return sanitized content
 
 ### Unread Count Cache
 
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                      CACHE STRATEGY                                   │
-└──────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    Start["Get Unread Count"] --> Check["Check cache key<br/>unread:{cnid}"]
+    Check --> Hit{"Cache<br/>Hit?"}
+    Hit -->|Yes| Return["Return cached value"]
+    Hit -->|No| Query["Query DB count"]
+    Query --> Store["Store in cache<br/>TTL: 10 seconds"]
+    Store --> Return
 
-  Read Flow:
-  ┌─────────────────┐
-  │ Get unread count│
-  └────────┬────────┘
-           │
-           ▼
-  ┌─────────────────┐
-  │ Check cache key │    ┌─────────────┐
-  │ "unread:{cnid}" │───▶│ Cache hit?  │
-  └────────┬────────┘    └──────┬──────┘
-           │                    │
-           │ No                 │ Yes
-           ▼                    ▼
-  ┌─────────────────┐    ┌─────────────┐
-  │ Query DB count  │    │ Return cached│
-  └────────┬────────┘    │ value       │
-           │             └─────────────┘
-           ▼
-  ┌─────────────────┐
-  │ Store in cache  │ (TTL: 10 seconds)
-  │ with 10s TTL    │
-  └────────┬────────┘
-           │
-           ▼
-  ┌─────────────────┐
-  │ Return count    │
-  └─────────────────┘
-
-  Invalidation Events:
-  • Mail sent to user     → invalidate "unread:{userCnid}"
-  • Mail marked as read   → invalidate "unread:{userCnid}"
-  • Mail deleted          → invalidate "unread:{userCnid}"
+    Return2["Return count"] --> End["End"]
+    Return --> End
 ```
+
+### Cache Invalidation Events
+
+| Event | Action |
+|-------|--------|
+| Mail sent to user | Invalidate `unread:{userCnid}` |
+| Mail marked as read | Invalidate `unread:{userCnid}` |
+| Mail deleted | Invalidate `unread:{userCnid}` |
 
 ### Cache Implementation
 
@@ -991,7 +781,7 @@ Step 7: Return sanitized content
 // src/lib/cache.ts
 class InMemoryCache {
     private cache = new Map<string, CacheEntry<unknown>>();
-    private readonly defaultTTL = 10000; // 10 seconds
+    private readonly defaultTTL = 10000;
 
     set<T>(key: string, value: T, ttl: number = this.defaultTTL): void {
         this.cache.set(key, {
@@ -1083,8 +873,7 @@ export const mailApi = {
 ### URL Linkification
 
 ```typescript
-// utils/linkify.ts
-// Use a safe library like 'linkify-it' or 'autolinker.js'
+// Use a safe library like 'linkify-it'
 // NEVER use dangerouslySetInnerHTML with raw content
 
 import LinkifyIt from 'linkify-it';
@@ -1208,16 +997,12 @@ REDIS_URL=redis://localhost:6379
 
 ### Constants
 
-```typescript
-// In mail.service.ts
-const SEND_RATE_LIMIT = 20;           // mails per hour
-const SEND_RATE_WINDOW_MS = 3600000;   // 1 hour in ms
-
-const SEARCH_RATE_LIMIT = 30;          // searches per minute
-const SEARCH_RATE_WINDOW_MS = 60000;   // 1 minute in ms
-
-const UNREAD_CACHE_TTL = 10000;        // 10 seconds
-
-const MAX_BODY_LENGTH = 5000;          // characters
-const MAX_SUBJECT_LENGTH = 200;        // characters
-```
+| Constant | Value | Description |
+|----------|-------|-------------|
+| `SEND_RATE_LIMIT` | 20 | mails per hour |
+| `SEND_RATE_WINDOW_MS` | 3600000 | 1 hour in ms |
+| `SEARCH_RATE_LIMIT` | 30 | searches per minute |
+| `SEARCH_RATE_WINDOW_MS` | 60000 | 1 minute in ms |
+| `UNREAD_CACHE_TTL` | 10000 | 10 seconds |
+| `MAX_BODY_LENGTH` | 5000 | characters |
+| `MAX_SUBJECT_LENGTH` | 200 | characters |
