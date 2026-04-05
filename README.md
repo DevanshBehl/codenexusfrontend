@@ -91,6 +91,7 @@ erDiagram
         string email
         string password
         string role
+        string cnid UK
         datetime createdAt
         datetime updatedAt
     }
@@ -252,10 +253,38 @@ erDiagram
         string universityId
     }
 
+    Mail {
+        string id PK
+        string sender_cnid
+        string recipient_cnid
+        string subject
+        string body
+        datetime sent_at
+        boolean is_read
+        boolean is_deleted_sender
+        boolean is_deleted_recipient
+        string thread_id
+        string parent_mail_id FK
+        datetime created_at
+        datetime updated_at
+    }
+
+    MailPermissionViolation {
+        string id PK
+        string sender_cnid
+        string attempted_recipient_cnid
+        string action
+        datetime timestamp
+        string ip_address
+        string user_agent
+    }
+
     User ||--o| Student : "studentProfile"
     User ||--o| University : "universityProfile"
     User ||--o| Company : "companyProfile"
     User ||--o| Recruiter : "recruiterProfile"
+    User ||--o{ Mail : "sentMails"
+    User ||--o{ Mail : "receivedMails"
 
     University ||--o{ Student : "has"
     University ||--o{ CompanyUniversity : "partners"
@@ -282,6 +311,9 @@ erDiagram
     Interview ||--o| Recording : "has"
 
     Webinar ||--o{ WebinarTargetUniversity : "targets"
+
+    Mail ||--o| Mail : "parent"
+    Mail ||--o{ Mail : "replies"
 ```
 
 ---
@@ -298,7 +330,7 @@ erDiagram
 | **Design Arena** | UI/UX design challenges with submission uploads |
 | **Interview Room** | Three-column live IDE — problem, code editor, video/chat + whiteboard |
 | **Webinars** | Join live pre-placement talks with chat and screen sharing |
-| **Internal Mail** | Message university placement cell or CodeNexus support |
+| **Internal Mail** | Message university placement cell; receive updates from companies (CNID-based addressing) |
 | **Student Profile** | Editable personal, educational, and parental information |
 | **Projects** | Portfolio of student projects with descriptions |
 
@@ -309,7 +341,7 @@ erDiagram
 | **Command Center** | Manage placement drives, student pools, company partnerships |
 | **Evaluations** | Review student performance across interviews and contests |
 | **Webinar Management** | View and manage scheduled company webinars |
-| **Internal Mail** | Communicate with students, companies, and support |
+| **Internal Mail** | Communicate with students and companies; send placement announcements (CNID-based) |
 
 ### 🏢 Company Portal
 
@@ -320,7 +352,7 @@ erDiagram
 | **PPT Scheduler** | Schedule pre-placement talk webinars with agenda and targeting |
 | **Webinar Host** | Host live webinars with screen sharing and participant management |
 | **Candidate Evaluation** | Review recordings, reports, Select/Reject with evaluator notes |
-| **Internal Mail** | Message universities, students, recruiters, and support |
+| **Internal Mail** | Message students, universities, and recruiters; receive inquiries (CNID-based) |
 
 ### 👔 Recruiter Portal
 
@@ -328,7 +360,7 @@ erDiagram
 |---------|-------------|
 | **Command Center** | Upcoming interviews, past recordings, candidate profiles |
 | **Interview Room** | Conduct live technical interviews in the three-column IDE |
-| **Internal Mail** | Contact companies directly through internal messaging |
+| **Internal Mail** | Contact company admins directly (CNID-based, role-restricted) |
 
 ---
 
@@ -350,16 +382,69 @@ erDiagram
 
 ---
 
-## 📬 Internal Communication Matrix
+## 📬 Internal Mail System
 
-CodeNexus features a fully enclosed mailing system — no external email required. Communication is role-restricted:
+CodeNexus features a fully enclosed mailing system — no external email required. Communication is role-restricted and CNID-based.
 
-| From ↓ / To → | Student | University | Company | Recruiter | CN Support |
-|:-:|:-:|:-:|:-:|:-:|:-:|
-| **Student** | ❌ | ✅ | ❌ | ❌ | ✅ |
-| **University** | ✅ | ❌ | ✅ | ❌ | ✅ |
-| **Company** | ✅ | ✅ | ❌ | ✅ | ✅ |
-| **Recruiter** | ❌ | ❌ | ✅ | ❌ | ✅ |
+### Communication Matrix
+
+| From ↓ / To → | Student | University | Company | Recruiter |
+|:-:|:-:|:-:|:-:|:-:|
+| **Student** | ❌ | ✅ | ❌ | ❌ |
+| **University** | ✅ | ❌ | ✅ | ❌ |
+| **Company** | ✅ | ✅ | ❌ | ✅ |
+| **Recruiter** | ❌ | ❌ | ✅ | ❌ |
+
+### CNID Format
+
+Every user gets a unique CodeNexus ID at registration:
+
+```
+CN-{PREFIX}-{6 RANDOM CHARS}
+```
+
+| Role | Prefix | Example |
+|------|--------|---------|
+| Student | STU | `CN-STU-A1B2C3` |
+| University | UNI | `CN-UNI-X7Y8Z9` |
+| Company | COM | `CN-COM-M4N5O6` |
+| Recruiter | REC | `CN-REC-P1Q2R3` |
+
+### Mail Features
+
+- **Threaded Conversations**: Messages group into threads via shared `thread_id`
+- **Real-Time Notifications**: SSE stream delivers new mail instantly
+- **Soft Delete**: Both sender and recipient must independently delete
+- **Unread Badge**: Cached unread count with 10s TTL
+- **Recipient Search**: Role-filtered autocomplete with rate limiting
+
+### API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/v1/mail/send` | Send a mail |
+| `GET` | `/api/v1/mail/inbox` | Paginated inbox |
+| `GET` | `/api/v1/mail/sent` | Paginated sent box |
+| `GET` | `/api/v1/mail/:id` | Get single mail |
+| `GET` | `/api/v1/mail/thread/:thread_id` | Get full thread |
+| `PATCH` | `/api/v1/mail/:id/read` | Mark as read |
+| `DELETE` | `/api/v1/mail/:id` | Delete mail |
+| `GET` | `/api/v1/mail/unread-count` | Get unread count (cached) |
+| `GET` | `/api/v1/mail/search-recipients` | Search recipients |
+| `GET` | `/api/v1/mail/events` | SSE notification stream |
+
+### Detailed Documentation
+
+For complete technical documentation, architecture diagrams, security details, and integration guides, see:
+
+📄 **[Mail System Documentation](./backend/docs/mailing.md)**
+
+### Security
+
+- **Server-Side Permission Enforcement**: Role matrix validated on every send
+- **Content Sanitization**: HTML stripped, angle brackets validated, max lengths enforced
+- **Rate Limiting**: 20 mails/hour, 30 searches/minute per user
+- **Audit Logging**: All permission violations logged with IP and timestamp
 
 ---
 
