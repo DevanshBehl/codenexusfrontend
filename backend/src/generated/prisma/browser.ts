@@ -97,3 +97,13 @@ export type Webinar = Prisma.WebinarModel
  * 
  */
 export type WebinarTargetUniversity = Prisma.WebinarTargetUniversityModel
+/**
+ * Model Mail
+ * 
+ */
+export type Mail = Prisma.MailModel
+/**
+ * Model MailPermissionViolation
+ * 
+ */
+export type MailPermissionViolation = Prisma.MailPermissionViolationModel

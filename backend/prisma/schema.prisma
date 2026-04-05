@@ -28,6 +28,7 @@ model User {
   email     String   @unique
   password  String
   role      Role
+  cnid      String?  @unique // Code Nexus ID: CN-{PREFIX}-{6 random chars}
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -36,6 +37,10 @@ model User {
   universityProfile University?
   companyProfile    Company? // For COMPANY_ADMIN
   recruiterProfile  Recruiter?
+
+  // Mail relations
+  sentMails       Mail[] @relation("MailSender")
+  receivedMails   Mail[] @relation("MailRecipient")
 }
 
 // ==========================================
@@ -273,4 +278,46 @@ model WebinarTargetUniversity {
   university University @relation(fields: [universityId], references: [id], onDelete: Cascade)
 
   @@id([webinarId, universityId])
+}
+
+// ==========================================
+// 6. INTERNAL MAIL SYSTEM
+// ==========================================
+
+model Mail {
+  id                    String   @id @default(uuid())
+  sender_cnid           String   // CNID of sender
+  recipient_cnid        String   // CNID of recipient
+  subject               String   @db.VarChar(200)
+  body                  String   @db.Text
+  sent_at               DateTime @default(now())
+  is_read               Boolean  @default(false)
+  is_deleted_sender     Boolean  @default(false)
+  is_deleted_recipient  Boolean  @default(false)
+  thread_id             String   // UUID - all replies share same thread_id
+  parent_mail_id        String?
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
+
+  sender                User?    @relation("MailSender", fields: [sender_cnid], references: [cnid])
+  recipient             User?    @relation("MailRecipient", fields: [recipient_cnid], references: [cnid])
+  parent                Mail?    @relation("MailThread", fields: [parent_mail_id], references: [id])
+  replies               Mail[]   @relation("MailThread")
+
+  @@index([recipient_cnid, is_read, is_deleted_recipient])
+  @@index([sender_cnid, is_deleted_sender])
+  @@index([thread_id])
+}
+
+model MailPermissionViolation {
+  id                       String   @id @default(uuid())
+  sender_cnid              String
+  attempted_recipient_cnid String
+  action                   String
+  timestamp                DateTime @default(now())
+  ip_address               String?
+  user_agent               String?
+
+  @@index([sender_cnid, timestamp])
+  @@index([timestamp])
 }

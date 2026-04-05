@@ -4,7 +4,12 @@ import { env } from '../config/env.js';
 import { ApiError } from '../utils/api-error.js';
 import { Role } from '../generated/prisma/enums.js';
 
-// Add RequestHandler here, and you can remove the types from req, res, next
+interface JwtPayload {
+    id: string;
+    role: Role;
+    cnid?: string;
+}
+
 export const authenticate: RequestHandler = (req, res, next) => {
     try {
         const authHeader = req.headers.authorization;
@@ -15,11 +20,12 @@ export const authenticate: RequestHandler = (req, res, next) => {
 
         const token = authHeader.split(' ')[1];
 
-        const decoded = jwt.verify(token as string, env.JWT_SECRET as string) as jwt.JwtPayload;
+        const decoded = jwt.verify(token as string, env.JWT_SECRET as string) as JwtPayload;
 
         req.user = {
             id: decoded.id as string,
             role: decoded.role as Role,
+            cnid: decoded.cnid as string,
         };
 
         next();

@@ -5,6 +5,7 @@ declare global {
             user?: {
                 id: String;
                 role: Role;
+                cnid?: String;
             }
         }
     }

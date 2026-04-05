@@ -29,6 +29,7 @@ export type UserMinAggregateOutputType = {
   email: string | null
   password: string | null
   role: $Enums.Role | null
+  cnid: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -38,6 +39,7 @@ export type UserMaxAggregateOutputType = {
   email: string | null
   password: string | null
   role: $Enums.Role | null
+  cnid: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -47,6 +49,7 @@ export type UserCountAggregateOutputType = {
   email: number
   password: number
   role: number
+  cnid: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -58,6 +61,7 @@ export type UserMinAggregateInputType = {
   email?: true
   password?: true
   role?: true
+  cnid?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -67,6 +71,7 @@ export type UserMaxAggregateInputType = {
   email?: true
   password?: true
   role?: true
+  cnid?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -76,6 +81,7 @@ export type UserCountAggregateInputType = {
   email?: true
   password?: true
   role?: true
+  cnid?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -158,6 +164,7 @@ export type UserGroupByOutputType = {
   email: string
   password: string
   role: $Enums.Role
+  cnid: string | null
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -188,12 +195,15 @@ export type UserWhereInput = {
   email?: Prisma.StringFilter<"User"> | string
   password?: Prisma.StringFilter<"User"> | string
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
+  cnid?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   studentProfile?: Prisma.XOR<Prisma.StudentNullableScalarRelationFilter, Prisma.StudentWhereInput> | null
   universityProfile?: Prisma.XOR<Prisma.UniversityNullableScalarRelationFilter, Prisma.UniversityWhereInput> | null
   companyProfile?: Prisma.XOR<Prisma.CompanyNullableScalarRelationFilter, Prisma.CompanyWhereInput> | null
   recruiterProfile?: Prisma.XOR<Prisma.RecruiterNullableScalarRelationFilter, Prisma.RecruiterWhereInput> | null
+  sentMails?: Prisma.MailListRelationFilter
+  receivedMails?: Prisma.MailListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -201,17 +211,21 @@ export type UserOrderByWithRelationInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  cnid?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   studentProfile?: Prisma.StudentOrderByWithRelationInput
   universityProfile?: Prisma.UniversityOrderByWithRelationInput
   companyProfile?: Prisma.CompanyOrderByWithRelationInput
   recruiterProfile?: Prisma.RecruiterOrderByWithRelationInput
+  sentMails?: Prisma.MailOrderByRelationAggregateInput
+  receivedMails?: Prisma.MailOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   email?: string
+  cnid?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
@@ -223,13 +237,16 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   universityProfile?: Prisma.XOR<Prisma.UniversityNullableScalarRelationFilter, Prisma.UniversityWhereInput> | null
   companyProfile?: Prisma.XOR<Prisma.CompanyNullableScalarRelationFilter, Prisma.CompanyWhereInput> | null
   recruiterProfile?: Prisma.XOR<Prisma.RecruiterNullableScalarRelationFilter, Prisma.RecruiterWhereInput> | null
-}, "id" | "email">
+  sentMails?: Prisma.MailListRelationFilter
+  receivedMails?: Prisma.MailListRelationFilter
+}, "id" | "email" | "cnid">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  cnid?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -245,6 +262,7 @@ export type UserScalarWhereWithAggregatesInput = {
   email?: Prisma.StringWithAggregatesFilter<"User"> | string
   password?: Prisma.StringWithAggregatesFilter<"User"> | string
   role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
+  cnid?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -254,12 +272,15 @@ export type UserCreateInput = {
   email: string
   password: string
   role: $Enums.Role
+  cnid?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   studentProfile?: Prisma.StudentCreateNestedOneWithoutUserInput
   universityProfile?: Prisma.UniversityCreateNestedOneWithoutUserInput
   companyProfile?: Prisma.CompanyCreateNestedOneWithoutUserInput
   recruiterProfile?: Prisma.RecruiterCreateNestedOneWithoutUserInput
+  sentMails?: Prisma.MailCreateNestedManyWithoutSenderInput
+  receivedMails?: Prisma.MailCreateNestedManyWithoutRecipientInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -267,12 +288,15 @@ export type UserUncheckedCreateInput = {
   email: string
   password: string
   role: $Enums.Role
+  cnid?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   studentProfile?: Prisma.StudentUncheckedCreateNestedOneWithoutUserInput
   universityProfile?: Prisma.UniversityUncheckedCreateNestedOneWithoutUserInput
   companyProfile?: Prisma.CompanyUncheckedCreateNestedOneWithoutUserInput
   recruiterProfile?: Prisma.RecruiterUncheckedCreateNestedOneWithoutUserInput
+  sentMails?: Prisma.MailUncheckedCreateNestedManyWithoutSenderInput
+  receivedMails?: Prisma.MailUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type UserUpdateInput = {
@@ -280,12 +304,15 @@ export type UserUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  cnid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   studentProfile?: Prisma.StudentUpdateOneWithoutUserNestedInput
   universityProfile?: Prisma.UniversityUpdateOneWithoutUserNestedInput
   companyProfile?: Prisma.CompanyUpdateOneWithoutUserNestedInput
   recruiterProfile?: Prisma.RecruiterUpdateOneWithoutUserNestedInput
+  sentMails?: Prisma.MailUpdateManyWithoutSenderNestedInput
+  receivedMails?: Prisma.MailUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -293,12 +320,15 @@ export type UserUncheckedUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  cnid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   studentProfile?: Prisma.StudentUncheckedUpdateOneWithoutUserNestedInput
   universityProfile?: Prisma.UniversityUncheckedUpdateOneWithoutUserNestedInput
   companyProfile?: Prisma.CompanyUncheckedUpdateOneWithoutUserNestedInput
   recruiterProfile?: Prisma.RecruiterUncheckedUpdateOneWithoutUserNestedInput
+  sentMails?: Prisma.MailUncheckedUpdateManyWithoutSenderNestedInput
+  receivedMails?: Prisma.MailUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -306,6 +336,7 @@ export type UserCreateManyInput = {
   email: string
   password: string
   role: $Enums.Role
+  cnid?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -315,6 +346,7 @@ export type UserUpdateManyMutationInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  cnid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -324,6 +356,7 @@ export type UserUncheckedUpdateManyInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  cnid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -333,6 +366,7 @@ export type UserCountOrderByAggregateInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  cnid?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -342,6 +376,7 @@ export type UserMaxOrderByAggregateInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  cnid?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -351,6 +386,7 @@ export type UserMinOrderByAggregateInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  cnid?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -360,12 +396,21 @@ export type UserScalarRelationFilter = {
   isNot?: Prisma.UserWhereInput
 }
 
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null
+  isNot?: Prisma.UserWhereInput | null
+}
+
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }
 
 export type EnumRoleFieldUpdateOperationsInput = {
   set?: $Enums.Role
+}
+
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -428,16 +473,51 @@ export type UserUpdateOneRequiredWithoutStudentProfileNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutStudentProfileInput, Prisma.UserUpdateWithoutStudentProfileInput>, Prisma.UserUncheckedUpdateWithoutStudentProfileInput>
 }
 
+export type UserCreateNestedOneWithoutSentMailsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSentMailsInput, Prisma.UserUncheckedCreateWithoutSentMailsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSentMailsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutReceivedMailsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReceivedMailsInput, Prisma.UserUncheckedCreateWithoutReceivedMailsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReceivedMailsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutSentMailsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSentMailsInput, Prisma.UserUncheckedCreateWithoutSentMailsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSentMailsInput
+  upsert?: Prisma.UserUpsertWithoutSentMailsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSentMailsInput, Prisma.UserUpdateWithoutSentMailsInput>, Prisma.UserUncheckedUpdateWithoutSentMailsInput>
+}
+
+export type UserUpdateOneWithoutReceivedMailsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReceivedMailsInput, Prisma.UserUncheckedCreateWithoutReceivedMailsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReceivedMailsInput
+  upsert?: Prisma.UserUpsertWithoutReceivedMailsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReceivedMailsInput, Prisma.UserUpdateWithoutReceivedMailsInput>, Prisma.UserUncheckedUpdateWithoutReceivedMailsInput>
+}
+
 export type UserCreateWithoutUniversityProfileInput = {
   id?: string
   email: string
   password: string
   role: $Enums.Role
+  cnid?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   studentProfile?: Prisma.StudentCreateNestedOneWithoutUserInput
   companyProfile?: Prisma.CompanyCreateNestedOneWithoutUserInput
   recruiterProfile?: Prisma.RecruiterCreateNestedOneWithoutUserInput
+  sentMails?: Prisma.MailCreateNestedManyWithoutSenderInput
+  receivedMails?: Prisma.MailCreateNestedManyWithoutRecipientInput
 }
 
 export type UserUncheckedCreateWithoutUniversityProfileInput = {
@@ -445,11 +525,14 @@ export type UserUncheckedCreateWithoutUniversityProfileInput = {
   email: string
   password: string
   role: $Enums.Role
+  cnid?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   studentProfile?: Prisma.StudentUncheckedCreateNestedOneWithoutUserInput
   companyProfile?: Prisma.CompanyUncheckedCreateNestedOneWithoutUserInput
   recruiterProfile?: Prisma.RecruiterUncheckedCreateNestedOneWithoutUserInput
+  sentMails?: Prisma.MailUncheckedCreateNestedManyWithoutSenderInput
+  receivedMails?: Prisma.MailUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type UserCreateOrConnectWithoutUniversityProfileInput = {
@@ -473,11 +556,14 @@ export type UserUpdateWithoutUniversityProfileInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  cnid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   studentProfile?: Prisma.StudentUpdateOneWithoutUserNestedInput
   companyProfile?: Prisma.CompanyUpdateOneWithoutUserNestedInput
   recruiterProfile?: Prisma.RecruiterUpdateOneWithoutUserNestedInput
+  sentMails?: Prisma.MailUpdateManyWithoutSenderNestedInput
+  receivedMails?: Prisma.MailUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUniversityProfileInput = {
@@ -485,11 +571,14 @@ export type UserUncheckedUpdateWithoutUniversityProfileInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  cnid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   studentProfile?: Prisma.StudentUncheckedUpdateOneWithoutUserNestedInput
   companyProfile?: Prisma.CompanyUncheckedUpdateOneWithoutUserNestedInput
   recruiterProfile?: Prisma.RecruiterUncheckedUpdateOneWithoutUserNestedInput
+  sentMails?: Prisma.MailUncheckedUpdateManyWithoutSenderNestedInput
+  receivedMails?: Prisma.MailUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserCreateWithoutCompanyProfileInput = {
@@ -497,11 +586,14 @@ export type UserCreateWithoutCompanyProfileInput = {
   email: string
   password: string
   role: $Enums.Role
+  cnid?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   studentProfile?: Prisma.StudentCreateNestedOneWithoutUserInput
   universityProfile?: Prisma.UniversityCreateNestedOneWithoutUserInput
   recruiterProfile?: Prisma.RecruiterCreateNestedOneWithoutUserInput
+  sentMails?: Prisma.MailCreateNestedManyWithoutSenderInput
+  receivedMails?: Prisma.MailCreateNestedManyWithoutRecipientInput
 }
 
 export type UserUncheckedCreateWithoutCompanyProfileInput = {
@@ -509,11 +601,14 @@ export type UserUncheckedCreateWithoutCompanyProfileInput = {
   email: string
   password: string
   role: $Enums.Role
+  cnid?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   studentProfile?: Prisma.StudentUncheckedCreateNestedOneWithoutUserInput
   universityProfile?: Prisma.UniversityUncheckedCreateNestedOneWithoutUserInput
   recruiterProfile?: Prisma.RecruiterUncheckedCreateNestedOneWithoutUserInput
+  sentMails?: Prisma.MailUncheckedCreateNestedManyWithoutSenderInput
+  receivedMails?: Prisma.MailUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type UserCreateOrConnectWithoutCompanyProfileInput = {
@@ -537,11 +632,14 @@ export type UserUpdateWithoutCompanyProfileInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  cnid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   studentProfile?: Prisma.StudentUpdateOneWithoutUserNestedInput
   universityProfile?: Prisma.UniversityUpdateOneWithoutUserNestedInput
   recruiterProfile?: Prisma.RecruiterUpdateOneWithoutUserNestedInput
+  sentMails?: Prisma.MailUpdateManyWithoutSenderNestedInput
+  receivedMails?: Prisma.MailUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCompanyProfileInput = {
@@ -549,11 +647,14 @@ export type UserUncheckedUpdateWithoutCompanyProfileInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  cnid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   studentProfile?: Prisma.StudentUncheckedUpdateOneWithoutUserNestedInput
   universityProfile?: Prisma.UniversityUncheckedUpdateOneWithoutUserNestedInput
   recruiterProfile?: Prisma.RecruiterUncheckedUpdateOneWithoutUserNestedInput
+  sentMails?: Prisma.MailUncheckedUpdateManyWithoutSenderNestedInput
+  receivedMails?: Prisma.MailUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserCreateWithoutRecruiterProfileInput = {
@@ -561,11 +662,14 @@ export type UserCreateWithoutRecruiterProfileInput = {
   email: string
   password: string
   role: $Enums.Role
+  cnid?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   studentProfile?: Prisma.StudentCreateNestedOneWithoutUserInput
   universityProfile?: Prisma.UniversityCreateNestedOneWithoutUserInput
   companyProfile?: Prisma.CompanyCreateNestedOneWithoutUserInput
+  sentMails?: Prisma.MailCreateNestedManyWithoutSenderInput
+  receivedMails?: Prisma.MailCreateNestedManyWithoutRecipientInput
 }
 
 export type UserUncheckedCreateWithoutRecruiterProfileInput = {
@@ -573,11 +677,14 @@ export type UserUncheckedCreateWithoutRecruiterProfileInput = {
   email: string
   password: string
   role: $Enums.Role
+  cnid?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   studentProfile?: Prisma.StudentUncheckedCreateNestedOneWithoutUserInput
   universityProfile?: Prisma.UniversityUncheckedCreateNestedOneWithoutUserInput
   companyProfile?: Prisma.CompanyUncheckedCreateNestedOneWithoutUserInput
+  sentMails?: Prisma.MailUncheckedCreateNestedManyWithoutSenderInput
+  receivedMails?: Prisma.MailUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type UserCreateOrConnectWithoutRecruiterProfileInput = {
@@ -601,11 +708,14 @@ export type UserUpdateWithoutRecruiterProfileInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  cnid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   studentProfile?: Prisma.StudentUpdateOneWithoutUserNestedInput
   universityProfile?: Prisma.UniversityUpdateOneWithoutUserNestedInput
   companyProfile?: Prisma.CompanyUpdateOneWithoutUserNestedInput
+  sentMails?: Prisma.MailUpdateManyWithoutSenderNestedInput
+  receivedMails?: Prisma.MailUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRecruiterProfileInput = {
@@ -613,11 +723,14 @@ export type UserUncheckedUpdateWithoutRecruiterProfileInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  cnid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   studentProfile?: Prisma.StudentUncheckedUpdateOneWithoutUserNestedInput
   universityProfile?: Prisma.UniversityUncheckedUpdateOneWithoutUserNestedInput
   companyProfile?: Prisma.CompanyUncheckedUpdateOneWithoutUserNestedInput
+  sentMails?: Prisma.MailUncheckedUpdateManyWithoutSenderNestedInput
+  receivedMails?: Prisma.MailUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserCreateWithoutStudentProfileInput = {
@@ -625,11 +738,14 @@ export type UserCreateWithoutStudentProfileInput = {
   email: string
   password: string
   role: $Enums.Role
+  cnid?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   universityProfile?: Prisma.UniversityCreateNestedOneWithoutUserInput
   companyProfile?: Prisma.CompanyCreateNestedOneWithoutUserInput
   recruiterProfile?: Prisma.RecruiterCreateNestedOneWithoutUserInput
+  sentMails?: Prisma.MailCreateNestedManyWithoutSenderInput
+  receivedMails?: Prisma.MailCreateNestedManyWithoutRecipientInput
 }
 
 export type UserUncheckedCreateWithoutStudentProfileInput = {
@@ -637,11 +753,14 @@ export type UserUncheckedCreateWithoutStudentProfileInput = {
   email: string
   password: string
   role: $Enums.Role
+  cnid?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   universityProfile?: Prisma.UniversityUncheckedCreateNestedOneWithoutUserInput
   companyProfile?: Prisma.CompanyUncheckedCreateNestedOneWithoutUserInput
   recruiterProfile?: Prisma.RecruiterUncheckedCreateNestedOneWithoutUserInput
+  sentMails?: Prisma.MailUncheckedCreateNestedManyWithoutSenderInput
+  receivedMails?: Prisma.MailUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type UserCreateOrConnectWithoutStudentProfileInput = {
@@ -665,11 +784,14 @@ export type UserUpdateWithoutStudentProfileInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  cnid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   universityProfile?: Prisma.UniversityUpdateOneWithoutUserNestedInput
   companyProfile?: Prisma.CompanyUpdateOneWithoutUserNestedInput
   recruiterProfile?: Prisma.RecruiterUpdateOneWithoutUserNestedInput
+  sentMails?: Prisma.MailUpdateManyWithoutSenderNestedInput
+  receivedMails?: Prisma.MailUpdateManyWithoutRecipientNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStudentProfileInput = {
@@ -677,13 +799,206 @@ export type UserUncheckedUpdateWithoutStudentProfileInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  cnid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   universityProfile?: Prisma.UniversityUncheckedUpdateOneWithoutUserNestedInput
   companyProfile?: Prisma.CompanyUncheckedUpdateOneWithoutUserNestedInput
   recruiterProfile?: Prisma.RecruiterUncheckedUpdateOneWithoutUserNestedInput
+  sentMails?: Prisma.MailUncheckedUpdateManyWithoutSenderNestedInput
+  receivedMails?: Prisma.MailUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
+export type UserCreateWithoutSentMailsInput = {
+  id?: string
+  email: string
+  password: string
+  role: $Enums.Role
+  cnid?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  studentProfile?: Prisma.StudentCreateNestedOneWithoutUserInput
+  universityProfile?: Prisma.UniversityCreateNestedOneWithoutUserInput
+  companyProfile?: Prisma.CompanyCreateNestedOneWithoutUserInput
+  recruiterProfile?: Prisma.RecruiterCreateNestedOneWithoutUserInput
+  receivedMails?: Prisma.MailCreateNestedManyWithoutRecipientInput
+}
+
+export type UserUncheckedCreateWithoutSentMailsInput = {
+  id?: string
+  email: string
+  password: string
+  role: $Enums.Role
+  cnid?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  studentProfile?: Prisma.StudentUncheckedCreateNestedOneWithoutUserInput
+  universityProfile?: Prisma.UniversityUncheckedCreateNestedOneWithoutUserInput
+  companyProfile?: Prisma.CompanyUncheckedCreateNestedOneWithoutUserInput
+  recruiterProfile?: Prisma.RecruiterUncheckedCreateNestedOneWithoutUserInput
+  receivedMails?: Prisma.MailUncheckedCreateNestedManyWithoutRecipientInput
+}
+
+export type UserCreateOrConnectWithoutSentMailsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSentMailsInput, Prisma.UserUncheckedCreateWithoutSentMailsInput>
+}
+
+export type UserCreateWithoutReceivedMailsInput = {
+  id?: string
+  email: string
+  password: string
+  role: $Enums.Role
+  cnid?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  studentProfile?: Prisma.StudentCreateNestedOneWithoutUserInput
+  universityProfile?: Prisma.UniversityCreateNestedOneWithoutUserInput
+  companyProfile?: Prisma.CompanyCreateNestedOneWithoutUserInput
+  recruiterProfile?: Prisma.RecruiterCreateNestedOneWithoutUserInput
+  sentMails?: Prisma.MailCreateNestedManyWithoutSenderInput
+}
+
+export type UserUncheckedCreateWithoutReceivedMailsInput = {
+  id?: string
+  email: string
+  password: string
+  role: $Enums.Role
+  cnid?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  studentProfile?: Prisma.StudentUncheckedCreateNestedOneWithoutUserInput
+  universityProfile?: Prisma.UniversityUncheckedCreateNestedOneWithoutUserInput
+  companyProfile?: Prisma.CompanyUncheckedCreateNestedOneWithoutUserInput
+  recruiterProfile?: Prisma.RecruiterUncheckedCreateNestedOneWithoutUserInput
+  sentMails?: Prisma.MailUncheckedCreateNestedManyWithoutSenderInput
+}
+
+export type UserCreateOrConnectWithoutReceivedMailsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutReceivedMailsInput, Prisma.UserUncheckedCreateWithoutReceivedMailsInput>
+}
+
+export type UserUpsertWithoutSentMailsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSentMailsInput, Prisma.UserUncheckedUpdateWithoutSentMailsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSentMailsInput, Prisma.UserUncheckedCreateWithoutSentMailsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSentMailsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSentMailsInput, Prisma.UserUncheckedUpdateWithoutSentMailsInput>
+}
+
+export type UserUpdateWithoutSentMailsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  cnid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  studentProfile?: Prisma.StudentUpdateOneWithoutUserNestedInput
+  universityProfile?: Prisma.UniversityUpdateOneWithoutUserNestedInput
+  companyProfile?: Prisma.CompanyUpdateOneWithoutUserNestedInput
+  recruiterProfile?: Prisma.RecruiterUpdateOneWithoutUserNestedInput
+  receivedMails?: Prisma.MailUpdateManyWithoutRecipientNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSentMailsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  cnid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  studentProfile?: Prisma.StudentUncheckedUpdateOneWithoutUserNestedInput
+  universityProfile?: Prisma.UniversityUncheckedUpdateOneWithoutUserNestedInput
+  companyProfile?: Prisma.CompanyUncheckedUpdateOneWithoutUserNestedInput
+  recruiterProfile?: Prisma.RecruiterUncheckedUpdateOneWithoutUserNestedInput
+  receivedMails?: Prisma.MailUncheckedUpdateManyWithoutRecipientNestedInput
+}
+
+export type UserUpsertWithoutReceivedMailsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutReceivedMailsInput, Prisma.UserUncheckedUpdateWithoutReceivedMailsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutReceivedMailsInput, Prisma.UserUncheckedCreateWithoutReceivedMailsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutReceivedMailsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutReceivedMailsInput, Prisma.UserUncheckedUpdateWithoutReceivedMailsInput>
+}
+
+export type UserUpdateWithoutReceivedMailsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  cnid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  studentProfile?: Prisma.StudentUpdateOneWithoutUserNestedInput
+  universityProfile?: Prisma.UniversityUpdateOneWithoutUserNestedInput
+  companyProfile?: Prisma.CompanyUpdateOneWithoutUserNestedInput
+  recruiterProfile?: Prisma.RecruiterUpdateOneWithoutUserNestedInput
+  sentMails?: Prisma.MailUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutReceivedMailsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  cnid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  studentProfile?: Prisma.StudentUncheckedUpdateOneWithoutUserNestedInput
+  universityProfile?: Prisma.UniversityUncheckedUpdateOneWithoutUserNestedInput
+  companyProfile?: Prisma.CompanyUncheckedUpdateOneWithoutUserNestedInput
+  recruiterProfile?: Prisma.RecruiterUncheckedUpdateOneWithoutUserNestedInput
+  sentMails?: Prisma.MailUncheckedUpdateManyWithoutSenderNestedInput
+}
+
+
+/**
+ * Count Type UserCountOutputType
+ */
+
+export type UserCountOutputType = {
+  sentMails: number
+  receivedMails: number
+}
+
+export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  sentMails?: boolean | UserCountOutputTypeCountSentMailsArgs
+  receivedMails?: boolean | UserCountOutputTypeCountReceivedMailsArgs
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserCountOutputType
+   */
+  select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSentMailsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MailWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountReceivedMailsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MailWhereInput
+}
 
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -691,12 +1006,16 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   email?: boolean
   password?: boolean
   role?: boolean
+  cnid?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   studentProfile?: boolean | Prisma.User$studentProfileArgs<ExtArgs>
   universityProfile?: boolean | Prisma.User$universityProfileArgs<ExtArgs>
   companyProfile?: boolean | Prisma.User$companyProfileArgs<ExtArgs>
   recruiterProfile?: boolean | Prisma.User$recruiterProfileArgs<ExtArgs>
+  sentMails?: boolean | Prisma.User$sentMailsArgs<ExtArgs>
+  receivedMails?: boolean | Prisma.User$receivedMailsArgs<ExtArgs>
+  _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -704,6 +1023,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   email?: boolean
   password?: boolean
   role?: boolean
+  cnid?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -713,6 +1033,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   email?: boolean
   password?: boolean
   role?: boolean
+  cnid?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -722,16 +1043,20 @@ export type UserSelectScalar = {
   email?: boolean
   password?: boolean
   role?: boolean
+  cnid?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "role" | "cnid" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   studentProfile?: boolean | Prisma.User$studentProfileArgs<ExtArgs>
   universityProfile?: boolean | Prisma.User$universityProfileArgs<ExtArgs>
   companyProfile?: boolean | Prisma.User$companyProfileArgs<ExtArgs>
   recruiterProfile?: boolean | Prisma.User$recruiterProfileArgs<ExtArgs>
+  sentMails?: boolean | Prisma.User$sentMailsArgs<ExtArgs>
+  receivedMails?: boolean | Prisma.User$receivedMailsArgs<ExtArgs>
+  _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -743,12 +1068,15 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     universityProfile: Prisma.$UniversityPayload<ExtArgs> | null
     companyProfile: Prisma.$CompanyPayload<ExtArgs> | null
     recruiterProfile: Prisma.$RecruiterPayload<ExtArgs> | null
+    sentMails: Prisma.$MailPayload<ExtArgs>[]
+    receivedMails: Prisma.$MailPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     email: string
     password: string
     role: $Enums.Role
+    cnid: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -1149,6 +1477,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   universityProfile<T extends Prisma.User$universityProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$universityProfileArgs<ExtArgs>>): Prisma.Prisma__UniversityClient<runtime.Types.Result.GetResult<Prisma.$UniversityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   companyProfile<T extends Prisma.User$companyProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$companyProfileArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   recruiterProfile<T extends Prisma.User$recruiterProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$recruiterProfileArgs<ExtArgs>>): Prisma.Prisma__RecruiterClient<runtime.Types.Result.GetResult<Prisma.$RecruiterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  sentMails<T extends Prisma.User$sentMailsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sentMailsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  receivedMails<T extends Prisma.User$receivedMailsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$receivedMailsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1182,6 +1512,7 @@ export interface UserFieldRefs {
   readonly email: Prisma.FieldRef<"User", 'String'>
   readonly password: Prisma.FieldRef<"User", 'String'>
   readonly role: Prisma.FieldRef<"User", 'Role'>
+  readonly cnid: Prisma.FieldRef<"User", 'String'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
@@ -1650,6 +1981,54 @@ export type User$recruiterProfileArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   include?: Prisma.RecruiterInclude<ExtArgs> | null
   where?: Prisma.RecruiterWhereInput
+}
+
+/**
+ * User.sentMails
+ */
+export type User$sentMailsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Mail
+   */
+  select?: Prisma.MailSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Mail
+   */
+  omit?: Prisma.MailOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MailInclude<ExtArgs> | null
+  where?: Prisma.MailWhereInput
+  orderBy?: Prisma.MailOrderByWithRelationInput | Prisma.MailOrderByWithRelationInput[]
+  cursor?: Prisma.MailWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MailScalarFieldEnum | Prisma.MailScalarFieldEnum[]
+}
+
+/**
+ * User.receivedMails
+ */
+export type User$receivedMailsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Mail
+   */
+  select?: Prisma.MailSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Mail
+   */
+  omit?: Prisma.MailOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MailInclude<ExtArgs> | null
+  where?: Prisma.MailWhereInput
+  orderBy?: Prisma.MailOrderByWithRelationInput | Prisma.MailOrderByWithRelationInput[]
+  cursor?: Prisma.MailWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MailScalarFieldEnum | Prisma.MailScalarFieldEnum[]
 }
 
 /**

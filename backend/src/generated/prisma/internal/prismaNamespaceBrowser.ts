@@ -66,7 +66,9 @@ export const ModelName = {
   Interview: 'Interview',
   Recording: 'Recording',
   Webinar: 'Webinar',
-  WebinarTargetUniversity: 'WebinarTargetUniversity'
+  WebinarTargetUniversity: 'WebinarTargetUniversity',
+  Mail: 'Mail',
+  MailPermissionViolation: 'MailPermissionViolation'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -90,6 +92,7 @@ export const UserScalarFieldEnum = {
   email: 'email',
   password: 'password',
   role: 'role',
+  cnid: 'cnid',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -297,6 +300,38 @@ export const WebinarTargetUniversityScalarFieldEnum = {
 } as const
 
 export type WebinarTargetUniversityScalarFieldEnum = (typeof WebinarTargetUniversityScalarFieldEnum)[keyof typeof WebinarTargetUniversityScalarFieldEnum]
+
+
+export const MailScalarFieldEnum = {
+  id: 'id',
+  sender_cnid: 'sender_cnid',
+  recipient_cnid: 'recipient_cnid',
+  subject: 'subject',
+  body: 'body',
+  sent_at: 'sent_at',
+  is_read: 'is_read',
+  is_deleted_sender: 'is_deleted_sender',
+  is_deleted_recipient: 'is_deleted_recipient',
+  thread_id: 'thread_id',
+  parent_mail_id: 'parent_mail_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type MailScalarFieldEnum = (typeof MailScalarFieldEnum)[keyof typeof MailScalarFieldEnum]
+
+
+export const MailPermissionViolationScalarFieldEnum = {
+  id: 'id',
+  sender_cnid: 'sender_cnid',
+  attempted_recipient_cnid: 'attempted_recipient_cnid',
+  action: 'action',
+  timestamp: 'timestamp',
+  ip_address: 'ip_address',
+  user_agent: 'user_agent'
+} as const
+
+export type MailPermissionViolationScalarFieldEnum = (typeof MailPermissionViolationScalarFieldEnum)[keyof typeof MailPermissionViolationScalarFieldEnum]
 
 
 export const SortOrder = {

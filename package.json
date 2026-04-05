@@ -12,6 +12,7 @@
     "lint": "turbo run lint"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
     "turbo": "latest"
   }
 }

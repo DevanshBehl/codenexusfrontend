@@ -399,7 +399,9 @@ export const ModelName = {
   Interview: 'Interview',
   Recording: 'Recording',
   Webinar: 'Webinar',
-  WebinarTargetUniversity: 'WebinarTargetUniversity'
+  WebinarTargetUniversity: 'WebinarTargetUniversity',
+  Mail: 'Mail',
+  MailPermissionViolation: 'MailPermissionViolation'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -415,7 +417,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "university" | "company" | "companyUniversity" | "recruiter" | "student" | "project" | "contest" | "problem" | "testCase" | "submission" | "jobApplication" | "interview" | "recording" | "webinar" | "webinarTargetUniversity"
+    modelProps: "user" | "university" | "company" | "companyUniversity" | "recruiter" | "student" | "project" | "contest" | "problem" | "testCase" | "submission" | "jobApplication" | "interview" | "recording" | "webinar" | "webinarTargetUniversity" | "mail" | "mailPermissionViolation"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1603,6 +1605,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Mail: {
+      payload: Prisma.$MailPayload<ExtArgs>
+      fields: Prisma.MailFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MailFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MailPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MailFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MailPayload>
+        }
+        findFirst: {
+          args: Prisma.MailFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MailPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MailFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MailPayload>
+        }
+        findMany: {
+          args: Prisma.MailFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MailPayload>[]
+        }
+        create: {
+          args: Prisma.MailCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MailPayload>
+        }
+        createMany: {
+          args: Prisma.MailCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MailCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MailPayload>[]
+        }
+        delete: {
+          args: Prisma.MailDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MailPayload>
+        }
+        update: {
+          args: Prisma.MailUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MailPayload>
+        }
+        deleteMany: {
+          args: Prisma.MailDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MailUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MailUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MailPayload>[]
+        }
+        upsert: {
+          args: Prisma.MailUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MailPayload>
+        }
+        aggregate: {
+          args: Prisma.MailAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMail>
+        }
+        groupBy: {
+          args: Prisma.MailGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MailGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MailCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MailCountAggregateOutputType> | number
+        }
+      }
+    }
+    MailPermissionViolation: {
+      payload: Prisma.$MailPermissionViolationPayload<ExtArgs>
+      fields: Prisma.MailPermissionViolationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MailPermissionViolationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MailPermissionViolationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MailPermissionViolationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MailPermissionViolationPayload>
+        }
+        findFirst: {
+          args: Prisma.MailPermissionViolationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MailPermissionViolationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MailPermissionViolationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MailPermissionViolationPayload>
+        }
+        findMany: {
+          args: Prisma.MailPermissionViolationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MailPermissionViolationPayload>[]
+        }
+        create: {
+          args: Prisma.MailPermissionViolationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MailPermissionViolationPayload>
+        }
+        createMany: {
+          args: Prisma.MailPermissionViolationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MailPermissionViolationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MailPermissionViolationPayload>[]
+        }
+        delete: {
+          args: Prisma.MailPermissionViolationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MailPermissionViolationPayload>
+        }
+        update: {
+          args: Prisma.MailPermissionViolationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MailPermissionViolationPayload>
+        }
+        deleteMany: {
+          args: Prisma.MailPermissionViolationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MailPermissionViolationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MailPermissionViolationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MailPermissionViolationPayload>[]
+        }
+        upsert: {
+          args: Prisma.MailPermissionViolationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MailPermissionViolationPayload>
+        }
+        aggregate: {
+          args: Prisma.MailPermissionViolationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMailPermissionViolation>
+        }
+        groupBy: {
+          args: Prisma.MailPermissionViolationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MailPermissionViolationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MailPermissionViolationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MailPermissionViolationCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1647,6 +1797,7 @@ export const UserScalarFieldEnum = {
   email: 'email',
   password: 'password',
   role: 'role',
+  cnid: 'cnid',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1854,6 +2005,38 @@ export const WebinarTargetUniversityScalarFieldEnum = {
 } as const
 
 export type WebinarTargetUniversityScalarFieldEnum = (typeof WebinarTargetUniversityScalarFieldEnum)[keyof typeof WebinarTargetUniversityScalarFieldEnum]
+
+
+export const MailScalarFieldEnum = {
+  id: 'id',
+  sender_cnid: 'sender_cnid',
+  recipient_cnid: 'recipient_cnid',
+  subject: 'subject',
+  body: 'body',
+  sent_at: 'sent_at',
+  is_read: 'is_read',
+  is_deleted_sender: 'is_deleted_sender',
+  is_deleted_recipient: 'is_deleted_recipient',
+  thread_id: 'thread_id',
+  parent_mail_id: 'parent_mail_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type MailScalarFieldEnum = (typeof MailScalarFieldEnum)[keyof typeof MailScalarFieldEnum]
+
+
+export const MailPermissionViolationScalarFieldEnum = {
+  id: 'id',
+  sender_cnid: 'sender_cnid',
+  attempted_recipient_cnid: 'attempted_recipient_cnid',
+  action: 'action',
+  timestamp: 'timestamp',
+  ip_address: 'ip_address',
+  user_agent: 'user_agent'
+} as const
+
+export type MailPermissionViolationScalarFieldEnum = (typeof MailPermissionViolationScalarFieldEnum)[keyof typeof MailPermissionViolationScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2073,6 +2256,8 @@ export type GlobalOmitConfig = {
   recording?: Prisma.RecordingOmit
   webinar?: Prisma.WebinarOmit
   webinarTargetUniversity?: Prisma.WebinarTargetUniversityOmit
+  mail?: Prisma.MailOmit
+  mailPermissionViolation?: Prisma.MailPermissionViolationOmit
 }
 
 /* Types for Logging */
