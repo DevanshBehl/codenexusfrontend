@@ -94,12 +94,14 @@ export default function Whiteboard({ socket, interviewId }: WhiteboardProps) {
     useEffect(() => {
         const resize = () => {
             const canvas = canvasRef.current;
-            const container = containerRef.current;
-            if (!canvas || !container) return;
-            canvas.width = container.clientWidth;
-            canvas.height = container.clientHeight;
+            if (!canvas) return;
+            // Use the canvas's own displayed dimensions (CSS flex-1 determines this)
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
         };
-        resize();
+        // Wait for layout to settle before initial sizing
+        requestAnimationFrame(resize);
         window.addEventListener('resize', resize);
         return () => window.removeEventListener('resize', resize);
     }, []);
