@@ -65,7 +65,8 @@ export const getInterviews = async (userId: string, role: string) => {
         include: {
             student: { select: { id: true, name: true, branch: true, cgpa: true } },
             recruiter: { select: { name: true, company: { select: { name: true } } } },
-            recording: true
+            recording: true,
+            interviewRecording: true
         },
         orderBy: { scheduledAt: 'desc' }
     });
@@ -77,7 +78,8 @@ export const getInterviewById = async (id: string) => {
         include: {
             student: { select: { id: true, name: true, branch: true, cgpa: true } },
             recruiter: { select: { name: true, company: { select: { name: true } } } },
-            recording: true
+            recording: true,
+            interviewRecording: true
         }
     });
     if (!interview) throw new ApiError(404, "Interview not found");

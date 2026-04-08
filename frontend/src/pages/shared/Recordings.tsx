@@ -37,7 +37,7 @@ interface InterviewItem {
     scheduledAt: string;
     student: { id: string; name: string; branch: string; cgpa: number };
     recruiter: { name: string; company: { name: string } };
-    recording?: { status: string; file_size_bytes: number };
+    interviewRecording?: { status: string; file_size_bytes: number; file_path?: string };
 }
 
 export default function Recordings({ userRole }: RecordingsProps) {
@@ -47,9 +47,11 @@ export default function Recordings({ userRole }: RecordingsProps) {
         isOpen: false,
         title: '',
     });
+    const [videoLoading, setVideoLoading] = useState(false);
     const [recordings, setRecordings] = useState<Recording[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [blobUrl, setBlobUrl] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchRecordings = async () => {
@@ -59,15 +61,15 @@ export default function Recordings({ userRole }: RecordingsProps) {
                 const interviews: InterviewItem[] = response.data;
 
                 const recordingsData: Recording[] = interviews
-                    .filter(interview => interview.recording && interview.recording.status === 'completed')
+                    .filter(interview => interview.interviewRecording && interview.interviewRecording.status === 'completed')
                     .map(interview => ({
                         id: interview.id,
                         student: interview.student.name,
                         university: interview.student.branch || 'Unknown',
                         role: interview.role,
                         date: new Date(interview.scheduledAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-                        duration: interview.recording?.file_size_bytes 
-                            ? `${Math.round(interview.recording.file_size_bytes / 1024 / 1024)} MB` 
+                        duration: interview.interviewRecording?.file_size_bytes 
+                            ? `${Math.round(interview.interviewRecording.file_size_bytes / 1024 / 1024)} MB` 
                             : 'N/A',
                         rating: 0,
                         type: interview.type,
@@ -275,7 +277,20 @@ export default function Recordings({ userRole }: RecordingsProps) {
                                                 ))}
                                             </div>
                                             <button
-                                                onClick={() => setSelectedVideo({ isOpen: true, url: rec.videoUrl, title: `Recording: ${rec.student} - ${rec.role}` })}
+                                                onClick={async () => {
+                                                    setSelectedVideo({ isOpen: true, title: `Recording: ${rec.student} - ${rec.role}` });
+                                                    setVideoLoading(true);
+                                                    try {
+                                                        const url = await interviewApi.getRecordingBlobUrl(rec.id);
+                                                        setBlobUrl(url);
+                                                        setSelectedVideo(prev => ({ ...prev, url }));
+                                                    } catch (err) {
+                                                        console.error('Failed to load video:', err);
+                                                        setSelectedVideo(prev => ({ ...prev, isOpen: false }));
+                                                    } finally {
+                                                        setVideoLoading(false);
+                                                    }
+                                                }}
                                                 className="ml-auto text-[10px] font-mono font-bold flex items-center gap-2 px-3 py-1.5 rounded-sm outline-none transition-all bg-accent-500 text-black hover:bg-accent-400 shadow-[0_0_15px_rgba(var(--accent-500),0.3)]"
                                             >
                                                 <Play size={12} className="fill-black" /> Watch Video
@@ -292,9 +307,16 @@ export default function Recordings({ userRole }: RecordingsProps) {
             {/* Video Player Modal */}
             <VideoPlayer
                 isOpen={selectedVideo.isOpen}
-                onClose={() => setSelectedVideo({ ...selectedVideo, isOpen: false })}
+                onClose={() => {
+                    setSelectedVideo({ ...selectedVideo, isOpen: false });
+                    if (blobUrl) {
+                        URL.revokeObjectURL(blobUrl);
+                        setBlobUrl(null);
+                    }
+                }}
                 title={selectedVideo.title}
-                videoUrl={selectedVideo.url} // Defaults inside component if undefined
+                videoUrl={selectedVideo.url}
+                isLoading={videoLoading}
             />
         </div>
     );

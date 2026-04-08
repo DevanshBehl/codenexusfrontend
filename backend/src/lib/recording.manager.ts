@@ -342,6 +342,9 @@ async function stopRecording(interviewId: string): Promise<void> {
     }
     session.plainTransports.clear();
 
+    let recordingStatus = 'completed';
+    let duration = 0;
+
     if (session.ffmpegProcess) {
         session.ffmpegProcess.kill('SIGTERM');
 
@@ -360,12 +363,40 @@ async function stopRecording(interviewId: string): Promise<void> {
         });
 
         session.ffmpegProcess = null;
+    } else {
+        recordingStatus = 'completed';
     }
 
     for (const port of session.portPool) {
         releaseGlobalPort(port);
     }
     session.portPool.clear();
+
+    try {
+        const stats = fs.statSync(session.outputPath);
+        duration = Math.floor((Date.now() - session.startedAt.getTime()) / 1000);
+        await prisma.interviewRecording.update({
+            where: { interview_id: interviewId },
+            data: {
+                status: recordingStatus,
+                file_size_bytes: stats.size,
+                duration_seconds: duration,
+                completed_at: new Date(),
+            },
+        });
+    } catch (err) {
+        const duration = Math.floor((Date.now() - session.startedAt.getTime()) / 1000);
+        await prisma.interviewRecording.update({
+            where: { interview_id: interviewId },
+            data: {
+                status: recordingStatus,
+                duration_seconds: duration,
+                completed_at: new Date(),
+            },
+        }).catch(dbErr => {
+            console.error(`[Recording] Failed to update DB after stop:`, dbErr);
+        });
+    }
 
     activeSessions.delete(interviewId);
     console.log(`[Recording] Stopped recording for interview ${interviewId}`);

@@ -407,4 +407,17 @@ export const interviewApi = {
     getCompanyRecruiters: () => api.get<any[]>('/interviews/company-recruiters'),
     getRecordingStatus: (id: string) => api.get<{ status: string; started_at: string; completed_at: string; duration_seconds: number; file_size_bytes: number }>(`/interviews/${id}/recording`),
     getRecordingStreamUrl: (id: string) => `${import.meta.env.VITE_API_URL}/interviews/${id}/recording/download?download=false`,
+    getRecordingBlobUrl: async (id: string): Promise<string> => {
+        const token = localStorage.getItem('cn_token');
+        const response = await fetch(`/api/v1/interviews/${id}/recording/download?download=false`, {
+            headers: {
+                'Authorization': token ? `Bearer ${token}` : '',
+            },
+        });
+        if (!response.ok) {
+            throw new Error('Failed to fetch recording');
+        }
+        const blob = await response.blob();
+        return URL.createObjectURL(blob);
+    },
 };
