@@ -352,10 +352,37 @@ export interface CreateWebinarPayload {
     targetUniversityIds: string[];
 }
 
+export interface WebinarAttendee {
+    id: string;
+    webinarId: string;
+    userId: string;
+    role: string;
+    joinedAt: string;
+    leftAt: string | null;
+    hasPermissionToSpeak: boolean;
+}
+
+export interface WebinarMessage {
+    id: string;
+    webinarId: string;
+    senderId: string;
+    senderName: string;
+    content: string;
+    isQuestion: boolean;
+    createdAt: string;
+}
+
 export const webinarApi = {
     getAll: () => api.get<WebinarItem[]>('/webinars', false),
+    getMyList: () => api.get<WebinarItem[]>('/webinars/my/list'),
     getById: (id: string) => api.get<WebinarItem>(`/webinars/${id}`, false),
     create: (data: CreateWebinarPayload) => api.post<WebinarItem>('/webinars', data),
+    getAttendees: (webinarId: string) => api.get<WebinarAttendee[]>(`/webinars/${webinarId}/attendees`),
+    joinWebinar: (webinarId: string, role?: string) => api.post<WebinarAttendee>(`/webinars/${webinarId}/join`, { role }),
+    leaveWebinar: (webinarId: string) => api.post<WebinarAttendee>(`/webinars/${webinarId}/leave`, {}),
+    getMessages: (webinarId: string) => api.get<WebinarMessage[]>(`/webinars/${webinarId}/messages`),
+    postMessage: (webinarId: string, senderName: string, content: string, isQuestion?: boolean) =>
+        api.post<WebinarMessage>(`/webinars/${webinarId}/messages`, { senderName, content, isQuestion }),
 };
 
 // ─── Mail APIs ───

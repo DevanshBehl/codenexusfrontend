@@ -68,8 +68,11 @@ export const ModelName = {
   Recording: 'Recording',
   InterviewRecording: 'InterviewRecording',
   InterviewMessage: 'InterviewMessage',
+  Evaluation: 'Evaluation',
   Webinar: 'Webinar',
   WebinarTargetUniversity: 'WebinarTargetUniversity',
+  WebinarAttendee: 'WebinarAttendee',
+  WebinarMessage: 'WebinarMessage',
   Mail: 'Mail',
   MailPermissionViolation: 'MailPermissionViolation',
   CaProblem: 'CaProblem',
@@ -324,6 +327,24 @@ export const InterviewMessageScalarFieldEnum = {
 export type InterviewMessageScalarFieldEnum = (typeof InterviewMessageScalarFieldEnum)[keyof typeof InterviewMessageScalarFieldEnum]
 
 
+export const EvaluationScalarFieldEnum = {
+  id: 'id',
+  interviewId: 'interviewId',
+  companyId: 'companyId',
+  evaluatorId: 'evaluatorId',
+  verdict: 'verdict',
+  rating: 'rating',
+  notes: 'notes',
+  technicalScore: 'technicalScore',
+  communicationScore: 'communicationScore',
+  cultureScore: 'cultureScore',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EvaluationScalarFieldEnum = (typeof EvaluationScalarFieldEnum)[keyof typeof EvaluationScalarFieldEnum]
+
+
 export const WebinarScalarFieldEnum = {
   id: 'id',
   companyId: 'companyId',
@@ -344,6 +365,32 @@ export const WebinarTargetUniversityScalarFieldEnum = {
 } as const
 
 export type WebinarTargetUniversityScalarFieldEnum = (typeof WebinarTargetUniversityScalarFieldEnum)[keyof typeof WebinarTargetUniversityScalarFieldEnum]
+
+
+export const WebinarAttendeeScalarFieldEnum = {
+  id: 'id',
+  webinarId: 'webinarId',
+  userId: 'userId',
+  role: 'role',
+  joinedAt: 'joinedAt',
+  leftAt: 'leftAt',
+  hasPermissionToSpeak: 'hasPermissionToSpeak'
+} as const
+
+export type WebinarAttendeeScalarFieldEnum = (typeof WebinarAttendeeScalarFieldEnum)[keyof typeof WebinarAttendeeScalarFieldEnum]
+
+
+export const WebinarMessageScalarFieldEnum = {
+  id: 'id',
+  webinarId: 'webinarId',
+  senderId: 'senderId',
+  senderName: 'senderName',
+  content: 'content',
+  isQuestion: 'isQuestion',
+  createdAt: 'createdAt'
+} as const
+
+export type WebinarMessageScalarFieldEnum = (typeof WebinarMessageScalarFieldEnum)[keyof typeof WebinarMessageScalarFieldEnum]
 
 
 export const MailScalarFieldEnum = {

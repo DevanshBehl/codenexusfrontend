@@ -10,6 +10,8 @@ const router = Router();
 // Public routes
 router.get("/", webinarController.getAllWebinars as RequestHandler);
 router.get("/:id", webinarController.getWebinarById as RequestHandler);
+router.get("/:id/attendees", webinarController.getWebinarAttendees as RequestHandler);
+router.get("/:id/messages", webinarController.getWebinarMessages as RequestHandler);
 
 // Protected routes - company users can see their own webinars
 router.get("/my/list",
@@ -37,6 +39,22 @@ router.delete("/:id",
     authenticate as RequestHandler,
     authorize(["COMPANY_ADMIN"]) as RequestHandler,
     webinarController.deleteWebinar as RequestHandler
+);
+
+// Attendance routes (authenticated users)
+router.post("/:id/join",
+    authenticate as RequestHandler,
+    webinarController.joinWebinar as RequestHandler
+);
+
+router.post("/:id/leave",
+    authenticate as RequestHandler,
+    webinarController.leaveWebinar as RequestHandler
+);
+
+router.post("/:id/messages",
+    authenticate as RequestHandler,
+    webinarController.postWebinarMessage as RequestHandler
 );
 
 export default router;

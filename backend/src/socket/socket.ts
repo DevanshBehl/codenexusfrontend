@@ -489,6 +489,356 @@ export function createSocketServer(httpServer: HttpServer): Server {
             }
         });
 
+        // ─── Join Webinar Room ───
+        socket.on("join-webinar", async (data: { webinarId: string }, callback) => {
+            try {
+                const { webinarId } = data;
+                const roomId = `webinar-${webinarId}`;
+
+                const webinar = await prisma.webinar.findUnique({
+                    where: { id: webinarId },
+                    include: {
+                        company: { select: { userId: true, name: true } },
+                        targetUniversities: { include: { university: true } }
+                    }
+                });
+
+                if (!webinar) {
+                    socket.emit("error", { message: "Webinar not found" });
+                    return;
+                }
+
+                let role = "VIEWER";
+                if (webinar.company.userId === socket.userId) {
+                    role = "PRESENTER";
+                } else if (socket.userRole === "STUDENT") {
+                    const student = await prisma.student.findUnique({
+                        where: { userId: socket.userId! },
+                        include: { university: true }
+                    });
+                    if (!student || !webinar.targetUniversities.some(tu => tu.universityId === student.universityId)) {
+                        socket.emit("error", { message: "Not authorized to join this webinar" });
+                        return;
+                    }
+                } else if (socket.userRole === "UNIVERSITY") {
+                    const university = await prisma.university.findUnique({
+                        where: { userId: socket.userId! }
+                    });
+                    if (!university || !webinar.targetUniversities.some(tu => tu.universityId === university.id)) {
+                        socket.emit("error", { message: "Not authorized to join this webinar" });
+                        return;
+                    }
+                } else if (socket.userRole !== "COMPANY_ADMIN") {
+                    socket.emit("error", { message: "Not authorized to join this webinar" });
+                    return;
+                }
+
+                socket.join(roomId);
+                socket.data.webinarRole = role;
+                socket.data.webinarId = webinarId;
+
+                // Record attendance in DB
+                await prisma.webinarAttendee.upsert({
+                    where: { webinarId_userId: { webinarId, userId: socket.userId! } },
+                    create: { webinarId, userId: socket.userId!, role },
+                    update: { leftAt: null, role }
+                });
+
+                // Notify room about new participant
+                socket.to(roomId).emit("webinar-peer-joined", {
+                    userId: socket.userId,
+                    userName: socket.userName,
+                    role
+                });
+
+                // Send current attendees to the joiner
+                const attendees = await prisma.webinarAttendee.findMany({
+                    where: { webinarId, leftAt: null },
+                    orderBy: { joinedAt: 'asc' }
+                });
+
+                // Send existing producers for late joiner consumption
+                const existingProducers = Array.from(producers.values())
+                    .filter(p => p.appData.webinarId === webinarId && p.appData.userId !== socket.userId)
+                    .map(p => ({ producerId: p.id, userId: p.appData.userId }));
+
+                callback?.({
+                    success: true,
+                    role,
+                    webinar: {
+                        id: webinar.id,
+                        title: webinar.title,
+                        status: webinar.status,
+                        companyName: webinar.company.name
+                    },
+                    attendees,
+                    producers: existingProducers
+                });
+
+                console.log(`[Socket] ${socket.userName} joined webinar room ${roomId} as ${role}`);
+            } catch (err) {
+                console.error("[Socket] join-webinar error:", err);
+                socket.emit("error", { message: "Failed to join webinar" });
+            }
+        });
+
+        // ─── Raise Hand (Viewer) ───
+        socket.on("raise-hand", (data: { webinarId: string }) => {
+            const roomId = `webinar-${data.webinarId}`;
+            socket.to(roomId).emit("hand-raised", {
+                userId: socket.userId,
+                userName: socket.userName
+            });
+        });
+
+        // ─── Lower Hand (Viewer) ───
+        socket.on("lower-hand", (data: { webinarId: string }) => {
+            const roomId = `webinar-${data.webinarId}`;
+            socket.to(roomId).emit("hand-lowered", {
+                userId: socket.userId,
+                userName: socket.userName
+            });
+        });
+
+        // ─── Grant Permission (Presenter) ───
+        socket.on("grant-permission", async (data: { webinarId: string, targetUserId: string }, callback) => {
+            try {
+                if (socket.data.webinarRole !== "PRESENTER") {
+                    callback?.({ error: "Only presenter can grant permission" });
+                    return;
+                }
+
+                await prisma.webinarAttendee.update({
+                    where: {
+                        webinarId_userId: {
+                            webinarId: data.webinarId,
+                            userId: data.targetUserId
+                        }
+                    },
+                    data: { hasPermissionToSpeak: true }
+                });
+
+                const roomId = `webinar-${data.webinarId}`;
+                io.to(roomId).emit("permission-granted", {
+                    userId: data.targetUserId
+                });
+
+                callback?.({ success: true });
+            } catch (err) {
+                console.error("[Socket] grant-permission error:", err);
+                callback?.({ error: "Failed to grant permission" });
+            }
+        });
+
+        // ─── Revoke Permission (Presenter) ───
+        socket.on("revoke-permission", async (data: { webinarId: string, targetUserId: string }, callback) => {
+            try {
+                if (socket.data.webinarRole !== "PRESENTER") {
+                    callback?.({ error: "Only presenter can revoke permission" });
+                    return;
+                }
+
+                await prisma.webinarAttendee.update({
+                    where: {
+                        webinarId_userId: {
+                            webinarId: data.webinarId,
+                            userId: data.targetUserId
+                        }
+                    },
+                    data: { hasPermissionToSpeak: false }
+                });
+
+                // Kill any active producers from this viewer
+                for (const [prodId, prod] of producers) {
+                    if (prod.appData.webinarId === data.webinarId && prod.appData.userId === data.targetUserId) {
+                        prod.close();
+                        producers.delete(prodId);
+                    }
+                }
+
+                const roomId = `webinar-${data.webinarId}`;
+                io.to(roomId).emit("permission-revoked", {
+                    userId: data.targetUserId
+                });
+
+                callback?.({ success: true });
+            } catch (err) {
+                console.error("[Socket] revoke-permission error:", err);
+                callback?.({ error: "Failed to revoke permission" });
+            }
+        });
+
+        // ─── End Webinar (Presenter) ───
+        socket.on("end-webinar", async (data: { webinarId: string }, callback) => {
+            try {
+                if (socket.data.webinarRole !== "PRESENTER") {
+                    callback?.({ error: "Only presenter can end the webinar" });
+                    return;
+                }
+
+                await prisma.webinar.update({
+                    where: { id: data.webinarId },
+                    data: { status: "COMPLETED" }
+                });
+
+                // Close all producers for this webinar
+                for (const [prodId, prod] of producers) {
+                    if (prod.appData.webinarId === data.webinarId) {
+                        prod.close();
+                        producers.delete(prodId);
+                    }
+                }
+
+                const roomId = `webinar-${data.webinarId}`;
+                io.to(roomId).emit("webinar-ended", {
+                    endedBy: socket.userName
+                });
+
+                callback?.({ success: true });
+            } catch (err) {
+                console.error("[Socket] end-webinar error:", err);
+                callback?.({ error: "Failed to end webinar" });
+            }
+        });
+
+        // ─── Webinar Chat Message ───
+        socket.on("webinar-chat-message", async (data: { webinarId: string; text: string; isQuestion?: boolean }) => {
+            if (!socket.userId || !data.webinarId || !data.text?.trim()) return;
+            const roomId = `webinar-${data.webinarId}`;
+
+            try {
+                const savedMsg = await prisma.webinarMessage.create({
+                    data: {
+                        webinarId: data.webinarId,
+                        senderId: socket.userId,
+                        senderName: socket.userName || "Anonymous",
+                        content: data.text,
+                        isQuestion: data.isQuestion ?? false
+                    }
+                });
+
+                io.to(roomId).emit("webinar-chat-message", {
+                    id: savedMsg.id,
+                    senderId: socket.userId,
+                    senderName: socket.userName,
+                    text: data.text,
+                    isQuestion: savedMsg.isQuestion,
+                    timestamp: savedMsg.createdAt.toISOString()
+                });
+            } catch (err) {
+                console.error("[Socket] Failed to save webinar chat message", err);
+            }
+        });
+
+        // ─── Produce for Webinar ───
+        socket.on("produce-webinar", async (data: { webinarId: string; transportId: string; kind: any; rtpParameters: any }, callback) => {
+            try {
+                const transport = transports.get(data.transportId);
+                if (!transport) throw new Error("Transport not found");
+
+                const producer = await transport.produce({
+                    kind: data.kind,
+                    rtpParameters: data.rtpParameters
+                });
+                producer.appData.userId = socket.userId;
+                producer.appData.webinarId = data.webinarId;
+                producers.set(producer.id, producer);
+
+                const roomId = `webinar-${data.webinarId}`;
+                socket.to(roomId).emit("new-webinar-producer", {
+                    producerId: producer.id,
+                    userId: socket.userId
+                });
+
+                callback({ id: producer.id });
+            } catch (err: any) {
+                console.error("[Socket] produce-webinar error:", err);
+                callback({ error: err.message });
+            }
+        });
+
+        // ─── Consume Webinar Producer ───
+        socket.on("consume-webinar", async (data: { webinarId: string; transportId: string; producerId: string; rtpCapabilities: any }, callback) => {
+            try {
+                const transport = transports.get(data.transportId);
+                const router = await createRoomRouter(`webinar-${data.webinarId}`);
+
+                if (!transport || !router) throw new Error("Transport or Router not found");
+
+                if (!router.canConsume({ producerId: data.producerId, rtpCapabilities: data.rtpCapabilities })) {
+                    throw new Error("Cannot consume");
+                }
+
+                const consumer = await transport.consume({
+                    producerId: data.producerId,
+                    rtpCapabilities: data.rtpCapabilities,
+                    paused: true,
+                });
+
+                consumers.set(consumer.id, consumer);
+
+                consumer.on("transportclose", () => consumers.delete(consumer.id));
+                consumer.on("producerclose", () => {
+                    consumers.delete(consumer.id);
+                    socket.emit("webinar-consumer-closed", { consumerId: consumer.id });
+                });
+
+                callback({
+                    id: consumer.id,
+                    producerId: data.producerId,
+                    kind: consumer.kind,
+                    rtpParameters: consumer.rtpParameters
+                });
+            } catch (err: any) {
+                console.error("[Socket] consume-webinar error:", err);
+                callback({ error: err.message });
+            }
+        });
+
+        // ─── Resume Webinar Consumer ───
+        socket.on("resume-webinar-consumer", async (data: { consumerId: string }, callback) => {
+            const consumer = consumers.get(data.consumerId);
+            if (consumer) {
+                await consumer.resume();
+                callback?.({ success: true });
+            }
+        });
+
+        // ─── Leave Webinar Room ───
+        socket.on("leave-webinar", async (data: { webinarId: string }) => {
+            try {
+                const roomId = `webinar-${data.webinarId}`;
+                socket.leave(roomId);
+
+                await prisma.webinarAttendee.update({
+                    where: {
+                        webinarId_userId: {
+                            webinarId: data.webinarId,
+                            userId: socket.userId!
+                        }
+                    },
+                    data: { leftAt: new Date() }
+                });
+
+                // Close any producers from this user in this webinar
+                for (const [prodId, prod] of producers) {
+                    if (prod.appData.webinarId === data.webinarId && prod.appData.userId === socket.userId) {
+                        prod.close();
+                        producers.delete(prodId);
+                    }
+                }
+
+                socket.to(roomId).emit("webinar-peer-left", {
+                    userId: socket.userId,
+                    userName: socket.userName
+                });
+
+                console.log(`[Socket] ${socket.userName} left webinar room ${roomId}`);
+            } catch (err) {
+                console.error("[Socket] leave-webinar error:", err);
+            }
+        });
+
         // ─── Disconnect ───
         socket.on("disconnect", () => {
             console.log(`[Socket] Disconnected: ${socket.userId}`);
@@ -496,6 +846,11 @@ export function createSocketServer(httpServer: HttpServer): Server {
             for (const room of socket.rooms) {
                 if (room.startsWith("interview-")) {
                     socket.to(room).emit("peer-left", {
+                        userId: socket.userId,
+                        userName: socket.userName,
+                    });
+                } else if (room.startsWith("webinar-")) {
+                    socket.to(room).emit("webinar-peer-left", {
                         userId: socket.userId,
                         userName: socket.userName,
                     });

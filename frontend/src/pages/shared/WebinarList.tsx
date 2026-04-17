@@ -7,21 +7,9 @@ import {
     Code2, Play, CheckCircle2, MessageSquare, Briefcase, PenTool, 
     BarChart3, FileBarChart, Box
 } from 'lucide-react';
+import { webinarApi, type WebinarItem } from '../../lib/api';
 
-/* ────────── Types & Mock Data ────────── */
-interface PPT {
-    id: string;
-    title: string;
-    companyName: string;
-    targetUniversities: string[];
-    date: string;
-    time: string;
-    duration: string;
-    meetingLink: string;
-    agenda: string;
-    status: 'UPCOMING' | 'COMPLETED';
-}
-
+/* ────────── Types ────────── */
 interface WebinarListProps {
     userRole: 'STUDENT' | 'UNIVERSITY';
 }
@@ -30,52 +18,29 @@ export default function WebinarList({ userRole }: WebinarListProps) {
     const navigate = useNavigate();
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [currentTime, setCurrentTime] = useState(new Date());
+    const [webinars, setWebinars] = useState<WebinarItem[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchWebinars = async () => {
+            try {
+                setLoading(true);
+                const res = await webinarApi.getAll();
+                setWebinars(res.data || []);
+            } catch (error) {
+                console.error("Failed to fetch webinars", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchWebinars();
+    }, []);
 
     // Update current time every minute to re-evaluate the 5-min rule
     useEffect(() => {
         const timer = setInterval(() => setCurrentTime(new Date()), 60000);
         return () => clearInterval(timer);
     }, []);
-
-    const mockPPTs: PPT[] = [
-        {
-            id: '1',
-            title: 'Google Cloud Platform Info Session',
-            companyName: 'Google',
-            targetUniversities: ['IIT Bombay', 'BITS Pilani'],
-            date: '2026-04-10',
-            time: '14:00',
-            duration: '60 mins',
-            meetingLink: userRole === 'STUDENT' ? '/student/webinar' : '/university/webinar', // Natively routes to our platform
-            agenda: 'Introduction to GCP infrastructure and hiring process for the Site Reliability Engineering roles.',
-            status: 'UPCOMING'
-        },
-        {
-            id: '2',
-            title: 'Mock Live PPT (Demo)',
-            companyName: 'Microsoft',
-            targetUniversities: ['IIT Bombay', 'NIT Trichy'],
-            // Mocking a time exactly right now so it's guaranteed to be open for joining
-            date: new Date().toISOString().split('T')[0],
-            time: new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' }),
-            duration: '45 mins',
-            meetingLink: userRole === 'STUDENT' ? '/student/webinar' : '/university/webinar',
-            agenda: 'Live demo presentation allowing users to test the 5-minute joining rule logic.',
-            status: 'UPCOMING'
-        },
-        {
-            id: '3',
-            title: 'Stripe Engineering Culture',
-            companyName: 'Stripe',
-            targetUniversities: ['NIT Trichy', 'IIIT Hyderabad'],
-            date: '2026-03-15',
-            time: '16:00',
-            duration: '45 mins',
-            meetingLink: userRole === 'STUDENT' ? '/student/webinar' : '/university/webinar',
-            agenda: 'A deep dive into Stripe engineering culture and Q&A with our Lead Engineers.',
-            status: 'COMPLETED'
-        }
-    ];
 
     const studentSidebarItems = [
         { icon: Mail, label: 'MAIL', onClick: () => navigate('/student/mail') },
@@ -186,48 +151,61 @@ export default function WebinarList({ userRole }: WebinarListProps) {
 
                 <div className="flex-1 overflow-y-auto custom-scrollbar p-8">
                     <div className="max-w-5xl mx-auto space-y-6">
-                        {mockPPTs.map(ppt => {
-                            const isJoinable = canJoinWebinar(ppt.date, ppt.time);
+                        {loading ? (
+                            <div className="text-center py-16 text-[#555] font-mono text-xs uppercase tracking-widest">
+                                Loading webinars...
+                            </div>
+                        ) : webinars.length === 0 ? (
+                            <div className="text-center py-16 text-[#555] font-mono text-xs uppercase tracking-widest">
+                                No webinars scheduled yet
+                            </div>
+                        ) : (
+                        webinars.map(webinar => {
+                            const scheduledDate = new Date(webinar.scheduledAt);
+                            const dateStr = scheduledDate.toISOString().split('T')[0];
+                            const timeStr = scheduledDate.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
+                            const isJoinable = canJoinWebinar(dateStr, timeStr);
+                            const isUpcoming = webinar.status === 'UPCOMING';
                             
                             return (
-                                <div key={ppt.id} className="bg-[#0A0A0A] border border-[#222] rounded-sm p-6 flex flex-col md:flex-row gap-6 hover:border-[#333] transition-colors shadow-lg">
+                                <div key={webinar.id} className="bg-[#0A0A0A] border border-[#222] rounded-sm p-6 flex flex-col md:flex-row gap-6 hover:border-[#333] transition-colors shadow-lg">
                                     <div className="md:w-1/4 shrink-0 flex flex-col justify-center items-center p-4 bg-[#111] border border-[#222] rounded-sm relative overflow-hidden">
-                                        <div className={`absolute top-0 right-0 w-16 h-16 rotate-45 translate-x-8 -translate-y-8 ${ppt.status === 'UPCOMING' ? 'bg-accent-500/5' : 'bg-[#222]/20'}`}></div>
-                                        <Calendar size={24} className={ppt.status === 'UPCOMING' ? 'text-accent-400 mb-2' : 'text-[#555] mb-2'} />
-                                        <span className="text-sm font-bold text-white tracking-widest font-mono">{new Date(ppt.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric'})}</span>
-                                        <span className="text-[10px] font-mono text-[#888] mt-1">{ppt.time} ({ppt.duration})</span>
+                                        <div className={`absolute top-0 right-0 w-16 h-16 rotate-45 translate-x-8 -translate-y-8 ${isUpcoming ? 'bg-accent-500/5' : 'bg-[#222]/20'}`}></div>
+                                        <Calendar size={24} className={isUpcoming ? 'text-accent-400 mb-2' : 'text-[#555] mb-2'} />
+                                        <span className="text-sm font-bold text-white tracking-widest font-mono">{scheduledDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric'})}</span>
+                                        <span className="text-[10px] font-mono text-[#888] mt-1">{timeStr} ({webinar.durationMins} mins)</span>
                                     </div>
                                     
                                     <div className="flex-1 flex flex-col">
                                         <div className="flex justify-between items-start mb-2">
                                             <div>
-                                                <h3 className={`text-lg font-bold font-sans ${ppt.status === 'UPCOMING' ? 'text-white' : 'text-[#888]'}`}>{ppt.title}</h3>
-                                                <p className="text-[10px] font-mono text-accent-500 uppercase tracking-widest">{ppt.companyName}</p>
+                                                <h3 className={`text-lg font-bold font-sans ${isUpcoming ? 'text-white' : 'text-[#888]'}`}>{webinar.title}</h3>
+                                                <p className="text-[10px] font-mono text-accent-500 uppercase tracking-widest">{webinar.company.name}</p>
                                             </div>
-                                            <span className={`px-2 py-0.5 text-[9px] font-mono border rounded-sm tracking-widest uppercase ${ppt.status === 'UPCOMING' ? 'text-green-400 border-green-500/20 bg-green-500/10' : 'text-[#555] border-[#333] bg-[#111]'}`}>
-                                                {ppt.status}
+                                            <span className={`px-2 py-0.5 text-[9px] font-mono border rounded-sm tracking-widest uppercase ${isUpcoming ? 'text-green-400 border-green-500/20 bg-green-500/10' : 'text-[#555] border-[#333] bg-[#111]'}`}>
+                                                {webinar.status}
                                             </span>
                                         </div>
                                         
                                         <p className="text-xs text-[#888] font-sans leading-relaxed mb-4 line-clamp-2">
-                                            {ppt.agenda}
+                                            {webinar.agenda}
                                         </p>
                                         
                                         <div className="flex flex-wrap items-center gap-4 mt-auto">
                                             <div className="flex items-center gap-2">
                                                 <Building size={14} className="text-[#555]" />
                                                 <div className="flex gap-1">
-                                                    {ppt.targetUniversities.map((uni, i) => (
-                                                        <span key={i} className="text-[10px] font-mono text-[#aaa] bg-[#1a1a1a] px-1.5 py-0.5 rounded-sm border border-[#333]">
-                                                            {uni}
+                                                    {webinar.targetUniversities.map((tu) => (
+                                                        <span key={tu.university.id} className="text-[10px] font-mono text-[#aaa] bg-[#1a1a1a] px-1.5 py-0.5 rounded-sm border border-[#333]">
+                                                            {tu.university.name}
                                                         </span>
                                                     ))}
                                                 </div>
                                             </div>
                                             
-                                            {ppt.status === 'UPCOMING' && (
+                                            {isUpcoming && (
                                                 <button 
-                                                    onClick={() => navigate(ppt.meetingLink)}
+                                                    onClick={() => navigate(`/student/webinar/${webinar.id}`)}
                                                     disabled={!isJoinable}
                                                     className={`ml-auto text-[10px] font-mono font-bold flex items-center gap-2 px-4 py-2 rounded-sm outline-none transition-all ${
                                                         isJoinable
@@ -246,7 +224,8 @@ export default function WebinarList({ userRole }: WebinarListProps) {
                                     </div>
                                 </div>
                             );
-                        })}
+                        })
+                        )}
                     </div>
                 </div>
             </main>

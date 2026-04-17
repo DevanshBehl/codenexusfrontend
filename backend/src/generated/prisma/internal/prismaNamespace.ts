@@ -401,8 +401,11 @@ export const ModelName = {
   Recording: 'Recording',
   InterviewRecording: 'InterviewRecording',
   InterviewMessage: 'InterviewMessage',
+  Evaluation: 'Evaluation',
   Webinar: 'Webinar',
   WebinarTargetUniversity: 'WebinarTargetUniversity',
+  WebinarAttendee: 'WebinarAttendee',
+  WebinarMessage: 'WebinarMessage',
   Mail: 'Mail',
   MailPermissionViolation: 'MailPermissionViolation',
   CaProblem: 'CaProblem',
@@ -425,7 +428,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "university" | "company" | "companyUniversity" | "recruiter" | "student" | "project" | "contest" | "contestRegistration" | "problem" | "testCase" | "submission" | "jobApplication" | "interview" | "recording" | "interviewRecording" | "interviewMessage" | "webinar" | "webinarTargetUniversity" | "mail" | "mailPermissionViolation" | "caProblem" | "caTestCase" | "caSubmission" | "caRunResult" | "caSubmissionSummary"
+    modelProps: "user" | "university" | "company" | "companyUniversity" | "recruiter" | "student" | "project" | "contest" | "contestRegistration" | "problem" | "testCase" | "submission" | "jobApplication" | "interview" | "recording" | "interviewRecording" | "interviewMessage" | "evaluation" | "webinar" | "webinarTargetUniversity" | "webinarAttendee" | "webinarMessage" | "mail" | "mailPermissionViolation" | "caProblem" | "caTestCase" | "caSubmission" | "caRunResult" | "caSubmissionSummary"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1687,6 +1690,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Evaluation: {
+      payload: Prisma.$EvaluationPayload<ExtArgs>
+      fields: Prisma.EvaluationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.EvaluationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvaluationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.EvaluationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvaluationPayload>
+        }
+        findFirst: {
+          args: Prisma.EvaluationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvaluationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.EvaluationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvaluationPayload>
+        }
+        findMany: {
+          args: Prisma.EvaluationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvaluationPayload>[]
+        }
+        create: {
+          args: Prisma.EvaluationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvaluationPayload>
+        }
+        createMany: {
+          args: Prisma.EvaluationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.EvaluationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvaluationPayload>[]
+        }
+        delete: {
+          args: Prisma.EvaluationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvaluationPayload>
+        }
+        update: {
+          args: Prisma.EvaluationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvaluationPayload>
+        }
+        deleteMany: {
+          args: Prisma.EvaluationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.EvaluationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.EvaluationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvaluationPayload>[]
+        }
+        upsert: {
+          args: Prisma.EvaluationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvaluationPayload>
+        }
+        aggregate: {
+          args: Prisma.EvaluationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEvaluation>
+        }
+        groupBy: {
+          args: Prisma.EvaluationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EvaluationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.EvaluationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EvaluationCountAggregateOutputType> | number
+        }
+      }
+    }
     Webinar: {
       payload: Prisma.$WebinarPayload<ExtArgs>
       fields: Prisma.WebinarFieldRefs
@@ -1832,6 +1909,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.WebinarTargetUniversityCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.WebinarTargetUniversityCountAggregateOutputType> | number
+        }
+      }
+    }
+    WebinarAttendee: {
+      payload: Prisma.$WebinarAttendeePayload<ExtArgs>
+      fields: Prisma.WebinarAttendeeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WebinarAttendeeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebinarAttendeePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WebinarAttendeeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebinarAttendeePayload>
+        }
+        findFirst: {
+          args: Prisma.WebinarAttendeeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebinarAttendeePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WebinarAttendeeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebinarAttendeePayload>
+        }
+        findMany: {
+          args: Prisma.WebinarAttendeeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebinarAttendeePayload>[]
+        }
+        create: {
+          args: Prisma.WebinarAttendeeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebinarAttendeePayload>
+        }
+        createMany: {
+          args: Prisma.WebinarAttendeeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.WebinarAttendeeCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebinarAttendeePayload>[]
+        }
+        delete: {
+          args: Prisma.WebinarAttendeeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebinarAttendeePayload>
+        }
+        update: {
+          args: Prisma.WebinarAttendeeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebinarAttendeePayload>
+        }
+        deleteMany: {
+          args: Prisma.WebinarAttendeeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WebinarAttendeeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.WebinarAttendeeUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebinarAttendeePayload>[]
+        }
+        upsert: {
+          args: Prisma.WebinarAttendeeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebinarAttendeePayload>
+        }
+        aggregate: {
+          args: Prisma.WebinarAttendeeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWebinarAttendee>
+        }
+        groupBy: {
+          args: Prisma.WebinarAttendeeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WebinarAttendeeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WebinarAttendeeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WebinarAttendeeCountAggregateOutputType> | number
+        }
+      }
+    }
+    WebinarMessage: {
+      payload: Prisma.$WebinarMessagePayload<ExtArgs>
+      fields: Prisma.WebinarMessageFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WebinarMessageFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebinarMessagePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WebinarMessageFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebinarMessagePayload>
+        }
+        findFirst: {
+          args: Prisma.WebinarMessageFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebinarMessagePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WebinarMessageFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebinarMessagePayload>
+        }
+        findMany: {
+          args: Prisma.WebinarMessageFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebinarMessagePayload>[]
+        }
+        create: {
+          args: Prisma.WebinarMessageCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebinarMessagePayload>
+        }
+        createMany: {
+          args: Prisma.WebinarMessageCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.WebinarMessageCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebinarMessagePayload>[]
+        }
+        delete: {
+          args: Prisma.WebinarMessageDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebinarMessagePayload>
+        }
+        update: {
+          args: Prisma.WebinarMessageUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebinarMessagePayload>
+        }
+        deleteMany: {
+          args: Prisma.WebinarMessageDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WebinarMessageUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.WebinarMessageUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebinarMessagePayload>[]
+        }
+        upsert: {
+          args: Prisma.WebinarMessageUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebinarMessagePayload>
+        }
+        aggregate: {
+          args: Prisma.WebinarMessageAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWebinarMessage>
+        }
+        groupBy: {
+          args: Prisma.WebinarMessageGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WebinarMessageGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WebinarMessageCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WebinarMessageCountAggregateOutputType> | number
         }
       }
     }
@@ -2621,6 +2846,24 @@ export const InterviewMessageScalarFieldEnum = {
 export type InterviewMessageScalarFieldEnum = (typeof InterviewMessageScalarFieldEnum)[keyof typeof InterviewMessageScalarFieldEnum]
 
 
+export const EvaluationScalarFieldEnum = {
+  id: 'id',
+  interviewId: 'interviewId',
+  companyId: 'companyId',
+  evaluatorId: 'evaluatorId',
+  verdict: 'verdict',
+  rating: 'rating',
+  notes: 'notes',
+  technicalScore: 'technicalScore',
+  communicationScore: 'communicationScore',
+  cultureScore: 'cultureScore',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EvaluationScalarFieldEnum = (typeof EvaluationScalarFieldEnum)[keyof typeof EvaluationScalarFieldEnum]
+
+
 export const WebinarScalarFieldEnum = {
   id: 'id',
   companyId: 'companyId',
@@ -2641,6 +2884,32 @@ export const WebinarTargetUniversityScalarFieldEnum = {
 } as const
 
 export type WebinarTargetUniversityScalarFieldEnum = (typeof WebinarTargetUniversityScalarFieldEnum)[keyof typeof WebinarTargetUniversityScalarFieldEnum]
+
+
+export const WebinarAttendeeScalarFieldEnum = {
+  id: 'id',
+  webinarId: 'webinarId',
+  userId: 'userId',
+  role: 'role',
+  joinedAt: 'joinedAt',
+  leftAt: 'leftAt',
+  hasPermissionToSpeak: 'hasPermissionToSpeak'
+} as const
+
+export type WebinarAttendeeScalarFieldEnum = (typeof WebinarAttendeeScalarFieldEnum)[keyof typeof WebinarAttendeeScalarFieldEnum]
+
+
+export const WebinarMessageScalarFieldEnum = {
+  id: 'id',
+  webinarId: 'webinarId',
+  senderId: 'senderId',
+  senderName: 'senderName',
+  content: 'content',
+  isQuestion: 'isQuestion',
+  createdAt: 'createdAt'
+} as const
+
+export type WebinarMessageScalarFieldEnum = (typeof WebinarMessageScalarFieldEnum)[keyof typeof WebinarMessageScalarFieldEnum]
 
 
 export const MailScalarFieldEnum = {
@@ -2987,8 +3256,11 @@ export type GlobalOmitConfig = {
   recording?: Prisma.RecordingOmit
   interviewRecording?: Prisma.InterviewRecordingOmit
   interviewMessage?: Prisma.InterviewMessageOmit
+  evaluation?: Prisma.EvaluationOmit
   webinar?: Prisma.WebinarOmit
   webinarTargetUniversity?: Prisma.WebinarTargetUniversityOmit
+  webinarAttendee?: Prisma.WebinarAttendeeOmit
+  webinarMessage?: Prisma.WebinarMessageOmit
   mail?: Prisma.MailOmit
   mailPermissionViolation?: Prisma.MailPermissionViolationOmit
   caProblem?: Prisma.CaProblemOmit

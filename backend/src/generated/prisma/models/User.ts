@@ -208,6 +208,7 @@ export type UserWhereInput = {
   caRunResults?: Prisma.CaRunResultListRelationFilter
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryListRelationFilter
   interviewMessages?: Prisma.InterviewMessageListRelationFilter
+  evaluations?: Prisma.EvaluationListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -228,6 +229,7 @@ export type UserOrderByWithRelationInput = {
   caRunResults?: Prisma.CaRunResultOrderByRelationAggregateInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryOrderByRelationAggregateInput
   interviewMessages?: Prisma.InterviewMessageOrderByRelationAggregateInput
+  evaluations?: Prisma.EvaluationOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -251,6 +253,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   caRunResults?: Prisma.CaRunResultListRelationFilter
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryListRelationFilter
   interviewMessages?: Prisma.InterviewMessageListRelationFilter
+  evaluations?: Prisma.EvaluationListRelationFilter
 }, "id" | "email" | "cnid">
 
 export type UserOrderByWithAggregationInput = {
@@ -297,6 +300,7 @@ export type UserCreateInput = {
   caRunResults?: Prisma.CaRunResultCreateNestedManyWithoutStudentInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryCreateNestedManyWithoutStudentInput
   interviewMessages?: Prisma.InterviewMessageCreateNestedManyWithoutSenderInput
+  evaluations?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -317,6 +321,7 @@ export type UserUncheckedCreateInput = {
   caRunResults?: Prisma.CaRunResultUncheckedCreateNestedManyWithoutStudentInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUncheckedCreateNestedManyWithoutStudentInput
   interviewMessages?: Prisma.InterviewMessageUncheckedCreateNestedManyWithoutSenderInput
+  evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
 }
 
 export type UserUpdateInput = {
@@ -337,6 +342,7 @@ export type UserUpdateInput = {
   caRunResults?: Prisma.CaRunResultUpdateManyWithoutStudentNestedInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUpdateManyWithoutStudentNestedInput
   interviewMessages?: Prisma.InterviewMessageUpdateManyWithoutSenderNestedInput
+  evaluations?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -357,6 +363,7 @@ export type UserUncheckedUpdateInput = {
   caRunResults?: Prisma.CaRunResultUncheckedUpdateManyWithoutStudentNestedInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUncheckedUpdateManyWithoutStudentNestedInput
   interviewMessages?: Prisma.InterviewMessageUncheckedUpdateManyWithoutSenderNestedInput
+  evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -515,6 +522,22 @@ export type UserUpdateOneRequiredWithoutInterviewMessagesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutInterviewMessagesInput, Prisma.UserUpdateWithoutInterviewMessagesInput>, Prisma.UserUncheckedUpdateWithoutInterviewMessagesInput>
 }
 
+export type UserCreateNestedOneWithoutEvaluationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutEvaluationsInput, Prisma.UserUncheckedCreateWithoutEvaluationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutEvaluationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutEvaluationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutEvaluationsInput, Prisma.UserUncheckedCreateWithoutEvaluationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutEvaluationsInput
+  upsert?: Prisma.UserUpsertWithoutEvaluationsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutEvaluationsInput, Prisma.UserUpdateWithoutEvaluationsInput>, Prisma.UserUncheckedUpdateWithoutEvaluationsInput>
+}
+
 export type UserCreateNestedOneWithoutSentMailsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutSentMailsInput, Prisma.UserUncheckedCreateWithoutSentMailsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutSentMailsInput
@@ -610,6 +633,7 @@ export type UserCreateWithoutUniversityProfileInput = {
   caRunResults?: Prisma.CaRunResultCreateNestedManyWithoutStudentInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryCreateNestedManyWithoutStudentInput
   interviewMessages?: Prisma.InterviewMessageCreateNestedManyWithoutSenderInput
+  evaluations?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
 }
 
 export type UserUncheckedCreateWithoutUniversityProfileInput = {
@@ -629,6 +653,7 @@ export type UserUncheckedCreateWithoutUniversityProfileInput = {
   caRunResults?: Prisma.CaRunResultUncheckedCreateNestedManyWithoutStudentInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUncheckedCreateNestedManyWithoutStudentInput
   interviewMessages?: Prisma.InterviewMessageUncheckedCreateNestedManyWithoutSenderInput
+  evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
 }
 
 export type UserCreateOrConnectWithoutUniversityProfileInput = {
@@ -664,6 +689,7 @@ export type UserUpdateWithoutUniversityProfileInput = {
   caRunResults?: Prisma.CaRunResultUpdateManyWithoutStudentNestedInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUpdateManyWithoutStudentNestedInput
   interviewMessages?: Prisma.InterviewMessageUpdateManyWithoutSenderNestedInput
+  evaluations?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUniversityProfileInput = {
@@ -683,6 +709,7 @@ export type UserUncheckedUpdateWithoutUniversityProfileInput = {
   caRunResults?: Prisma.CaRunResultUncheckedUpdateManyWithoutStudentNestedInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUncheckedUpdateManyWithoutStudentNestedInput
   interviewMessages?: Prisma.InterviewMessageUncheckedUpdateManyWithoutSenderNestedInput
+  evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
 }
 
 export type UserCreateWithoutCompanyProfileInput = {
@@ -702,6 +729,7 @@ export type UserCreateWithoutCompanyProfileInput = {
   caRunResults?: Prisma.CaRunResultCreateNestedManyWithoutStudentInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryCreateNestedManyWithoutStudentInput
   interviewMessages?: Prisma.InterviewMessageCreateNestedManyWithoutSenderInput
+  evaluations?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
 }
 
 export type UserUncheckedCreateWithoutCompanyProfileInput = {
@@ -721,6 +749,7 @@ export type UserUncheckedCreateWithoutCompanyProfileInput = {
   caRunResults?: Prisma.CaRunResultUncheckedCreateNestedManyWithoutStudentInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUncheckedCreateNestedManyWithoutStudentInput
   interviewMessages?: Prisma.InterviewMessageUncheckedCreateNestedManyWithoutSenderInput
+  evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
 }
 
 export type UserCreateOrConnectWithoutCompanyProfileInput = {
@@ -756,6 +785,7 @@ export type UserUpdateWithoutCompanyProfileInput = {
   caRunResults?: Prisma.CaRunResultUpdateManyWithoutStudentNestedInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUpdateManyWithoutStudentNestedInput
   interviewMessages?: Prisma.InterviewMessageUpdateManyWithoutSenderNestedInput
+  evaluations?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCompanyProfileInput = {
@@ -775,6 +805,7 @@ export type UserUncheckedUpdateWithoutCompanyProfileInput = {
   caRunResults?: Prisma.CaRunResultUncheckedUpdateManyWithoutStudentNestedInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUncheckedUpdateManyWithoutStudentNestedInput
   interviewMessages?: Prisma.InterviewMessageUncheckedUpdateManyWithoutSenderNestedInput
+  evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
 }
 
 export type UserCreateWithoutRecruiterProfileInput = {
@@ -794,6 +825,7 @@ export type UserCreateWithoutRecruiterProfileInput = {
   caRunResults?: Prisma.CaRunResultCreateNestedManyWithoutStudentInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryCreateNestedManyWithoutStudentInput
   interviewMessages?: Prisma.InterviewMessageCreateNestedManyWithoutSenderInput
+  evaluations?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
 }
 
 export type UserUncheckedCreateWithoutRecruiterProfileInput = {
@@ -813,6 +845,7 @@ export type UserUncheckedCreateWithoutRecruiterProfileInput = {
   caRunResults?: Prisma.CaRunResultUncheckedCreateNestedManyWithoutStudentInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUncheckedCreateNestedManyWithoutStudentInput
   interviewMessages?: Prisma.InterviewMessageUncheckedCreateNestedManyWithoutSenderInput
+  evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
 }
 
 export type UserCreateOrConnectWithoutRecruiterProfileInput = {
@@ -848,6 +881,7 @@ export type UserUpdateWithoutRecruiterProfileInput = {
   caRunResults?: Prisma.CaRunResultUpdateManyWithoutStudentNestedInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUpdateManyWithoutStudentNestedInput
   interviewMessages?: Prisma.InterviewMessageUpdateManyWithoutSenderNestedInput
+  evaluations?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRecruiterProfileInput = {
@@ -867,6 +901,7 @@ export type UserUncheckedUpdateWithoutRecruiterProfileInput = {
   caRunResults?: Prisma.CaRunResultUncheckedUpdateManyWithoutStudentNestedInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUncheckedUpdateManyWithoutStudentNestedInput
   interviewMessages?: Prisma.InterviewMessageUncheckedUpdateManyWithoutSenderNestedInput
+  evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
 }
 
 export type UserCreateWithoutStudentProfileInput = {
@@ -886,6 +921,7 @@ export type UserCreateWithoutStudentProfileInput = {
   caRunResults?: Prisma.CaRunResultCreateNestedManyWithoutStudentInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryCreateNestedManyWithoutStudentInput
   interviewMessages?: Prisma.InterviewMessageCreateNestedManyWithoutSenderInput
+  evaluations?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
 }
 
 export type UserUncheckedCreateWithoutStudentProfileInput = {
@@ -905,6 +941,7 @@ export type UserUncheckedCreateWithoutStudentProfileInput = {
   caRunResults?: Prisma.CaRunResultUncheckedCreateNestedManyWithoutStudentInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUncheckedCreateNestedManyWithoutStudentInput
   interviewMessages?: Prisma.InterviewMessageUncheckedCreateNestedManyWithoutSenderInput
+  evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
 }
 
 export type UserCreateOrConnectWithoutStudentProfileInput = {
@@ -940,6 +977,7 @@ export type UserUpdateWithoutStudentProfileInput = {
   caRunResults?: Prisma.CaRunResultUpdateManyWithoutStudentNestedInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUpdateManyWithoutStudentNestedInput
   interviewMessages?: Prisma.InterviewMessageUpdateManyWithoutSenderNestedInput
+  evaluations?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStudentProfileInput = {
@@ -959,6 +997,7 @@ export type UserUncheckedUpdateWithoutStudentProfileInput = {
   caRunResults?: Prisma.CaRunResultUncheckedUpdateManyWithoutStudentNestedInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUncheckedUpdateManyWithoutStudentNestedInput
   interviewMessages?: Prisma.InterviewMessageUncheckedUpdateManyWithoutSenderNestedInput
+  evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
 }
 
 export type UserCreateWithoutInterviewMessagesInput = {
@@ -978,6 +1017,7 @@ export type UserCreateWithoutInterviewMessagesInput = {
   caSubmissions?: Prisma.CaSubmissionCreateNestedManyWithoutStudentInput
   caRunResults?: Prisma.CaRunResultCreateNestedManyWithoutStudentInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryCreateNestedManyWithoutStudentInput
+  evaluations?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
 }
 
 export type UserUncheckedCreateWithoutInterviewMessagesInput = {
@@ -997,6 +1037,7 @@ export type UserUncheckedCreateWithoutInterviewMessagesInput = {
   caSubmissions?: Prisma.CaSubmissionUncheckedCreateNestedManyWithoutStudentInput
   caRunResults?: Prisma.CaRunResultUncheckedCreateNestedManyWithoutStudentInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUncheckedCreateNestedManyWithoutStudentInput
+  evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
 }
 
 export type UserCreateOrConnectWithoutInterviewMessagesInput = {
@@ -1032,6 +1073,7 @@ export type UserUpdateWithoutInterviewMessagesInput = {
   caSubmissions?: Prisma.CaSubmissionUpdateManyWithoutStudentNestedInput
   caRunResults?: Prisma.CaRunResultUpdateManyWithoutStudentNestedInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUpdateManyWithoutStudentNestedInput
+  evaluations?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutInterviewMessagesInput = {
@@ -1051,6 +1093,103 @@ export type UserUncheckedUpdateWithoutInterviewMessagesInput = {
   caSubmissions?: Prisma.CaSubmissionUncheckedUpdateManyWithoutStudentNestedInput
   caRunResults?: Prisma.CaRunResultUncheckedUpdateManyWithoutStudentNestedInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUncheckedUpdateManyWithoutStudentNestedInput
+  evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
+}
+
+export type UserCreateWithoutEvaluationsInput = {
+  id?: string
+  email: string
+  password: string
+  role: $Enums.Role
+  cnid?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  studentProfile?: Prisma.StudentCreateNestedOneWithoutUserInput
+  universityProfile?: Prisma.UniversityCreateNestedOneWithoutUserInput
+  companyProfile?: Prisma.CompanyCreateNestedOneWithoutUserInput
+  recruiterProfile?: Prisma.RecruiterCreateNestedOneWithoutUserInput
+  sentMails?: Prisma.MailCreateNestedManyWithoutSenderInput
+  receivedMails?: Prisma.MailCreateNestedManyWithoutRecipientInput
+  caSubmissions?: Prisma.CaSubmissionCreateNestedManyWithoutStudentInput
+  caRunResults?: Prisma.CaRunResultCreateNestedManyWithoutStudentInput
+  caSubmissionSummaries?: Prisma.CaSubmissionSummaryCreateNestedManyWithoutStudentInput
+  interviewMessages?: Prisma.InterviewMessageCreateNestedManyWithoutSenderInput
+}
+
+export type UserUncheckedCreateWithoutEvaluationsInput = {
+  id?: string
+  email: string
+  password: string
+  role: $Enums.Role
+  cnid?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  studentProfile?: Prisma.StudentUncheckedCreateNestedOneWithoutUserInput
+  universityProfile?: Prisma.UniversityUncheckedCreateNestedOneWithoutUserInput
+  companyProfile?: Prisma.CompanyUncheckedCreateNestedOneWithoutUserInput
+  recruiterProfile?: Prisma.RecruiterUncheckedCreateNestedOneWithoutUserInput
+  sentMails?: Prisma.MailUncheckedCreateNestedManyWithoutSenderInput
+  receivedMails?: Prisma.MailUncheckedCreateNestedManyWithoutRecipientInput
+  caSubmissions?: Prisma.CaSubmissionUncheckedCreateNestedManyWithoutStudentInput
+  caRunResults?: Prisma.CaRunResultUncheckedCreateNestedManyWithoutStudentInput
+  caSubmissionSummaries?: Prisma.CaSubmissionSummaryUncheckedCreateNestedManyWithoutStudentInput
+  interviewMessages?: Prisma.InterviewMessageUncheckedCreateNestedManyWithoutSenderInput
+}
+
+export type UserCreateOrConnectWithoutEvaluationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutEvaluationsInput, Prisma.UserUncheckedCreateWithoutEvaluationsInput>
+}
+
+export type UserUpsertWithoutEvaluationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutEvaluationsInput, Prisma.UserUncheckedUpdateWithoutEvaluationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutEvaluationsInput, Prisma.UserUncheckedCreateWithoutEvaluationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutEvaluationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutEvaluationsInput, Prisma.UserUncheckedUpdateWithoutEvaluationsInput>
+}
+
+export type UserUpdateWithoutEvaluationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  cnid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  studentProfile?: Prisma.StudentUpdateOneWithoutUserNestedInput
+  universityProfile?: Prisma.UniversityUpdateOneWithoutUserNestedInput
+  companyProfile?: Prisma.CompanyUpdateOneWithoutUserNestedInput
+  recruiterProfile?: Prisma.RecruiterUpdateOneWithoutUserNestedInput
+  sentMails?: Prisma.MailUpdateManyWithoutSenderNestedInput
+  receivedMails?: Prisma.MailUpdateManyWithoutRecipientNestedInput
+  caSubmissions?: Prisma.CaSubmissionUpdateManyWithoutStudentNestedInput
+  caRunResults?: Prisma.CaRunResultUpdateManyWithoutStudentNestedInput
+  caSubmissionSummaries?: Prisma.CaSubmissionSummaryUpdateManyWithoutStudentNestedInput
+  interviewMessages?: Prisma.InterviewMessageUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutEvaluationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  cnid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  studentProfile?: Prisma.StudentUncheckedUpdateOneWithoutUserNestedInput
+  universityProfile?: Prisma.UniversityUncheckedUpdateOneWithoutUserNestedInput
+  companyProfile?: Prisma.CompanyUncheckedUpdateOneWithoutUserNestedInput
+  recruiterProfile?: Prisma.RecruiterUncheckedUpdateOneWithoutUserNestedInput
+  sentMails?: Prisma.MailUncheckedUpdateManyWithoutSenderNestedInput
+  receivedMails?: Prisma.MailUncheckedUpdateManyWithoutRecipientNestedInput
+  caSubmissions?: Prisma.CaSubmissionUncheckedUpdateManyWithoutStudentNestedInput
+  caRunResults?: Prisma.CaRunResultUncheckedUpdateManyWithoutStudentNestedInput
+  caSubmissionSummaries?: Prisma.CaSubmissionSummaryUncheckedUpdateManyWithoutStudentNestedInput
+  interviewMessages?: Prisma.InterviewMessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateWithoutSentMailsInput = {
@@ -1070,6 +1209,7 @@ export type UserCreateWithoutSentMailsInput = {
   caRunResults?: Prisma.CaRunResultCreateNestedManyWithoutStudentInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryCreateNestedManyWithoutStudentInput
   interviewMessages?: Prisma.InterviewMessageCreateNestedManyWithoutSenderInput
+  evaluations?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
 }
 
 export type UserUncheckedCreateWithoutSentMailsInput = {
@@ -1089,6 +1229,7 @@ export type UserUncheckedCreateWithoutSentMailsInput = {
   caRunResults?: Prisma.CaRunResultUncheckedCreateNestedManyWithoutStudentInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUncheckedCreateNestedManyWithoutStudentInput
   interviewMessages?: Prisma.InterviewMessageUncheckedCreateNestedManyWithoutSenderInput
+  evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
 }
 
 export type UserCreateOrConnectWithoutSentMailsInput = {
@@ -1113,6 +1254,7 @@ export type UserCreateWithoutReceivedMailsInput = {
   caRunResults?: Prisma.CaRunResultCreateNestedManyWithoutStudentInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryCreateNestedManyWithoutStudentInput
   interviewMessages?: Prisma.InterviewMessageCreateNestedManyWithoutSenderInput
+  evaluations?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
 }
 
 export type UserUncheckedCreateWithoutReceivedMailsInput = {
@@ -1132,6 +1274,7 @@ export type UserUncheckedCreateWithoutReceivedMailsInput = {
   caRunResults?: Prisma.CaRunResultUncheckedCreateNestedManyWithoutStudentInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUncheckedCreateNestedManyWithoutStudentInput
   interviewMessages?: Prisma.InterviewMessageUncheckedCreateNestedManyWithoutSenderInput
+  evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
 }
 
 export type UserCreateOrConnectWithoutReceivedMailsInput = {
@@ -1167,6 +1310,7 @@ export type UserUpdateWithoutSentMailsInput = {
   caRunResults?: Prisma.CaRunResultUpdateManyWithoutStudentNestedInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUpdateManyWithoutStudentNestedInput
   interviewMessages?: Prisma.InterviewMessageUpdateManyWithoutSenderNestedInput
+  evaluations?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSentMailsInput = {
@@ -1186,6 +1330,7 @@ export type UserUncheckedUpdateWithoutSentMailsInput = {
   caRunResults?: Prisma.CaRunResultUncheckedUpdateManyWithoutStudentNestedInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUncheckedUpdateManyWithoutStudentNestedInput
   interviewMessages?: Prisma.InterviewMessageUncheckedUpdateManyWithoutSenderNestedInput
+  evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
 }
 
 export type UserUpsertWithoutReceivedMailsInput = {
@@ -1216,6 +1361,7 @@ export type UserUpdateWithoutReceivedMailsInput = {
   caRunResults?: Prisma.CaRunResultUpdateManyWithoutStudentNestedInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUpdateManyWithoutStudentNestedInput
   interviewMessages?: Prisma.InterviewMessageUpdateManyWithoutSenderNestedInput
+  evaluations?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReceivedMailsInput = {
@@ -1235,6 +1381,7 @@ export type UserUncheckedUpdateWithoutReceivedMailsInput = {
   caRunResults?: Prisma.CaRunResultUncheckedUpdateManyWithoutStudentNestedInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUncheckedUpdateManyWithoutStudentNestedInput
   interviewMessages?: Prisma.InterviewMessageUncheckedUpdateManyWithoutSenderNestedInput
+  evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
 }
 
 export type UserCreateWithoutCaSubmissionsInput = {
@@ -1254,6 +1401,7 @@ export type UserCreateWithoutCaSubmissionsInput = {
   caRunResults?: Prisma.CaRunResultCreateNestedManyWithoutStudentInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryCreateNestedManyWithoutStudentInput
   interviewMessages?: Prisma.InterviewMessageCreateNestedManyWithoutSenderInput
+  evaluations?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
 }
 
 export type UserUncheckedCreateWithoutCaSubmissionsInput = {
@@ -1273,6 +1421,7 @@ export type UserUncheckedCreateWithoutCaSubmissionsInput = {
   caRunResults?: Prisma.CaRunResultUncheckedCreateNestedManyWithoutStudentInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUncheckedCreateNestedManyWithoutStudentInput
   interviewMessages?: Prisma.InterviewMessageUncheckedCreateNestedManyWithoutSenderInput
+  evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
 }
 
 export type UserCreateOrConnectWithoutCaSubmissionsInput = {
@@ -1308,6 +1457,7 @@ export type UserUpdateWithoutCaSubmissionsInput = {
   caRunResults?: Prisma.CaRunResultUpdateManyWithoutStudentNestedInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUpdateManyWithoutStudentNestedInput
   interviewMessages?: Prisma.InterviewMessageUpdateManyWithoutSenderNestedInput
+  evaluations?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCaSubmissionsInput = {
@@ -1327,6 +1477,7 @@ export type UserUncheckedUpdateWithoutCaSubmissionsInput = {
   caRunResults?: Prisma.CaRunResultUncheckedUpdateManyWithoutStudentNestedInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUncheckedUpdateManyWithoutStudentNestedInput
   interviewMessages?: Prisma.InterviewMessageUncheckedUpdateManyWithoutSenderNestedInput
+  evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
 }
 
 export type UserCreateWithoutCaRunResultsInput = {
@@ -1346,6 +1497,7 @@ export type UserCreateWithoutCaRunResultsInput = {
   caSubmissions?: Prisma.CaSubmissionCreateNestedManyWithoutStudentInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryCreateNestedManyWithoutStudentInput
   interviewMessages?: Prisma.InterviewMessageCreateNestedManyWithoutSenderInput
+  evaluations?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
 }
 
 export type UserUncheckedCreateWithoutCaRunResultsInput = {
@@ -1365,6 +1517,7 @@ export type UserUncheckedCreateWithoutCaRunResultsInput = {
   caSubmissions?: Prisma.CaSubmissionUncheckedCreateNestedManyWithoutStudentInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUncheckedCreateNestedManyWithoutStudentInput
   interviewMessages?: Prisma.InterviewMessageUncheckedCreateNestedManyWithoutSenderInput
+  evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
 }
 
 export type UserCreateOrConnectWithoutCaRunResultsInput = {
@@ -1400,6 +1553,7 @@ export type UserUpdateWithoutCaRunResultsInput = {
   caSubmissions?: Prisma.CaSubmissionUpdateManyWithoutStudentNestedInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUpdateManyWithoutStudentNestedInput
   interviewMessages?: Prisma.InterviewMessageUpdateManyWithoutSenderNestedInput
+  evaluations?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCaRunResultsInput = {
@@ -1419,6 +1573,7 @@ export type UserUncheckedUpdateWithoutCaRunResultsInput = {
   caSubmissions?: Prisma.CaSubmissionUncheckedUpdateManyWithoutStudentNestedInput
   caSubmissionSummaries?: Prisma.CaSubmissionSummaryUncheckedUpdateManyWithoutStudentNestedInput
   interviewMessages?: Prisma.InterviewMessageUncheckedUpdateManyWithoutSenderNestedInput
+  evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
 }
 
 export type UserCreateWithoutCaSubmissionSummariesInput = {
@@ -1438,6 +1593,7 @@ export type UserCreateWithoutCaSubmissionSummariesInput = {
   caSubmissions?: Prisma.CaSubmissionCreateNestedManyWithoutStudentInput
   caRunResults?: Prisma.CaRunResultCreateNestedManyWithoutStudentInput
   interviewMessages?: Prisma.InterviewMessageCreateNestedManyWithoutSenderInput
+  evaluations?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
 }
 
 export type UserUncheckedCreateWithoutCaSubmissionSummariesInput = {
@@ -1457,6 +1613,7 @@ export type UserUncheckedCreateWithoutCaSubmissionSummariesInput = {
   caSubmissions?: Prisma.CaSubmissionUncheckedCreateNestedManyWithoutStudentInput
   caRunResults?: Prisma.CaRunResultUncheckedCreateNestedManyWithoutStudentInput
   interviewMessages?: Prisma.InterviewMessageUncheckedCreateNestedManyWithoutSenderInput
+  evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
 }
 
 export type UserCreateOrConnectWithoutCaSubmissionSummariesInput = {
@@ -1492,6 +1649,7 @@ export type UserUpdateWithoutCaSubmissionSummariesInput = {
   caSubmissions?: Prisma.CaSubmissionUpdateManyWithoutStudentNestedInput
   caRunResults?: Prisma.CaRunResultUpdateManyWithoutStudentNestedInput
   interviewMessages?: Prisma.InterviewMessageUpdateManyWithoutSenderNestedInput
+  evaluations?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCaSubmissionSummariesInput = {
@@ -1511,6 +1669,7 @@ export type UserUncheckedUpdateWithoutCaSubmissionSummariesInput = {
   caSubmissions?: Prisma.CaSubmissionUncheckedUpdateManyWithoutStudentNestedInput
   caRunResults?: Prisma.CaRunResultUncheckedUpdateManyWithoutStudentNestedInput
   interviewMessages?: Prisma.InterviewMessageUncheckedUpdateManyWithoutSenderNestedInput
+  evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
 }
 
 
@@ -1525,6 +1684,7 @@ export type UserCountOutputType = {
   caRunResults: number
   caSubmissionSummaries: number
   interviewMessages: number
+  evaluations: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1534,6 +1694,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   caRunResults?: boolean | UserCountOutputTypeCountCaRunResultsArgs
   caSubmissionSummaries?: boolean | UserCountOutputTypeCountCaSubmissionSummariesArgs
   interviewMessages?: boolean | UserCountOutputTypeCountInterviewMessagesArgs
+  evaluations?: boolean | UserCountOutputTypeCountEvaluationsArgs
 }
 
 /**
@@ -1588,6 +1749,13 @@ export type UserCountOutputTypeCountInterviewMessagesArgs<ExtArgs extends runtim
   where?: Prisma.InterviewMessageWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountEvaluationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EvaluationWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1607,6 +1775,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   caRunResults?: boolean | Prisma.User$caRunResultsArgs<ExtArgs>
   caSubmissionSummaries?: boolean | Prisma.User$caSubmissionSummariesArgs<ExtArgs>
   interviewMessages?: boolean | Prisma.User$interviewMessagesArgs<ExtArgs>
+  evaluations?: boolean | Prisma.User$evaluationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1652,6 +1821,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   caRunResults?: boolean | Prisma.User$caRunResultsArgs<ExtArgs>
   caSubmissionSummaries?: boolean | Prisma.User$caSubmissionSummariesArgs<ExtArgs>
   interviewMessages?: boolean | Prisma.User$interviewMessagesArgs<ExtArgs>
+  evaluations?: boolean | Prisma.User$evaluationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1670,6 +1840,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     caRunResults: Prisma.$CaRunResultPayload<ExtArgs>[]
     caSubmissionSummaries: Prisma.$CaSubmissionSummaryPayload<ExtArgs>[]
     interviewMessages: Prisma.$InterviewMessagePayload<ExtArgs>[]
+    evaluations: Prisma.$EvaluationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2083,6 +2254,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   caRunResults<T extends Prisma.User$caRunResultsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$caRunResultsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CaRunResultPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   caSubmissionSummaries<T extends Prisma.User$caSubmissionSummariesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$caSubmissionSummariesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CaSubmissionSummaryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   interviewMessages<T extends Prisma.User$interviewMessagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$interviewMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InterviewMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  evaluations<T extends Prisma.User$evaluationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$evaluationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EvaluationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2729,6 +2901,30 @@ export type User$interviewMessagesArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.InterviewMessageScalarFieldEnum | Prisma.InterviewMessageScalarFieldEnum[]
+}
+
+/**
+ * User.evaluations
+ */
+export type User$evaluationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Evaluation
+   */
+  select?: Prisma.EvaluationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Evaluation
+   */
+  omit?: Prisma.EvaluationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EvaluationInclude<ExtArgs> | null
+  where?: Prisma.EvaluationWhereInput
+  orderBy?: Prisma.EvaluationOrderByWithRelationInput | Prisma.EvaluationOrderByWithRelationInput[]
+  cursor?: Prisma.EvaluationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EvaluationScalarFieldEnum | Prisma.EvaluationScalarFieldEnum[]
 }
 
 /**

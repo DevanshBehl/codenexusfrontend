@@ -242,6 +242,8 @@ export type WebinarWhereInput = {
   status?: Prisma.StringFilter<"Webinar"> | string
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
   targetUniversities?: Prisma.WebinarTargetUniversityListRelationFilter
+  attendees?: Prisma.WebinarAttendeeListRelationFilter
+  messages?: Prisma.WebinarMessageListRelationFilter
 }
 
 export type WebinarOrderByWithRelationInput = {
@@ -255,6 +257,8 @@ export type WebinarOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   company?: Prisma.CompanyOrderByWithRelationInput
   targetUniversities?: Prisma.WebinarTargetUniversityOrderByRelationAggregateInput
+  attendees?: Prisma.WebinarAttendeeOrderByRelationAggregateInput
+  messages?: Prisma.WebinarMessageOrderByRelationAggregateInput
 }
 
 export type WebinarWhereUniqueInput = Prisma.AtLeast<{
@@ -271,6 +275,8 @@ export type WebinarWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.StringFilter<"Webinar"> | string
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
   targetUniversities?: Prisma.WebinarTargetUniversityListRelationFilter
+  attendees?: Prisma.WebinarAttendeeListRelationFilter
+  messages?: Prisma.WebinarMessageListRelationFilter
 }, "id">
 
 export type WebinarOrderByWithAggregationInput = {
@@ -313,6 +319,8 @@ export type WebinarCreateInput = {
   status?: string
   company: Prisma.CompanyCreateNestedOneWithoutWebinarsInput
   targetUniversities?: Prisma.WebinarTargetUniversityCreateNestedManyWithoutWebinarInput
+  attendees?: Prisma.WebinarAttendeeCreateNestedManyWithoutWebinarInput
+  messages?: Prisma.WebinarMessageCreateNestedManyWithoutWebinarInput
 }
 
 export type WebinarUncheckedCreateInput = {
@@ -325,6 +333,8 @@ export type WebinarUncheckedCreateInput = {
   meetingLink: string
   status?: string
   targetUniversities?: Prisma.WebinarTargetUniversityUncheckedCreateNestedManyWithoutWebinarInput
+  attendees?: Prisma.WebinarAttendeeUncheckedCreateNestedManyWithoutWebinarInput
+  messages?: Prisma.WebinarMessageUncheckedCreateNestedManyWithoutWebinarInput
 }
 
 export type WebinarUpdateInput = {
@@ -337,6 +347,8 @@ export type WebinarUpdateInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutWebinarsNestedInput
   targetUniversities?: Prisma.WebinarTargetUniversityUpdateManyWithoutWebinarNestedInput
+  attendees?: Prisma.WebinarAttendeeUpdateManyWithoutWebinarNestedInput
+  messages?: Prisma.WebinarMessageUpdateManyWithoutWebinarNestedInput
 }
 
 export type WebinarUncheckedUpdateInput = {
@@ -349,6 +361,8 @@ export type WebinarUncheckedUpdateInput = {
   meetingLink?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   targetUniversities?: Prisma.WebinarTargetUniversityUncheckedUpdateManyWithoutWebinarNestedInput
+  attendees?: Prisma.WebinarAttendeeUncheckedUpdateManyWithoutWebinarNestedInput
+  messages?: Prisma.WebinarMessageUncheckedUpdateManyWithoutWebinarNestedInput
 }
 
 export type WebinarCreateManyInput = {
@@ -495,6 +509,34 @@ export type WebinarUpdateOneRequiredWithoutTargetUniversitiesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.WebinarUpdateToOneWithWhereWithoutTargetUniversitiesInput, Prisma.WebinarUpdateWithoutTargetUniversitiesInput>, Prisma.WebinarUncheckedUpdateWithoutTargetUniversitiesInput>
 }
 
+export type WebinarCreateNestedOneWithoutAttendeesInput = {
+  create?: Prisma.XOR<Prisma.WebinarCreateWithoutAttendeesInput, Prisma.WebinarUncheckedCreateWithoutAttendeesInput>
+  connectOrCreate?: Prisma.WebinarCreateOrConnectWithoutAttendeesInput
+  connect?: Prisma.WebinarWhereUniqueInput
+}
+
+export type WebinarUpdateOneRequiredWithoutAttendeesNestedInput = {
+  create?: Prisma.XOR<Prisma.WebinarCreateWithoutAttendeesInput, Prisma.WebinarUncheckedCreateWithoutAttendeesInput>
+  connectOrCreate?: Prisma.WebinarCreateOrConnectWithoutAttendeesInput
+  upsert?: Prisma.WebinarUpsertWithoutAttendeesInput
+  connect?: Prisma.WebinarWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WebinarUpdateToOneWithWhereWithoutAttendeesInput, Prisma.WebinarUpdateWithoutAttendeesInput>, Prisma.WebinarUncheckedUpdateWithoutAttendeesInput>
+}
+
+export type WebinarCreateNestedOneWithoutMessagesInput = {
+  create?: Prisma.XOR<Prisma.WebinarCreateWithoutMessagesInput, Prisma.WebinarUncheckedCreateWithoutMessagesInput>
+  connectOrCreate?: Prisma.WebinarCreateOrConnectWithoutMessagesInput
+  connect?: Prisma.WebinarWhereUniqueInput
+}
+
+export type WebinarUpdateOneRequiredWithoutMessagesNestedInput = {
+  create?: Prisma.XOR<Prisma.WebinarCreateWithoutMessagesInput, Prisma.WebinarUncheckedCreateWithoutMessagesInput>
+  connectOrCreate?: Prisma.WebinarCreateOrConnectWithoutMessagesInput
+  upsert?: Prisma.WebinarUpsertWithoutMessagesInput
+  connect?: Prisma.WebinarWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WebinarUpdateToOneWithWhereWithoutMessagesInput, Prisma.WebinarUpdateWithoutMessagesInput>, Prisma.WebinarUncheckedUpdateWithoutMessagesInput>
+}
+
 export type WebinarCreateWithoutCompanyInput = {
   id?: string
   title: string
@@ -504,6 +546,8 @@ export type WebinarCreateWithoutCompanyInput = {
   meetingLink: string
   status?: string
   targetUniversities?: Prisma.WebinarTargetUniversityCreateNestedManyWithoutWebinarInput
+  attendees?: Prisma.WebinarAttendeeCreateNestedManyWithoutWebinarInput
+  messages?: Prisma.WebinarMessageCreateNestedManyWithoutWebinarInput
 }
 
 export type WebinarUncheckedCreateWithoutCompanyInput = {
@@ -515,6 +559,8 @@ export type WebinarUncheckedCreateWithoutCompanyInput = {
   meetingLink: string
   status?: string
   targetUniversities?: Prisma.WebinarTargetUniversityUncheckedCreateNestedManyWithoutWebinarInput
+  attendees?: Prisma.WebinarAttendeeUncheckedCreateNestedManyWithoutWebinarInput
+  messages?: Prisma.WebinarMessageUncheckedCreateNestedManyWithoutWebinarInput
 }
 
 export type WebinarCreateOrConnectWithoutCompanyInput = {
@@ -566,6 +612,8 @@ export type WebinarCreateWithoutTargetUniversitiesInput = {
   meetingLink: string
   status?: string
   company: Prisma.CompanyCreateNestedOneWithoutWebinarsInput
+  attendees?: Prisma.WebinarAttendeeCreateNestedManyWithoutWebinarInput
+  messages?: Prisma.WebinarMessageCreateNestedManyWithoutWebinarInput
 }
 
 export type WebinarUncheckedCreateWithoutTargetUniversitiesInput = {
@@ -577,6 +625,8 @@ export type WebinarUncheckedCreateWithoutTargetUniversitiesInput = {
   durationMins: number
   meetingLink: string
   status?: string
+  attendees?: Prisma.WebinarAttendeeUncheckedCreateNestedManyWithoutWebinarInput
+  messages?: Prisma.WebinarMessageUncheckedCreateNestedManyWithoutWebinarInput
 }
 
 export type WebinarCreateOrConnectWithoutTargetUniversitiesInput = {
@@ -604,6 +654,8 @@ export type WebinarUpdateWithoutTargetUniversitiesInput = {
   meetingLink?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutWebinarsNestedInput
+  attendees?: Prisma.WebinarAttendeeUpdateManyWithoutWebinarNestedInput
+  messages?: Prisma.WebinarMessageUpdateManyWithoutWebinarNestedInput
 }
 
 export type WebinarUncheckedUpdateWithoutTargetUniversitiesInput = {
@@ -615,6 +667,144 @@ export type WebinarUncheckedUpdateWithoutTargetUniversitiesInput = {
   durationMins?: Prisma.IntFieldUpdateOperationsInput | number
   meetingLink?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  attendees?: Prisma.WebinarAttendeeUncheckedUpdateManyWithoutWebinarNestedInput
+  messages?: Prisma.WebinarMessageUncheckedUpdateManyWithoutWebinarNestedInput
+}
+
+export type WebinarCreateWithoutAttendeesInput = {
+  id?: string
+  title: string
+  agenda: string
+  scheduledAt: Date | string
+  durationMins: number
+  meetingLink: string
+  status?: string
+  company: Prisma.CompanyCreateNestedOneWithoutWebinarsInput
+  targetUniversities?: Prisma.WebinarTargetUniversityCreateNestedManyWithoutWebinarInput
+  messages?: Prisma.WebinarMessageCreateNestedManyWithoutWebinarInput
+}
+
+export type WebinarUncheckedCreateWithoutAttendeesInput = {
+  id?: string
+  companyId: string
+  title: string
+  agenda: string
+  scheduledAt: Date | string
+  durationMins: number
+  meetingLink: string
+  status?: string
+  targetUniversities?: Prisma.WebinarTargetUniversityUncheckedCreateNestedManyWithoutWebinarInput
+  messages?: Prisma.WebinarMessageUncheckedCreateNestedManyWithoutWebinarInput
+}
+
+export type WebinarCreateOrConnectWithoutAttendeesInput = {
+  where: Prisma.WebinarWhereUniqueInput
+  create: Prisma.XOR<Prisma.WebinarCreateWithoutAttendeesInput, Prisma.WebinarUncheckedCreateWithoutAttendeesInput>
+}
+
+export type WebinarUpsertWithoutAttendeesInput = {
+  update: Prisma.XOR<Prisma.WebinarUpdateWithoutAttendeesInput, Prisma.WebinarUncheckedUpdateWithoutAttendeesInput>
+  create: Prisma.XOR<Prisma.WebinarCreateWithoutAttendeesInput, Prisma.WebinarUncheckedCreateWithoutAttendeesInput>
+  where?: Prisma.WebinarWhereInput
+}
+
+export type WebinarUpdateToOneWithWhereWithoutAttendeesInput = {
+  where?: Prisma.WebinarWhereInput
+  data: Prisma.XOR<Prisma.WebinarUpdateWithoutAttendeesInput, Prisma.WebinarUncheckedUpdateWithoutAttendeesInput>
+}
+
+export type WebinarUpdateWithoutAttendeesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  agenda?: Prisma.StringFieldUpdateOperationsInput | string
+  scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationMins?: Prisma.IntFieldUpdateOperationsInput | number
+  meetingLink?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  company?: Prisma.CompanyUpdateOneRequiredWithoutWebinarsNestedInput
+  targetUniversities?: Prisma.WebinarTargetUniversityUpdateManyWithoutWebinarNestedInput
+  messages?: Prisma.WebinarMessageUpdateManyWithoutWebinarNestedInput
+}
+
+export type WebinarUncheckedUpdateWithoutAttendeesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  companyId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  agenda?: Prisma.StringFieldUpdateOperationsInput | string
+  scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationMins?: Prisma.IntFieldUpdateOperationsInput | number
+  meetingLink?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  targetUniversities?: Prisma.WebinarTargetUniversityUncheckedUpdateManyWithoutWebinarNestedInput
+  messages?: Prisma.WebinarMessageUncheckedUpdateManyWithoutWebinarNestedInput
+}
+
+export type WebinarCreateWithoutMessagesInput = {
+  id?: string
+  title: string
+  agenda: string
+  scheduledAt: Date | string
+  durationMins: number
+  meetingLink: string
+  status?: string
+  company: Prisma.CompanyCreateNestedOneWithoutWebinarsInput
+  targetUniversities?: Prisma.WebinarTargetUniversityCreateNestedManyWithoutWebinarInput
+  attendees?: Prisma.WebinarAttendeeCreateNestedManyWithoutWebinarInput
+}
+
+export type WebinarUncheckedCreateWithoutMessagesInput = {
+  id?: string
+  companyId: string
+  title: string
+  agenda: string
+  scheduledAt: Date | string
+  durationMins: number
+  meetingLink: string
+  status?: string
+  targetUniversities?: Prisma.WebinarTargetUniversityUncheckedCreateNestedManyWithoutWebinarInput
+  attendees?: Prisma.WebinarAttendeeUncheckedCreateNestedManyWithoutWebinarInput
+}
+
+export type WebinarCreateOrConnectWithoutMessagesInput = {
+  where: Prisma.WebinarWhereUniqueInput
+  create: Prisma.XOR<Prisma.WebinarCreateWithoutMessagesInput, Prisma.WebinarUncheckedCreateWithoutMessagesInput>
+}
+
+export type WebinarUpsertWithoutMessagesInput = {
+  update: Prisma.XOR<Prisma.WebinarUpdateWithoutMessagesInput, Prisma.WebinarUncheckedUpdateWithoutMessagesInput>
+  create: Prisma.XOR<Prisma.WebinarCreateWithoutMessagesInput, Prisma.WebinarUncheckedCreateWithoutMessagesInput>
+  where?: Prisma.WebinarWhereInput
+}
+
+export type WebinarUpdateToOneWithWhereWithoutMessagesInput = {
+  where?: Prisma.WebinarWhereInput
+  data: Prisma.XOR<Prisma.WebinarUpdateWithoutMessagesInput, Prisma.WebinarUncheckedUpdateWithoutMessagesInput>
+}
+
+export type WebinarUpdateWithoutMessagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  agenda?: Prisma.StringFieldUpdateOperationsInput | string
+  scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationMins?: Prisma.IntFieldUpdateOperationsInput | number
+  meetingLink?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  company?: Prisma.CompanyUpdateOneRequiredWithoutWebinarsNestedInput
+  targetUniversities?: Prisma.WebinarTargetUniversityUpdateManyWithoutWebinarNestedInput
+  attendees?: Prisma.WebinarAttendeeUpdateManyWithoutWebinarNestedInput
+}
+
+export type WebinarUncheckedUpdateWithoutMessagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  companyId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  agenda?: Prisma.StringFieldUpdateOperationsInput | string
+  scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationMins?: Prisma.IntFieldUpdateOperationsInput | number
+  meetingLink?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  targetUniversities?: Prisma.WebinarTargetUniversityUncheckedUpdateManyWithoutWebinarNestedInput
+  attendees?: Prisma.WebinarAttendeeUncheckedUpdateManyWithoutWebinarNestedInput
 }
 
 export type WebinarCreateManyCompanyInput = {
@@ -636,6 +826,8 @@ export type WebinarUpdateWithoutCompanyInput = {
   meetingLink?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   targetUniversities?: Prisma.WebinarTargetUniversityUpdateManyWithoutWebinarNestedInput
+  attendees?: Prisma.WebinarAttendeeUpdateManyWithoutWebinarNestedInput
+  messages?: Prisma.WebinarMessageUpdateManyWithoutWebinarNestedInput
 }
 
 export type WebinarUncheckedUpdateWithoutCompanyInput = {
@@ -647,6 +839,8 @@ export type WebinarUncheckedUpdateWithoutCompanyInput = {
   meetingLink?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   targetUniversities?: Prisma.WebinarTargetUniversityUncheckedUpdateManyWithoutWebinarNestedInput
+  attendees?: Prisma.WebinarAttendeeUncheckedUpdateManyWithoutWebinarNestedInput
+  messages?: Prisma.WebinarMessageUncheckedUpdateManyWithoutWebinarNestedInput
 }
 
 export type WebinarUncheckedUpdateManyWithoutCompanyInput = {
@@ -666,10 +860,14 @@ export type WebinarUncheckedUpdateManyWithoutCompanyInput = {
 
 export type WebinarCountOutputType = {
   targetUniversities: number
+  attendees: number
+  messages: number
 }
 
 export type WebinarCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   targetUniversities?: boolean | WebinarCountOutputTypeCountTargetUniversitiesArgs
+  attendees?: boolean | WebinarCountOutputTypeCountAttendeesArgs
+  messages?: boolean | WebinarCountOutputTypeCountMessagesArgs
 }
 
 /**
@@ -689,6 +887,20 @@ export type WebinarCountOutputTypeCountTargetUniversitiesArgs<ExtArgs extends ru
   where?: Prisma.WebinarTargetUniversityWhereInput
 }
 
+/**
+ * WebinarCountOutputType without action
+ */
+export type WebinarCountOutputTypeCountAttendeesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WebinarAttendeeWhereInput
+}
+
+/**
+ * WebinarCountOutputType without action
+ */
+export type WebinarCountOutputTypeCountMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WebinarMessageWhereInput
+}
+
 
 export type WebinarSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -701,6 +913,8 @@ export type WebinarSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   status?: boolean
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   targetUniversities?: boolean | Prisma.Webinar$targetUniversitiesArgs<ExtArgs>
+  attendees?: boolean | Prisma.Webinar$attendeesArgs<ExtArgs>
+  messages?: boolean | Prisma.Webinar$messagesArgs<ExtArgs>
   _count?: boolean | Prisma.WebinarCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["webinar"]>
 
@@ -743,6 +957,8 @@ export type WebinarOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 export type WebinarInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   targetUniversities?: boolean | Prisma.Webinar$targetUniversitiesArgs<ExtArgs>
+  attendees?: boolean | Prisma.Webinar$attendeesArgs<ExtArgs>
+  messages?: boolean | Prisma.Webinar$messagesArgs<ExtArgs>
   _count?: boolean | Prisma.WebinarCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type WebinarIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -757,6 +973,8 @@ export type $WebinarPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   objects: {
     company: Prisma.$CompanyPayload<ExtArgs>
     targetUniversities: Prisma.$WebinarTargetUniversityPayload<ExtArgs>[]
+    attendees: Prisma.$WebinarAttendeePayload<ExtArgs>[]
+    messages: Prisma.$WebinarMessagePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1163,6 +1381,8 @@ export interface Prisma__WebinarClient<T, Null = never, ExtArgs extends runtime.
   readonly [Symbol.toStringTag]: "PrismaPromise"
   company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   targetUniversities<T extends Prisma.Webinar$targetUniversitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Webinar$targetUniversitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WebinarTargetUniversityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  attendees<T extends Prisma.Webinar$attendeesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Webinar$attendeesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WebinarAttendeePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  messages<T extends Prisma.Webinar$messagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Webinar$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WebinarMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1622,6 +1842,54 @@ export type Webinar$targetUniversitiesArgs<ExtArgs extends runtime.Types.Extensi
   take?: number
   skip?: number
   distinct?: Prisma.WebinarTargetUniversityScalarFieldEnum | Prisma.WebinarTargetUniversityScalarFieldEnum[]
+}
+
+/**
+ * Webinar.attendees
+ */
+export type Webinar$attendeesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WebinarAttendee
+   */
+  select?: Prisma.WebinarAttendeeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WebinarAttendee
+   */
+  omit?: Prisma.WebinarAttendeeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WebinarAttendeeInclude<ExtArgs> | null
+  where?: Prisma.WebinarAttendeeWhereInput
+  orderBy?: Prisma.WebinarAttendeeOrderByWithRelationInput | Prisma.WebinarAttendeeOrderByWithRelationInput[]
+  cursor?: Prisma.WebinarAttendeeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WebinarAttendeeScalarFieldEnum | Prisma.WebinarAttendeeScalarFieldEnum[]
+}
+
+/**
+ * Webinar.messages
+ */
+export type Webinar$messagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WebinarMessage
+   */
+  select?: Prisma.WebinarMessageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WebinarMessage
+   */
+  omit?: Prisma.WebinarMessageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WebinarMessageInclude<ExtArgs> | null
+  where?: Prisma.WebinarMessageWhereInput
+  orderBy?: Prisma.WebinarMessageOrderByWithRelationInput | Prisma.WebinarMessageOrderByWithRelationInput[]
+  cursor?: Prisma.WebinarMessageWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WebinarMessageScalarFieldEnum | Prisma.WebinarMessageScalarFieldEnum[]
 }
 
 /**

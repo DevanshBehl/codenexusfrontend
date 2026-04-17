@@ -49,6 +49,9 @@ model User {
 
   // Interview chat
   interviewMessages     InterviewMessage[]
+
+  // Evaluations
+  evaluations           Evaluation[] @relation("EvaluationEvaluator")
 }
 
 // ==========================================
@@ -342,8 +345,9 @@ model Webinar {
   status       String   @default("UPCOMING")
 
   company            Company                   @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  // Which universities this PPT is open to
   targetUniversities WebinarTargetUniversity[]
+  attendees          WebinarAttendee[]
+  messages           WebinarMessage[]
 }
 
 model WebinarTargetUniversity {
@@ -354,6 +358,32 @@ model WebinarTargetUniversity {
   university University @relation(fields: [universityId], references: [id], onDelete: Cascade)
 
   @@id([webinarId, universityId])
+}
+
+model WebinarAttendee {
+  id                   String    @id @default(uuid())
+  webinarId            String
+  userId               String
+  role                 String   @default("VIEWER")
+  joinedAt             DateTime @default(now())
+  leftAt               DateTime?
+  hasPermissionToSpeak Boolean  @default(false)
+
+  webinar Webinar @relation(fields: [webinarId], references: [id], onDelete: Cascade)
+
+  @@unique([webinarId, userId])
+}
+
+model WebinarMessage {
+  id         String   @id @default(uuid())
+  webinarId  String
+  senderId   String
+  senderName String
+  content    String   @db.Text
+  isQuestion Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  webinar Webinar @relation(fields: [webinarId], references: [id], onDelete: Cascade)
 }
 
 // ==========================================

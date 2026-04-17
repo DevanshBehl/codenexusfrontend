@@ -95,7 +95,7 @@ function App() {
           <Route path="/student/contest" element={<ProtectedRoute allowedRoles={['STUDENT']}><Contest /></ProtectedRoute>} />
           <Route path="/student/recording" element={<ProtectedRoute allowedRoles={['STUDENT']}><Recordings userRole="STUDENT" /></ProtectedRoute>} />
           <Route path="/student/webinars" element={<ProtectedRoute allowedRoles={['STUDENT']}><WebinarList userRole="STUDENT" /></ProtectedRoute>} />
-          <Route path="/student/webinar" element={<ProtectedRoute allowedRoles={['STUDENT']}><WebinarRoom userRole="STUDENT" /></ProtectedRoute>} />
+          <Route path="/student/webinar/:id" element={<ProtectedRoute allowedRoles={['STUDENT']}><WebinarRoom userRole="STUDENT" /></ProtectedRoute>} />
 
           {/* University Routes */}
           <Route path="/university/dashboard" element={<ProtectedRoute allowedRoles={['UNIVERSITY']}><UniversityDashboard /></ProtectedRoute>} />
@@ -113,7 +113,7 @@ function App() {
           <Route path="/company/evaluation" element={<ProtectedRoute allowedRoles={['COMPANY_ADMIN']}><CompanyEvaluation /></ProtectedRoute>} />
           <Route path="/company/recording" element={<ProtectedRoute allowedRoles={['COMPANY_ADMIN']}><Recordings userRole="COMPANY" /></ProtectedRoute>} />
           <Route path="/company/ppt" element={<ProtectedRoute allowedRoles={['COMPANY_ADMIN']}><SchedulePPT /></ProtectedRoute>} />
-          <Route path="/company/webinar" element={<ProtectedRoute allowedRoles={['COMPANY_ADMIN']}><WebinarRoom userRole="COMPANY" /></ProtectedRoute>} />
+          <Route path="/company/webinar/:id" element={<ProtectedRoute allowedRoles={['COMPANY_ADMIN']}><WebinarRoom userRole="COMPANY" /></ProtectedRoute>} />
           <Route path="/company/interview" element={<ProtectedRoute allowedRoles={['COMPANY_ADMIN']}><CompanyInterview /></ProtectedRoute>} />
 
           {/* Recruiter Routes */}

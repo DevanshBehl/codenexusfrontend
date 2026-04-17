@@ -58,6 +58,14 @@ export default function CompanyEvaluation() {
         { icon: BarChart3, label: 'ANALYTICS', onClick: () => window.location.href = '/company/dashboard' },
     ];
 
+    const closeModal = () => {
+        setSelectedCandidate(null);
+        setEvaluatorNote('');
+        setTechnicalScore(undefined);
+        setCommunicationScore(undefined);
+        setCultureScore(undefined);
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -107,11 +115,7 @@ export default function CompanyEvaluation() {
                 cultureScore
             }, ...prev]);
             setPendingCandidates(prev => prev.filter(c => c.id !== selectedCandidate.id));
-            setSelectedCandidate(null);
-            setEvaluatorNote('');
-            setTechnicalScore(undefined);
-            setCommunicationScore(undefined);
-            setCultureScore(undefined);
+            closeModal();
         } catch (error) {
             console.error("Failed to submit evaluation", error);
         } finally {
@@ -335,10 +339,16 @@ export default function CompanyEvaluation() {
                                                         const detailRes = await evaluationApi.getEvaluationDetail(candidate.id);
                                                         setSelectedCandidate(detailRes.data);
                                                         setEvaluatorNote(detailRes.data.evaluatorNote || '');
+                                                        setTechnicalScore(detailRes.data.technicalScore);
+                                                        setCommunicationScore(detailRes.data.communicationScore);
+                                                        setCultureScore(detailRes.data.cultureScore);
                                                     } catch (error) {
                                                         console.error("Failed to fetch evaluation detail", error);
                                                         setSelectedCandidate(candidate);
                                                         setEvaluatorNote(candidate.evaluatorNote || '');
+                                                        setTechnicalScore(candidate.technicalScore);
+                                                        setCommunicationScore(candidate.communicationScore);
+                                                        setCultureScore(candidate.cultureScore);
                                                     } finally {
                                                         setDetailLoading(false);
                                                     }
@@ -370,7 +380,7 @@ export default function CompanyEvaluation() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        onClick={() => setSelectedCandidate(null)}
+                        onClick={closeModal}
                         className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 md:p-6"
                     >
                         <motion.div
@@ -386,7 +396,7 @@ export default function CompanyEvaluation() {
                                     <FileText size={16} className="text-accent-400" /> Evaluation Review: {selectedCandidate.student}
                                 </h2>
                                 <button
-                                    onClick={() => setSelectedCandidate(null)}
+                                    onClick={closeModal}
                                     className="p-1.5 bg-[#111] hover:bg-[#222] rounded-sm text-[#666] hover:text-white transition-colors border border-[#333]"
                                 >
                                     <X size={16} />

@@ -194,6 +194,7 @@ export type CompanyWhereInput = {
   recruiters?: Prisma.RecruiterListRelationFilter
   contests?: Prisma.ContestListRelationFilter
   webinars?: Prisma.WebinarListRelationFilter
+  evaluations?: Prisma.EvaluationListRelationFilter
   partnerUniversities?: Prisma.CompanyUniversityListRelationFilter
 }
 
@@ -208,6 +209,7 @@ export type CompanyOrderByWithRelationInput = {
   recruiters?: Prisma.RecruiterOrderByRelationAggregateInput
   contests?: Prisma.ContestOrderByRelationAggregateInput
   webinars?: Prisma.WebinarOrderByRelationAggregateInput
+  evaluations?: Prisma.EvaluationOrderByRelationAggregateInput
   partnerUniversities?: Prisma.CompanyUniversityOrderByRelationAggregateInput
 }
 
@@ -225,6 +227,7 @@ export type CompanyWhereUniqueInput = Prisma.AtLeast<{
   recruiters?: Prisma.RecruiterListRelationFilter
   contests?: Prisma.ContestListRelationFilter
   webinars?: Prisma.WebinarListRelationFilter
+  evaluations?: Prisma.EvaluationListRelationFilter
   partnerUniversities?: Prisma.CompanyUniversityListRelationFilter
 }, "id" | "userId">
 
@@ -262,6 +265,7 @@ export type CompanyCreateInput = {
   recruiters?: Prisma.RecruiterCreateNestedManyWithoutCompanyInput
   contests?: Prisma.ContestCreateNestedManyWithoutCompanyInput
   webinars?: Prisma.WebinarCreateNestedManyWithoutCompanyInput
+  evaluations?: Prisma.EvaluationCreateNestedManyWithoutCompanyInput
   partnerUniversities?: Prisma.CompanyUniversityCreateNestedManyWithoutCompanyInput
 }
 
@@ -275,6 +279,7 @@ export type CompanyUncheckedCreateInput = {
   recruiters?: Prisma.RecruiterUncheckedCreateNestedManyWithoutCompanyInput
   contests?: Prisma.ContestUncheckedCreateNestedManyWithoutCompanyInput
   webinars?: Prisma.WebinarUncheckedCreateNestedManyWithoutCompanyInput
+  evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutCompanyInput
   partnerUniversities?: Prisma.CompanyUniversityUncheckedCreateNestedManyWithoutCompanyInput
 }
 
@@ -288,6 +293,7 @@ export type CompanyUpdateInput = {
   recruiters?: Prisma.RecruiterUpdateManyWithoutCompanyNestedInput
   contests?: Prisma.ContestUpdateManyWithoutCompanyNestedInput
   webinars?: Prisma.WebinarUpdateManyWithoutCompanyNestedInput
+  evaluations?: Prisma.EvaluationUpdateManyWithoutCompanyNestedInput
   partnerUniversities?: Prisma.CompanyUniversityUpdateManyWithoutCompanyNestedInput
 }
 
@@ -301,6 +307,7 @@ export type CompanyUncheckedUpdateInput = {
   recruiters?: Prisma.RecruiterUncheckedUpdateManyWithoutCompanyNestedInput
   contests?: Prisma.ContestUncheckedUpdateManyWithoutCompanyNestedInput
   webinars?: Prisma.WebinarUncheckedUpdateManyWithoutCompanyNestedInput
+  evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutCompanyNestedInput
   partnerUniversities?: Prisma.CompanyUniversityUncheckedUpdateManyWithoutCompanyNestedInput
 }
 
@@ -441,6 +448,20 @@ export type CompanyUpdateOneRequiredWithoutContestsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CompanyUpdateToOneWithWhereWithoutContestsInput, Prisma.CompanyUpdateWithoutContestsInput>, Prisma.CompanyUncheckedUpdateWithoutContestsInput>
 }
 
+export type CompanyCreateNestedOneWithoutEvaluationsInput = {
+  create?: Prisma.XOR<Prisma.CompanyCreateWithoutEvaluationsInput, Prisma.CompanyUncheckedCreateWithoutEvaluationsInput>
+  connectOrCreate?: Prisma.CompanyCreateOrConnectWithoutEvaluationsInput
+  connect?: Prisma.CompanyWhereUniqueInput
+}
+
+export type CompanyUpdateOneRequiredWithoutEvaluationsNestedInput = {
+  create?: Prisma.XOR<Prisma.CompanyCreateWithoutEvaluationsInput, Prisma.CompanyUncheckedCreateWithoutEvaluationsInput>
+  connectOrCreate?: Prisma.CompanyCreateOrConnectWithoutEvaluationsInput
+  upsert?: Prisma.CompanyUpsertWithoutEvaluationsInput
+  connect?: Prisma.CompanyWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CompanyUpdateToOneWithWhereWithoutEvaluationsInput, Prisma.CompanyUpdateWithoutEvaluationsInput>, Prisma.CompanyUncheckedUpdateWithoutEvaluationsInput>
+}
+
 export type CompanyCreateNestedOneWithoutWebinarsInput = {
   create?: Prisma.XOR<Prisma.CompanyCreateWithoutWebinarsInput, Prisma.CompanyUncheckedCreateWithoutWebinarsInput>
   connectOrCreate?: Prisma.CompanyCreateOrConnectWithoutWebinarsInput
@@ -464,6 +485,7 @@ export type CompanyCreateWithoutUserInput = {
   recruiters?: Prisma.RecruiterCreateNestedManyWithoutCompanyInput
   contests?: Prisma.ContestCreateNestedManyWithoutCompanyInput
   webinars?: Prisma.WebinarCreateNestedManyWithoutCompanyInput
+  evaluations?: Prisma.EvaluationCreateNestedManyWithoutCompanyInput
   partnerUniversities?: Prisma.CompanyUniversityCreateNestedManyWithoutCompanyInput
 }
 
@@ -476,6 +498,7 @@ export type CompanyUncheckedCreateWithoutUserInput = {
   recruiters?: Prisma.RecruiterUncheckedCreateNestedManyWithoutCompanyInput
   contests?: Prisma.ContestUncheckedCreateNestedManyWithoutCompanyInput
   webinars?: Prisma.WebinarUncheckedCreateNestedManyWithoutCompanyInput
+  evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutCompanyInput
   partnerUniversities?: Prisma.CompanyUniversityUncheckedCreateNestedManyWithoutCompanyInput
 }
 
@@ -504,6 +527,7 @@ export type CompanyUpdateWithoutUserInput = {
   recruiters?: Prisma.RecruiterUpdateManyWithoutCompanyNestedInput
   contests?: Prisma.ContestUpdateManyWithoutCompanyNestedInput
   webinars?: Prisma.WebinarUpdateManyWithoutCompanyNestedInput
+  evaluations?: Prisma.EvaluationUpdateManyWithoutCompanyNestedInput
   partnerUniversities?: Prisma.CompanyUniversityUpdateManyWithoutCompanyNestedInput
 }
 
@@ -516,6 +540,7 @@ export type CompanyUncheckedUpdateWithoutUserInput = {
   recruiters?: Prisma.RecruiterUncheckedUpdateManyWithoutCompanyNestedInput
   contests?: Prisma.ContestUncheckedUpdateManyWithoutCompanyNestedInput
   webinars?: Prisma.WebinarUncheckedUpdateManyWithoutCompanyNestedInput
+  evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutCompanyNestedInput
   partnerUniversities?: Prisma.CompanyUniversityUncheckedUpdateManyWithoutCompanyNestedInput
 }
 
@@ -529,6 +554,7 @@ export type CompanyCreateWithoutPartnerUniversitiesInput = {
   recruiters?: Prisma.RecruiterCreateNestedManyWithoutCompanyInput
   contests?: Prisma.ContestCreateNestedManyWithoutCompanyInput
   webinars?: Prisma.WebinarCreateNestedManyWithoutCompanyInput
+  evaluations?: Prisma.EvaluationCreateNestedManyWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutPartnerUniversitiesInput = {
@@ -541,6 +567,7 @@ export type CompanyUncheckedCreateWithoutPartnerUniversitiesInput = {
   recruiters?: Prisma.RecruiterUncheckedCreateNestedManyWithoutCompanyInput
   contests?: Prisma.ContestUncheckedCreateNestedManyWithoutCompanyInput
   webinars?: Prisma.WebinarUncheckedCreateNestedManyWithoutCompanyInput
+  evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutPartnerUniversitiesInput = {
@@ -569,6 +596,7 @@ export type CompanyUpdateWithoutPartnerUniversitiesInput = {
   recruiters?: Prisma.RecruiterUpdateManyWithoutCompanyNestedInput
   contests?: Prisma.ContestUpdateManyWithoutCompanyNestedInput
   webinars?: Prisma.WebinarUpdateManyWithoutCompanyNestedInput
+  evaluations?: Prisma.EvaluationUpdateManyWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutPartnerUniversitiesInput = {
@@ -581,6 +609,7 @@ export type CompanyUncheckedUpdateWithoutPartnerUniversitiesInput = {
   recruiters?: Prisma.RecruiterUncheckedUpdateManyWithoutCompanyNestedInput
   contests?: Prisma.ContestUncheckedUpdateManyWithoutCompanyNestedInput
   webinars?: Prisma.WebinarUncheckedUpdateManyWithoutCompanyNestedInput
+  evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutRecruitersInput = {
@@ -592,6 +621,7 @@ export type CompanyCreateWithoutRecruitersInput = {
   user: Prisma.UserCreateNestedOneWithoutCompanyProfileInput
   contests?: Prisma.ContestCreateNestedManyWithoutCompanyInput
   webinars?: Prisma.WebinarCreateNestedManyWithoutCompanyInput
+  evaluations?: Prisma.EvaluationCreateNestedManyWithoutCompanyInput
   partnerUniversities?: Prisma.CompanyUniversityCreateNestedManyWithoutCompanyInput
 }
 
@@ -604,6 +634,7 @@ export type CompanyUncheckedCreateWithoutRecruitersInput = {
   createdAt?: Date | string
   contests?: Prisma.ContestUncheckedCreateNestedManyWithoutCompanyInput
   webinars?: Prisma.WebinarUncheckedCreateNestedManyWithoutCompanyInput
+  evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutCompanyInput
   partnerUniversities?: Prisma.CompanyUniversityUncheckedCreateNestedManyWithoutCompanyInput
 }
 
@@ -632,6 +663,7 @@ export type CompanyUpdateWithoutRecruitersInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutCompanyProfileNestedInput
   contests?: Prisma.ContestUpdateManyWithoutCompanyNestedInput
   webinars?: Prisma.WebinarUpdateManyWithoutCompanyNestedInput
+  evaluations?: Prisma.EvaluationUpdateManyWithoutCompanyNestedInput
   partnerUniversities?: Prisma.CompanyUniversityUpdateManyWithoutCompanyNestedInput
 }
 
@@ -644,6 +676,7 @@ export type CompanyUncheckedUpdateWithoutRecruitersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contests?: Prisma.ContestUncheckedUpdateManyWithoutCompanyNestedInput
   webinars?: Prisma.WebinarUncheckedUpdateManyWithoutCompanyNestedInput
+  evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutCompanyNestedInput
   partnerUniversities?: Prisma.CompanyUniversityUncheckedUpdateManyWithoutCompanyNestedInput
 }
 
@@ -656,6 +689,7 @@ export type CompanyCreateWithoutContestsInput = {
   user: Prisma.UserCreateNestedOneWithoutCompanyProfileInput
   recruiters?: Prisma.RecruiterCreateNestedManyWithoutCompanyInput
   webinars?: Prisma.WebinarCreateNestedManyWithoutCompanyInput
+  evaluations?: Prisma.EvaluationCreateNestedManyWithoutCompanyInput
   partnerUniversities?: Prisma.CompanyUniversityCreateNestedManyWithoutCompanyInput
 }
 
@@ -668,6 +702,7 @@ export type CompanyUncheckedCreateWithoutContestsInput = {
   createdAt?: Date | string
   recruiters?: Prisma.RecruiterUncheckedCreateNestedManyWithoutCompanyInput
   webinars?: Prisma.WebinarUncheckedCreateNestedManyWithoutCompanyInput
+  evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutCompanyInput
   partnerUniversities?: Prisma.CompanyUniversityUncheckedCreateNestedManyWithoutCompanyInput
 }
 
@@ -696,6 +731,7 @@ export type CompanyUpdateWithoutContestsInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutCompanyProfileNestedInput
   recruiters?: Prisma.RecruiterUpdateManyWithoutCompanyNestedInput
   webinars?: Prisma.WebinarUpdateManyWithoutCompanyNestedInput
+  evaluations?: Prisma.EvaluationUpdateManyWithoutCompanyNestedInput
   partnerUniversities?: Prisma.CompanyUniversityUpdateManyWithoutCompanyNestedInput
 }
 
@@ -707,6 +743,75 @@ export type CompanyUncheckedUpdateWithoutContestsInput = {
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recruiters?: Prisma.RecruiterUncheckedUpdateManyWithoutCompanyNestedInput
+  webinars?: Prisma.WebinarUncheckedUpdateManyWithoutCompanyNestedInput
+  evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutCompanyNestedInput
+  partnerUniversities?: Prisma.CompanyUniversityUncheckedUpdateManyWithoutCompanyNestedInput
+}
+
+export type CompanyCreateWithoutEvaluationsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  industry?: string | null
+  createdAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutCompanyProfileInput
+  recruiters?: Prisma.RecruiterCreateNestedManyWithoutCompanyInput
+  contests?: Prisma.ContestCreateNestedManyWithoutCompanyInput
+  webinars?: Prisma.WebinarCreateNestedManyWithoutCompanyInput
+  partnerUniversities?: Prisma.CompanyUniversityCreateNestedManyWithoutCompanyInput
+}
+
+export type CompanyUncheckedCreateWithoutEvaluationsInput = {
+  id?: string
+  userId: string
+  name: string
+  description?: string | null
+  industry?: string | null
+  createdAt?: Date | string
+  recruiters?: Prisma.RecruiterUncheckedCreateNestedManyWithoutCompanyInput
+  contests?: Prisma.ContestUncheckedCreateNestedManyWithoutCompanyInput
+  webinars?: Prisma.WebinarUncheckedCreateNestedManyWithoutCompanyInput
+  partnerUniversities?: Prisma.CompanyUniversityUncheckedCreateNestedManyWithoutCompanyInput
+}
+
+export type CompanyCreateOrConnectWithoutEvaluationsInput = {
+  where: Prisma.CompanyWhereUniqueInput
+  create: Prisma.XOR<Prisma.CompanyCreateWithoutEvaluationsInput, Prisma.CompanyUncheckedCreateWithoutEvaluationsInput>
+}
+
+export type CompanyUpsertWithoutEvaluationsInput = {
+  update: Prisma.XOR<Prisma.CompanyUpdateWithoutEvaluationsInput, Prisma.CompanyUncheckedUpdateWithoutEvaluationsInput>
+  create: Prisma.XOR<Prisma.CompanyCreateWithoutEvaluationsInput, Prisma.CompanyUncheckedCreateWithoutEvaluationsInput>
+  where?: Prisma.CompanyWhereInput
+}
+
+export type CompanyUpdateToOneWithWhereWithoutEvaluationsInput = {
+  where?: Prisma.CompanyWhereInput
+  data: Prisma.XOR<Prisma.CompanyUpdateWithoutEvaluationsInput, Prisma.CompanyUncheckedUpdateWithoutEvaluationsInput>
+}
+
+export type CompanyUpdateWithoutEvaluationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutCompanyProfileNestedInput
+  recruiters?: Prisma.RecruiterUpdateManyWithoutCompanyNestedInput
+  contests?: Prisma.ContestUpdateManyWithoutCompanyNestedInput
+  webinars?: Prisma.WebinarUpdateManyWithoutCompanyNestedInput
+  partnerUniversities?: Prisma.CompanyUniversityUpdateManyWithoutCompanyNestedInput
+}
+
+export type CompanyUncheckedUpdateWithoutEvaluationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recruiters?: Prisma.RecruiterUncheckedUpdateManyWithoutCompanyNestedInput
+  contests?: Prisma.ContestUncheckedUpdateManyWithoutCompanyNestedInput
   webinars?: Prisma.WebinarUncheckedUpdateManyWithoutCompanyNestedInput
   partnerUniversities?: Prisma.CompanyUniversityUncheckedUpdateManyWithoutCompanyNestedInput
 }
@@ -720,6 +825,7 @@ export type CompanyCreateWithoutWebinarsInput = {
   user: Prisma.UserCreateNestedOneWithoutCompanyProfileInput
   recruiters?: Prisma.RecruiterCreateNestedManyWithoutCompanyInput
   contests?: Prisma.ContestCreateNestedManyWithoutCompanyInput
+  evaluations?: Prisma.EvaluationCreateNestedManyWithoutCompanyInput
   partnerUniversities?: Prisma.CompanyUniversityCreateNestedManyWithoutCompanyInput
 }
 
@@ -732,6 +838,7 @@ export type CompanyUncheckedCreateWithoutWebinarsInput = {
   createdAt?: Date | string
   recruiters?: Prisma.RecruiterUncheckedCreateNestedManyWithoutCompanyInput
   contests?: Prisma.ContestUncheckedCreateNestedManyWithoutCompanyInput
+  evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutCompanyInput
   partnerUniversities?: Prisma.CompanyUniversityUncheckedCreateNestedManyWithoutCompanyInput
 }
 
@@ -760,6 +867,7 @@ export type CompanyUpdateWithoutWebinarsInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutCompanyProfileNestedInput
   recruiters?: Prisma.RecruiterUpdateManyWithoutCompanyNestedInput
   contests?: Prisma.ContestUpdateManyWithoutCompanyNestedInput
+  evaluations?: Prisma.EvaluationUpdateManyWithoutCompanyNestedInput
   partnerUniversities?: Prisma.CompanyUniversityUpdateManyWithoutCompanyNestedInput
 }
 
@@ -772,6 +880,7 @@ export type CompanyUncheckedUpdateWithoutWebinarsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recruiters?: Prisma.RecruiterUncheckedUpdateManyWithoutCompanyNestedInput
   contests?: Prisma.ContestUncheckedUpdateManyWithoutCompanyNestedInput
+  evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutCompanyNestedInput
   partnerUniversities?: Prisma.CompanyUniversityUncheckedUpdateManyWithoutCompanyNestedInput
 }
 
@@ -784,6 +893,7 @@ export type CompanyCountOutputType = {
   recruiters: number
   contests: number
   webinars: number
+  evaluations: number
   partnerUniversities: number
 }
 
@@ -791,6 +901,7 @@ export type CompanyCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   recruiters?: boolean | CompanyCountOutputTypeCountRecruitersArgs
   contests?: boolean | CompanyCountOutputTypeCountContestsArgs
   webinars?: boolean | CompanyCountOutputTypeCountWebinarsArgs
+  evaluations?: boolean | CompanyCountOutputTypeCountEvaluationsArgs
   partnerUniversities?: boolean | CompanyCountOutputTypeCountPartnerUniversitiesArgs
 }
 
@@ -828,6 +939,13 @@ export type CompanyCountOutputTypeCountWebinarsArgs<ExtArgs extends runtime.Type
 /**
  * CompanyCountOutputType without action
  */
+export type CompanyCountOutputTypeCountEvaluationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EvaluationWhereInput
+}
+
+/**
+ * CompanyCountOutputType without action
+ */
 export type CompanyCountOutputTypeCountPartnerUniversitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.CompanyUniversityWhereInput
 }
@@ -844,6 +962,7 @@ export type CompanySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   recruiters?: boolean | Prisma.Company$recruitersArgs<ExtArgs>
   contests?: boolean | Prisma.Company$contestsArgs<ExtArgs>
   webinars?: boolean | Prisma.Company$webinarsArgs<ExtArgs>
+  evaluations?: boolean | Prisma.Company$evaluationsArgs<ExtArgs>
   partnerUniversities?: boolean | Prisma.Company$partnerUniversitiesArgs<ExtArgs>
   _count?: boolean | Prisma.CompanyCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["company"]>
@@ -883,6 +1002,7 @@ export type CompanyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   recruiters?: boolean | Prisma.Company$recruitersArgs<ExtArgs>
   contests?: boolean | Prisma.Company$contestsArgs<ExtArgs>
   webinars?: boolean | Prisma.Company$webinarsArgs<ExtArgs>
+  evaluations?: boolean | Prisma.Company$evaluationsArgs<ExtArgs>
   partnerUniversities?: boolean | Prisma.Company$partnerUniversitiesArgs<ExtArgs>
   _count?: boolean | Prisma.CompanyCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -900,6 +1020,7 @@ export type $CompanyPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     recruiters: Prisma.$RecruiterPayload<ExtArgs>[]
     contests: Prisma.$ContestPayload<ExtArgs>[]
     webinars: Prisma.$WebinarPayload<ExtArgs>[]
+    evaluations: Prisma.$EvaluationPayload<ExtArgs>[]
     partnerUniversities: Prisma.$CompanyUniversityPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1307,6 +1428,7 @@ export interface Prisma__CompanyClient<T, Null = never, ExtArgs extends runtime.
   recruiters<T extends Prisma.Company$recruitersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$recruitersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecruiterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   contests<T extends Prisma.Company$contestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$contestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   webinars<T extends Prisma.Company$webinarsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$webinarsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WebinarPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  evaluations<T extends Prisma.Company$evaluationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$evaluationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EvaluationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   partnerUniversities<T extends Prisma.Company$partnerUniversitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$partnerUniversitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CompanyUniversityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1813,6 +1935,30 @@ export type Company$webinarsArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.WebinarScalarFieldEnum | Prisma.WebinarScalarFieldEnum[]
+}
+
+/**
+ * Company.evaluations
+ */
+export type Company$evaluationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Evaluation
+   */
+  select?: Prisma.EvaluationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Evaluation
+   */
+  omit?: Prisma.EvaluationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EvaluationInclude<ExtArgs> | null
+  where?: Prisma.EvaluationWhereInput
+  orderBy?: Prisma.EvaluationOrderByWithRelationInput | Prisma.EvaluationOrderByWithRelationInput[]
+  cursor?: Prisma.EvaluationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EvaluationScalarFieldEnum | Prisma.EvaluationScalarFieldEnum[]
 }
 
 /**

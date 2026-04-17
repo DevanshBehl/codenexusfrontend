@@ -95,11 +95,12 @@ export const updateWebinar = async (userId: string, id: string, data: UpdateWebi
     if (data.status !== undefined) updateData.status = data.status;
 
     if (data.scheduledDate || data.scheduledTime) {
-        // Find existing date/time pieces if only one is updated to reconstruct
-        // For simplicity, we assume either both are updated, or if only one is provided we skip the reconstruction for this stub unless both are provided
-        if (data.scheduledDate && data.scheduledTime) {
-            updateData.scheduledAt = new Date(`${data.scheduledDate}T${data.scheduledTime}:00`);
-        }
+        const iso = webinar.scheduledAt.toISOString();
+        const existingDate = iso.split('T')[0];
+        const existingTime = (iso.split('T')[1] ?? '00:00').substring(0, 5);
+        const date = data.scheduledDate || existingDate;
+        const time = data.scheduledTime || existingTime;
+        updateData.scheduledAt = new Date(`${date}T${time}:00`);
     }
 
     if (data.targetUniversityIds) {
@@ -129,4 +130,104 @@ export const deleteWebinar = async (userId: string, id: string) => {
 
     await prisma.webinar.delete({ where: { id } });
     return { success: true };
+}
+
+export const getWebinarAttendees = async (webinarId: string) => {
+    const webinar = await prisma.webinar.findUnique({ where: { id: webinarId } });
+    if (!webinar) throw new ApiError(404, "Webinar not found");
+
+    return await prisma.webinarAttendee.findMany({
+        where: { webinarId },
+        orderBy: { joinedAt: 'asc' }
+    });
+}
+
+export const joinWebinar = async (webinarId: string, userId: string, role: string = 'VIEWER') => {
+    const webinar = await prisma.webinar.findUnique({ where: { id: webinarId } });
+    if (!webinar) throw new ApiError(404, "Webinar not found");
+
+    const existing = await prisma.webinarAttendee.findUnique({
+        where: { webinarId_userId: { webinarId, userId } }
+    });
+
+    if (existing) {
+        if (existing.leftAt) {
+            return await prisma.webinarAttendee.update({
+                where: { webinarId_userId: { webinarId, userId } },
+                data: { leftAt: null, role }
+            });
+        }
+        return existing;
+    }
+
+    return await prisma.webinarAttendee.create({
+        data: { webinarId, userId, role }
+    });
+}
+
+export const leaveWebinar = async (webinarId: string, userId: string) => {
+    const attendee = await prisma.webinarAttendee.findUnique({
+        where: { webinarId_userId: { webinarId, userId } }
+    });
+    if (!attendee) throw new ApiError(404, "Attendee not found");
+
+    return await prisma.webinarAttendee.update({
+        where: { webinarId_userId: { webinarId, userId } },
+        data: { leftAt: new Date() }
+    });
+}
+
+export const grantPermission = async (webinarId: string, userId: string) => {
+    const webinar = await prisma.webinar.findUnique({ where: { id: webinarId } });
+    if (!webinar) throw new ApiError(404, "Webinar not found");
+
+    const attendee = await prisma.webinarAttendee.findUnique({
+        where: { webinarId_userId: { webinarId, userId } }
+    });
+    if (!attendee) throw new ApiError(404, "Attendee not found");
+
+    return await prisma.webinarAttendee.update({
+        where: { webinarId_userId: { webinarId, userId } },
+        data: { hasPermissionToSpeak: true }
+    });
+}
+
+export const revokePermission = async (webinarId: string, userId: string) => {
+    const webinar = await prisma.webinar.findUnique({ where: { id: webinarId } });
+    if (!webinar) throw new ApiError(404, "Webinar not found");
+
+    const attendee = await prisma.webinarAttendee.findUnique({
+        where: { webinarId_userId: { webinarId, userId } }
+    });
+    if (!attendee) throw new ApiError(404, "Attendee not found");
+
+    return await prisma.webinarAttendee.update({
+        where: { webinarId_userId: { webinarId, userId } },
+        data: { hasPermissionToSpeak: false }
+    });
+}
+
+export const getWebinarMessages = async (webinarId: string) => {
+    const webinar = await prisma.webinar.findUnique({ where: { id: webinarId } });
+    if (!webinar) throw new ApiError(404, "Webinar not found");
+
+    return await prisma.webinarMessage.findMany({
+        where: { webinarId },
+        orderBy: { createdAt: 'asc' }
+    });
+}
+
+export const createWebinarMessage = async (
+    webinarId: string,
+    senderId: string,
+    senderName: string,
+    content: string,
+    isQuestion: boolean = false
+) => {
+    const webinar = await prisma.webinar.findUnique({ where: { id: webinarId } });
+    if (!webinar) throw new ApiError(404, "Webinar not found");
+
+    return await prisma.webinarMessage.create({
+        data: { webinarId, senderId, senderName, content, isQuestion }
+    });
 }

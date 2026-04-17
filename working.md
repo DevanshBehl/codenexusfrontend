@@ -362,17 +362,83 @@ Phase 4 is replacing hardcoded mock data on admin dashboards with real backend A
 
 ---
 
+## Recent Progress (Phase 5 Completed)
+
+Phase 5 completed the webinar live streaming infrastructure using the existing Mediasoup SFU:
+
+### 5.1 — Database Models (Prisma)
+- **Updated:** `backend/prisma/schema.prisma`
+  - Added `WebinarAttendee` model — tracks join/leave, role (PRESENTER/VIEWER), `hasPermissionToSpeak`
+  - Added `WebinarMessage` model — persists chat messages with `isQuestion` flag for Q&A mode
+  - Updated `Webinar` model to include `attendees` and `messages` relations
+
+### 5.2 — Attendance Service & Controller
+- **Updated:** `backend/src/modules/webinar/webinar.service.ts`
+  - Added: `getWebinarAttendees`, `joinWebinar`, `leaveWebinar`, `grantPermission`, `revokePermission`, `getWebinarMessages`, `createWebinarMessage`
+- **Updated:** `backend/src/modules/webinar/webinar.controller.ts`
+  - Added handlers for all new service methods
+- **Updated:** `backend/src/modules/webinar/webinar.routes.ts`
+  - Added routes: `GET /:id/attendees`, `POST /:id/join`, `POST /:id/leave`, `GET /:id/messages`, `POST /:id/messages`
+
+### 5.3 — Webinar Socket Events
+- **Updated:** `backend/src/socket/socket.ts`
+  - Added `join-webinar` — validates user authorization (presenter = company creator, viewer = student from targeted university), records attendance, sends room state
+  - Added `produce-webinar` / `consume-webinar` / `resume-webinar-consumer` — media production/consumption for webinar rooms (separate from interview rooms)
+  - Added `raise-hand` / `lower-hand` — viewer raises/lowers hand; broadcasts to room
+  - Added `grant-permission` / `revoke-permission` — presenter grants/revokes speaking permission; updates DB, kills producers on revoke
+  - Added `end-webinar` — presenter ends webinar; marks COMPLETED in DB, closes all producers
+  - Added `webinar-chat-message` — persists to DB, broadcasts to room
+  - Added `leave-webinar` — records leave time, closes producers, notifies room
+  - Updated `disconnect` handler to also notify webinar rooms
+
+### 5.4 — Frontend API Additions
+- **Updated:** `frontend/src/lib/api.ts`
+  - Added `WebinarAttendee` and `WebinarMessage` interfaces
+  - Added `webinarApi.getMyList()`, `getAttendees()`, `joinWebinar()`, `leaveWebinar()`, `getMessages()`, `postMessage()`
+
+### 5.5 — WebinarList Wired to Real API
+- **Updated:** `frontend/src/pages/shared/WebinarList.tsx`
+  - Replaced `mockPPTs` with real state from `webinarApi.getAll()`
+  - Added loading and empty states
+  - Join button now navigates to `/student/webinar/:id` (webinarId as URL param)
+
+### 5.6 — WebinarRoom Full Rewrite
+- **Rewritten:** `frontend/src/pages/shared/WebinarRoom.tsx`
+  - Now receives `webinarId` from URL params (`useParams`)
+  - Connects to socket.io on mount, emits `join-webinar`
+  - Handles all socket events: peer join/leave, hand raise/lower, permission grant/revoke, chat messages, webinar end
+  - Implements WebRTC media: `enableMedia`/`disableMedia` for mic/camera, `createTransport` for socket signaling
+  - Company (presenter) starts with camera/mic enabled; students start as viewers
+  - Raise hand emits `raise-hand` socket event; host sees hand-raised notification
+  - Chat sends via `webinarApi.postMessage` + socket broadcast
+  - Grant/revoke permission buttons visible only to presenter
+  - End webinar button visible only to presenter
+
+### 5.7 — Route Updates
+- **Updated:** `frontend/src/App.tsx`
+  - Changed `/student/webinar` → `/student/webinar/:id`
+  - Changed `/company/webinar` → `/company/webinar/:id`
+
+### Key Design Decisions
+- **Reuses existing Mediasoup infrastructure** — `createRoomRouter`, `createWebRtcTransport`, `produce`, `consume` all work for webinar rooms; just need webinar-specific prefixes (`webinar-{id}` vs `interview-{id}`)
+- **PRESENTER = company creator** — the company that created the webinar is automatically the presenter
+- **Raise hand → temporary speaking** — when presenter grants permission, student's `hasPermissionToSpeak` flips to true in DB and they can unmute
+
+---
+
 ## Recommended Next Sprint (ordered)
 
-1. Replace hardcoded dashboard data with real API queries (Phase 4).
-2. Plan webinar streaming (likely WebRTC SFU via existing Mediasoup, or nginx-rtmp + HLS) (Phase 5).
-3. ~~Complete CodeArena Features (Phase 3: Leaderboard, Test Cases UI)~~ — **COMPLETED**.
-4. Add refresh tokens, revocation, and basic e2e tests around auth + mail (Phase 6).
+1. ~~Replace hardcoded dashboard data with real API queries (Phase 4).~~ — **MOSTLY COMPLETED** (Company Evaluation wired; University/Recruiter dashboards still need work)
+2. ~~Webinar streaming via Mediasoup SFU (Phase 5).~~ — **COMPLETED**
+3. Add refresh tokens, revocation, and basic e2e tests around auth + mail (Phase 6).
+4. Design Arena end-to-end wiring (Phase 7).
 
 ---
 
 ## TL;DR
 
 - **Foundations are solid:** schema, auth, module layout, mail.
-- **Code Arena is now fully functional** (Phase 3 complete): live leaderboards, submission history with pagination, activity heatmap with real data, contest lifecycle automation.
-- **~60–65% complete overall.** Phase 1 (core broken features), Phase 2 (interview collaboration), and Phase 3 (Code Arena completion) are done. Remaining work: Phase 4 (dashboards), Phase 5 (webinars), Phase 6 (polish/infrastructure).
+- **Code Arena fully functional** (Phase 3): live leaderboards, submission history with pagination, activity heatmap, contest lifecycle automation.
+- **Company Evaluation wired end-to-end** (Phase 4): real API for pending/evaluated candidates, modal fetches full detail with code submissions, SELECTED/REJECTED/HOLD verdicts.
+- **Webinars live streaming complete** (Phase 5): WebRTC broadcast via Mediasoup SFU, attendance tracking, raise-hand Q&A, chat, presenter controls.
+- **~70–75% complete overall.** Phases 1–3 and 5 done. Phase 4 mostly done. Phase 6 (auth hardening), Phase 7 (Design Arena) remain.

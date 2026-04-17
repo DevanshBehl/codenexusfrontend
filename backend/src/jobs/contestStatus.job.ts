@@ -25,7 +25,7 @@ export function startContestStatusJob(): void {
             });
 
             if (upcomingToOngoing.count > 0) {
-                console.log(`[ContestStatus] Fliped ${upcomingToOngoing.count} UPCOMING → ACTIVE`);
+                console.log(`[ContestStatus] Flipped ${upcomingToOngoing.count} UPCOMING → ACTIVE`);
             }
 
             const activeContests = await prisma.contest.findMany({

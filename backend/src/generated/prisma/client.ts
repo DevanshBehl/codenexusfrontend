@@ -127,6 +127,11 @@ export type InterviewRecording = Prisma.InterviewRecordingModel
  */
 export type InterviewMessage = Prisma.InterviewMessageModel
 /**
+ * Model Evaluation
+ * 
+ */
+export type Evaluation = Prisma.EvaluationModel
+/**
  * Model Webinar
  * 
  */
@@ -136,6 +141,16 @@ export type Webinar = Prisma.WebinarModel
  * 
  */
 export type WebinarTargetUniversity = Prisma.WebinarTargetUniversityModel
+/**
+ * Model WebinarAttendee
+ * 
+ */
+export type WebinarAttendee = Prisma.WebinarAttendeeModel
+/**
+ * Model WebinarMessage
+ * 
+ */
+export type WebinarMessage = Prisma.WebinarMessageModel
 /**
  * Model Mail
  * 
