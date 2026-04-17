@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -25,103 +25,21 @@ import {
     Mail,
     Presentation
 } from 'lucide-react';
+import { evaluationApi, type EvaluationCandidate } from '../../lib/api';
 
-/* ────────── Types & Mock Data ────────── */
+/* ────────── Types ────────── */
 type TabType = 'PENDING' | 'EVALUATED';
-
-interface SolvedQuestion {
-    title: string;
-    testCasesPassed: number;
-    totalTestCases: number;
-    codeSubmission: string;
-}
-
-interface EvaluationCandidate {
-    id: string;
-    student: string;
-    university: string;
-    recruiter: string;
-    role: string;
-    date: string;
-    duration: string;
-    rating: number;
-    notes: string;
-    evaluatorNote?: string;
-    status: 'PENDING' | 'SELECTED' | 'REJECTED';
-    questions: SolvedQuestion[];
-}
-
-const mockCandidates: EvaluationCandidate[] = [
-    {
-        id: 'c1',
-        student: 'Kavya Iyer',
-        university: 'IIT Bombay',
-        recruiter: 'John Doe',
-        role: 'Backend Eng.',
-        date: 'Mar 13, 2026',
-        duration: '38 min',
-        rating: 3.5,
-        status: 'PENDING',
-        notes: "Struggled a bit initially with DP but brute force solution worked. We talked through memoization but ran out of time to implement fully.",
-        questions: [
-            {
-                title: 'Climbing Stairs',
-                totalTestCases: 15,
-                testCasesPassed: 10,
-                codeSubmission: "function climbStairs(n) {\n  // TLE on large inputs\n  if (n <= 2) return n;\n  return climbStairs(n - 1) + climbStairs(n - 2);\n}"
-            }
-        ]
-    },
-    {
-        id: 'c2',
-        student: 'Arjun Nair',
-        university: 'BITS Pilani',
-        recruiter: 'Jane Smith',
-        role: 'SDE I',
-        date: 'Mar 12, 2026',
-        duration: '40 min',
-        rating: 2.8,
-        status: 'PENDING',
-        notes: "Candidate was unable to grasp the optimal solution even after several hints. The basic string manipulation question was left incomplete.",
-        questions: [
-            {
-                title: 'Valid Palindrome',
-                totalTestCases: 10,
-                testCasesPassed: 4,
-                codeSubmission: "function isPalindrome(s) {\n  const cleanStr = s.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();\n  // Did not finish two-pointer logic\n  for(let i=0; i<cleanStr.length; i++){\n    \n  }\n}"
-            }
-        ]
-    },
-    {
-        id: 'c3',
-        student: 'Vikram Singh',
-        university: 'NIT Trichy',
-        recruiter: 'John Doe',
-        role: 'Systems Eng.',
-        date: 'Mar 14, 2026',
-        duration: '52 min',
-        rating: 4.8,
-        status: 'SELECTED',
-        notes: "Exceptional knowledge of core CS concepts and systems design. Solved the LRU Cache with perfect concurrency considerations.",
-        evaluatorNote: "Strongly agree with recruiter. Making an offer for Systems Team.",
-        questions: [
-            {
-                title: 'LRU Cache',
-                totalTestCases: 20,
-                testCasesPassed: 20,
-                codeSubmission: "class LRUCache {\n  constructor(capacity) {\n    this.capacity = capacity;\n    this.cache = new Map();\n  }\n  get(key) {\n    if (!this.cache.has(key)) return -1;\n    const val = this.cache.get(key);\n    this.cache.delete(key);\n    this.cache.set(key, val);\n    return val;\n  }\n  put(key, value) {\n    if (this.cache.has(key)) this.cache.delete(key);\n    this.cache.set(key, value);\n    if (this.cache.size > this.capacity) {\n      this.cache.delete(this.cache.keys().next().value);\n    }\n  }\n}"
-            }
-        ]
-    }
-];
 
 export default function CompanyEvaluation() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [activeTab, setActiveTab] = useState<TabType>('PENDING');
     const [searchQuery, setSearchQuery] = useState('');
-    const [candidates, setCandidates] = useState<EvaluationCandidate[]>(mockCandidates);
+    const [pendingCandidates, setPendingCandidates] = useState<EvaluationCandidate[]>([]);
+    const [evaluatedCandidates, setEvaluatedCandidates] = useState<EvaluationCandidate[]>([]);
     const [selectedCandidate, setSelectedCandidate] = useState<EvaluationCandidate | null>(null);
     const [evaluatorNote, setEvaluatorNote] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [submitting, setSubmitting] = useState(false);
 
     const sidebarItems = [
         { icon: Mail, label: 'MAIL', onClick: () => window.location.href = '/company/mail' },
@@ -135,33 +53,65 @@ export default function CompanyEvaluation() {
         { icon: BarChart3, label: 'ANALYTICS', onClick: () => window.location.href = '/company/dashboard' },
     ];
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                const [pendingRes, evaluatedRes] = await Promise.all([
+                    evaluationApi.getCompanyEvaluations('PENDING'),
+                    evaluationApi.getCompanyEvaluations('EVALUATED')
+                ]);
+                setPendingCandidates(pendingRes.data || []);
+                setEvaluatedCandidates(evaluatedRes.data || []);
+            } catch (error) {
+                console.error("Failed to fetch evaluations", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
+
     const getStatusStyle = (status: string) => {
         switch (status) {
             case 'SELECTED': return 'text-green-400 border-green-500/20 bg-green-500/10';
             case 'REJECTED': return 'text-red-400 border-red-500/20 bg-red-500/10';
+            case 'HOLD': return 'text-yellow-400 border-yellow-500/20 bg-yellow-500/10';
             case 'PENDING': return 'text-yellow-400 border-yellow-500/20 bg-yellow-500/10';
             default: return 'text-[#888] border-[#333] bg-[#111]';
         }
     };
 
-    const handleEvaluation = (status: 'SELECTED' | 'REJECTED') => {
+    const handleEvaluation = async (verdict: 'SELECTED' | 'REJECTED') => {
         if (!selectedCandidate) return;
-        setCandidates(prev => prev.map(c => {
-            if (c.id === selectedCandidate.id) {
-                return { ...c, status, evaluatorNote };
-            }
-            return c;
-        }));
-        setSelectedCandidate(null);
-        setEvaluatorNote('');
+        setSubmitting(true);
+        try {
+            await evaluationApi.submitEvaluation(selectedCandidate.id, {
+                verdict,
+                notes: evaluatorNote
+            });
+            setEvaluatedCandidates(prev => [{
+                ...selectedCandidate,
+                status: verdict,
+                evaluatorNote
+            }, ...prev]);
+            setPendingCandidates(prev => prev.filter(c => c.id !== selectedCandidate.id));
+            setSelectedCandidate(null);
+            setEvaluatorNote('');
+        } catch (error) {
+            console.error("Failed to submit evaluation", error);
+        } finally {
+            setSubmitting(false);
+        }
     };
 
-    const displayList = candidates.filter(c => {
-        const matchesTab = activeTab === 'PENDING' ? c.status === 'PENDING' : c.status !== 'PENDING';
+    const allCandidates = activeTab === 'PENDING' ? pendingCandidates : evaluatedCandidates;
+
+    const displayList = allCandidates.filter(c => {
         const matchesSearch = c.student.toLowerCase().includes(searchQuery.toLowerCase()) ||
             c.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
             c.recruiter.toLowerCase().includes(searchQuery.toLowerCase());
-        return matchesTab && matchesSearch;
+        return matchesSearch;
     });
 
     return (
@@ -285,7 +235,7 @@ export default function CompanyEvaluation() {
                             }`}
                         >
                             <FileText size={13} />
-                            Pending Evaluation ({candidates.filter(c => c.status === 'PENDING').length})
+                            Pending Evaluation ({pendingCandidates.length})
                         </button>
                         <button
                             onClick={() => setActiveTab('EVALUATED')}
@@ -296,7 +246,7 @@ export default function CompanyEvaluation() {
                             }`}
                         >
                             <CheckCircle2 size={13} />
-                            Evaluated Students ({candidates.filter(c => c.status !== 'PENDING').length})
+                            Evaluated Students ({evaluatedCandidates.length})
                         </button>
                     </div>
 
@@ -322,62 +272,67 @@ export default function CompanyEvaluation() {
                         </div>
 
                         <div className="divide-y divide-[#1a1a1a]">
-                            {displayList.map((candidate, i) => (
-                                <div key={i} className="flex flex-col md:flex-row md:items-center justify-between p-5 hover:bg-[#050505] transition-colors group cursor-pointer">
-                                    <div className="flex items-start gap-4 flex-1">
-                                        <div className={`w-10 h-10 rounded-sm bg-[#111] border flex items-center justify-center shrink-0 ${candidate.status === 'PENDING' ? 'border-[#333] group-hover:border-accent-500/50 text-[#555] group-hover:text-accent-400' : 'border-[#333] text-[#888]'}`}>
-                                            <FileText size={16} className="transition-colors" />
-                                        </div>
-                                        <div>
-                                            <div className="flex items-center gap-3 mb-1">
-                                                <h4 className="font-sans font-bold text-sm text-white group-hover:text-accent-400 transition-colors">{candidate.student}</h4>
-                                                <span className={`text-[9px] font-mono px-2 py-0.5 border rounded-sm uppercase tracking-widest ${getStatusStyle(candidate.status)}`}>
-                                                    {candidate.status}
-                                                </span>
-                                                {candidate.status !== 'PENDING' && (
-                                                    <div className="flex items-center gap-1">
-                                                        {[...Array(5)].map((_, si) => (
-                                                            <Star key={si} size={10} className={si < Math.floor(candidate.rating) ? 'text-yellow-400 fill-yellow-400' : 'text-[#333]'} />
-                                                        ))}
-                                                    </div>
-                                                )}
-                                            </div>
-                                            <div className="flex items-center gap-3 text-[10px] font-mono text-[#666] uppercase tracking-widest mt-1">
-                                                <span>{candidate.university}</span>
-                                                <span>•</span>
-                                                <span>{candidate.role}</span>
-                                            </div>
-                                            <div className="flex items-center gap-3 text-[10px] font-mono text-[#555] mt-2">
-                                                <span>{candidate.date}</span>
-                                                <span>•</span>
-                                                <span>Recruiter: <span className="text-[#aaa]">{candidate.recruiter}</span></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center gap-4 mt-3 md:mt-0">
-                                        <button 
-                                            onClick={() => {
-                                                setSelectedCandidate(candidate);
-                                                setEvaluatorNote(candidate.evaluatorNote || '');
-                                            }}
-                                            className={`px-4 py-2 bg-[#111] border rounded-sm transition-colors flex items-center gap-2 group/btn ${
-                                                candidate.status === 'PENDING' ? 'border-accent-500/50 hover:bg-accent-500/10 hover:border-accent-500' : 'border-[#333] hover:border-[#555]'
-                                            }`}
-                                        >
-                                            <Search size={14} className={candidate.status === 'PENDING' ? 'text-accent-400' : 'text-[#888]'} />
-                                            <span className={`text-[10px] font-mono uppercase tracking-widest ${
-                                                candidate.status === 'PENDING' ? 'text-accent-400' : 'text-[#aaa]'
-                                            }`}>
-                                                {candidate.status === 'PENDING' ? 'Review & Decide' : 'View Details'}
-                                            </span>
-                                        </button>
-                                    </div>
+                            {loading ? (
+                                <div className="text-center py-16 text-[#555] font-mono text-xs uppercase tracking-widest bg-[#050505]">
+                                    Loading evaluations...
                                 </div>
-                            ))}
-                            {displayList.length === 0 && (
+                            ) : displayList.length === 0 ? (
                                 <div className="text-center py-16 text-[#555] font-mono text-xs uppercase tracking-widest bg-[#050505]">
                                     No candidates found
                                 </div>
+                            ) : (
+                                displayList.map((candidate) => (
+                                    <div key={candidate.id} className="flex flex-col md:flex-row md:items-center justify-between p-5 hover:bg-[#050505] transition-colors group cursor-pointer">
+                                        <div className="flex items-start gap-4 flex-1">
+                                            <div className={`w-10 h-10 rounded-sm bg-[#111] border flex items-center justify-center shrink-0 ${candidate.status === 'PENDING' ? 'border-[#333] group-hover:border-accent-500/50 text-[#555] group-hover:text-accent-400' : 'border-[#333] text-[#888]'}`}>
+                                                <FileText size={16} className="transition-colors" />
+                                            </div>
+                                            <div>
+                                                <div className="flex items-center gap-3 mb-1">
+                                                    <h4 className="font-sans font-bold text-sm text-white group-hover:text-accent-400 transition-colors">{candidate.student}</h4>
+                                                    <span className={`text-[9px] font-mono px-2 py-0.5 border rounded-sm uppercase tracking-widest ${getStatusStyle(candidate.status)}`}>
+                                                        {candidate.status}
+                                                    </span>
+                                                    {candidate.status !== 'PENDING' && (
+                                                        <div className="flex items-center gap-1">
+                                                            {[...Array(5)].map((_, si) => (
+                                                                <Star key={si} size={10} className={si < Math.floor(candidate.rating) ? 'text-yellow-400 fill-yellow-400' : 'text-[#333]'} />
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                <div className="flex items-center gap-3 text-[10px] font-mono text-[#666] uppercase tracking-widest mt-1">
+                                                    <span>{candidate.university}</span>
+                                                    <span>•</span>
+                                                    <span>{candidate.role}</span>
+                                                </div>
+                                                <div className="flex items-center gap-3 text-[10px] font-mono text-[#555] mt-2">
+                                                    <span>{new Date(candidate.date).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                                                    <span>•</span>
+                                                    <span>Recruiter: <span className="text-[#aaa]">{candidate.recruiter}</span></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center gap-4 mt-3 md:mt-0">
+                                            <button 
+                                                onClick={() => {
+                                                    setSelectedCandidate(candidate);
+                                                    setEvaluatorNote(candidate.evaluatorNote || '');
+                                                }}
+                                                className={`px-4 py-2 bg-[#111] border rounded-sm transition-colors flex items-center gap-2 group/btn ${
+                                                    candidate.status === 'PENDING' ? 'border-accent-500/50 hover:bg-accent-500/10 hover:border-accent-500' : 'border-[#333] hover:border-[#555]'
+                                                }`}
+                                            >
+                                                <Search size={14} className={candidate.status === 'PENDING' ? 'text-accent-400' : 'text-[#888]'} />
+                                                <span className={`text-[10px] font-mono uppercase tracking-widest ${
+                                                    candidate.status === 'PENDING' ? 'text-accent-400' : 'text-[#aaa]'
+                                                }`}>
+                                                    {candidate.status === 'PENDING' ? 'Review & Decide' : 'View Details'}
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))
                             )}
                         </div>
                     </div>

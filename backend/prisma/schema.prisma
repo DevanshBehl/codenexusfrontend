@@ -259,6 +259,7 @@ model Interview {
   recording           Recording?
   interviewRecording  InterviewRecording?
   messages            InterviewMessage[]
+  evaluation          Evaluation?
 }
 
 model Recording {
@@ -301,6 +302,28 @@ model InterviewMessage {
   sender    User      @relation(fields: [senderId], references: [id], onDelete: Cascade)
 
   @@index([interviewId, createdAt])
+}
+
+model Evaluation {
+  id                  String    @id @default(uuid())
+  interviewId         String    @unique
+  companyId           String
+  evaluatorId         String?
+  verdict             String    @default("PENDING")
+  rating              Int       @default(0)
+  notes               String?   @db.Text
+  technicalScore      Int?
+  communicationScore  Int?
+  cultureScore        Int?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  interview Interview @relation(fields: [interviewId], references: [id], onDelete: Cascade)
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  evaluator User?     @relation("EvaluationEvaluator", fields: [evaluatorId], references: [id])
+
+  @@index([companyId])
+  @@index([interviewId])
 }
 
 // ==========================================

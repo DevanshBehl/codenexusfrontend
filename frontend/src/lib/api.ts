@@ -219,6 +219,50 @@ export const contestApi = {
     getLeaderboard: (contestId: string) => api.get<any>(`/contests/${contestId}/leaderboard`),
 };
 
+export interface EvaluationCandidate {
+    id: string;
+    student: string;
+    university: string;
+    recruiter: string;
+    role: string;
+    date: string;
+    duration: string;
+    rating: number;
+    notes: string;
+    evaluatorNote?: string;
+    status: 'PENDING' | 'SELECTED' | 'REJECTED' | 'HOLD';
+    questions: {
+        title: string;
+        testCasesPassed: number;
+        totalTestCases: number;
+        codeSubmission: string;
+        language?: string;
+    }[];
+    technicalScore?: number;
+    communicationScore?: number;
+    cultureScore?: number;
+}
+
+export interface SubmitEvaluationPayload {
+    verdict: 'SELECTED' | 'REJECTED' | 'HOLD';
+    notes?: string;
+    rating?: number;
+    technicalScore?: number;
+    communicationScore?: number;
+    cultureScore?: number;
+}
+
+export const evaluationApi = {
+    getCompanyEvaluations: (status?: string) => {
+        const qs = status ? `?status=${status}` : '';
+        return api.get<EvaluationCandidate[]>(`/evaluations/company${qs}`);
+    },
+    getEvaluationDetail: (interviewId: string) =>
+        api.get<EvaluationCandidate>(`/evaluations/company/${interviewId}`),
+    submitEvaluation: (interviewId: string, data: SubmitEvaluationPayload) =>
+        api.patch(`/evaluations/${interviewId}`, data),
+};
+
 // ─── Problem APIs ───
 export interface ProblemListItem {
     id: string;

@@ -210,7 +210,8 @@ export function initSubmissionWorker() {
                 if (problem?.contest) {
                     const contest = problem.contest;
                     const student = await prisma.student.findUnique({
-                        where: { id: submission.studentId }
+                        where: { id: submission.studentId },
+                        include: { user: true }
                     });
                     if (student?.user?.cnid) {
                         const submissions = await prisma.submission.findMany({

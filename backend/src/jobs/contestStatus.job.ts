@@ -28,25 +28,6 @@ export function startContestStatusJob(): void {
                 console.log(`[ContestStatus] Fliped ${upcomingToOngoing.count} UPCOMING → ACTIVE`);
             }
 
-            const ongoingToEnded = await prisma.contest.updateMany({
-                where: {
-                    status: 'ACTIVE',
-                    date: {
-                        lte: new Date(now.getTime() - 2 * 60 * 1000)
-                    }
-                },
-                data: { status: 'COMPLETED' }
-            });
-
-            const endedViaDuration = await prisma.contest.updateMany({
-                where: {
-                    status: 'ACTIVE'
-                },
-                data: {
-                    status: 'COMPLETED'
-                }
-            });
-
             const activeContests = await prisma.contest.findMany({
                 where: { status: 'ACTIVE' },
                 select: { id: true, date: true, durationMins: true }
