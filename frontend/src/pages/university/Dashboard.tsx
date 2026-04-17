@@ -23,24 +23,25 @@ import {
     Clock,
     ArrowUpRight,
     Mail,
-    Presentation
+    Presentation,
+    FileText
 } from 'lucide-react';
 
 const UniversityDashboard = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [studentFilter, setStudentFilter] = useState<'ALL' | 'PLACED' | 'UNPLACED' | 'IN_PROCESS'>('ALL');
     const [searchQuery, setSearchQuery] = useState('');
-
     const sidebarItems = [
         { icon: Mail, label: 'MAIL', onClick: () => window.location.href = '/university/mail' },
         { icon: Presentation, label: 'WEBINARS', onClick: () => window.location.href = '/university/webinars' },
         { icon: Terminal, label: 'CMD CENTER', active: true, onClick: () => window.location.href = '/university/dashboard' },
-        { icon: Building2, label: 'COMPANIES', onClick: () => window.location.href = '/university/dashboard' },
-        { icon: Users, label: 'STUDENTS', onClick: () => window.location.href = '/university/dashboard' },
-        { icon: Briefcase, label: 'PLACEMENTS', onClick: () => window.location.href = '/university/dashboard' },
+        { icon: Building2, label: 'COMPANIES', onClick: () => window.location.href = '/university/profile' },
+        { icon: Users, label: 'STUDENTS', onClick: () => window.location.href = '/university/profile' },
+        { icon: Briefcase, label: 'PLACEMENTS', onClick: () => window.location.href = '/university/profile' },
         { icon: CheckCircle2, label: 'EVALUATIONS', onClick: () => window.location.href = '/university/evaluation' },
-        { icon: BarChart3, label: 'ANALYTICS', onClick: () => window.location.href = '/university/dashboard' },
-        { icon: FileBarChart, label: 'REPORTS', onClick: () => window.location.href = '/university/dashboard' },
+        { icon: BarChart3, label: 'ANALYTICS', onClick: () => window.location.href = '/university/profile' },
+        { icon: FileBarChart, label: 'REPORTS', onClick: () => window.location.href = '/university/profile' },
+        { icon: FileText, label: 'PROFILE', onClick: () => window.location.href = '/university/profile' },
     ];
 
     const students = [

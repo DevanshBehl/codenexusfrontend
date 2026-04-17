@@ -30,6 +30,7 @@ import Mail from './pages/mail/Mail';
 import UniversityEvaluation from './pages/university/Evaluation';
 import AboutDeveloper from './pages/AboutDeveloper';
 import Recordings from './pages/shared/Recordings';
+import StaticProfile from './pages/shared/StaticProfile';
 import type { ReactNode } from 'react';
 
 function ProtectedRoute({ children, allowedRoles }: { children: ReactNode; allowedRoles?: string[] }) {
@@ -98,6 +99,7 @@ function App() {
 
           {/* University Routes */}
           <Route path="/university/dashboard" element={<ProtectedRoute allowedRoles={['UNIVERSITY']}><UniversityDashboard /></ProtectedRoute>} />
+          <Route path="/university/profile" element={<ProtectedRoute allowedRoles={['UNIVERSITY']}><StaticProfile /></ProtectedRoute>} />
           <Route path="/university/mail/*" element={<ProtectedRoute allowedRoles={['UNIVERSITY']}><Mail /></ProtectedRoute>} />
           <Route path="/university/recording" element={<ProtectedRoute allowedRoles={['UNIVERSITY']}><Recordings userRole="UNIVERSITY" /></ProtectedRoute>} />
           <Route path="/university/webinars" element={<ProtectedRoute allowedRoles={['UNIVERSITY']}><WebinarList userRole="UNIVERSITY" /></ProtectedRoute>} />
@@ -105,6 +107,7 @@ function App() {
 
           {/* Company Routes */}
           <Route path="/company/dashboard" element={<ProtectedRoute allowedRoles={['COMPANY_ADMIN']}><CompanyDashboard /></ProtectedRoute>} />
+          <Route path="/company/profile" element={<ProtectedRoute allowedRoles={['COMPANY_ADMIN']}><StaticProfile /></ProtectedRoute>} />
           <Route path="/company/mail/*" element={<ProtectedRoute allowedRoles={['COMPANY_ADMIN']}><Mail /></ProtectedRoute>} />
           <Route path="/company/create-contest" element={<ProtectedRoute allowedRoles={['COMPANY_ADMIN']}><CreateContest /></ProtectedRoute>} />
           <Route path="/company/evaluation" element={<ProtectedRoute allowedRoles={['COMPANY_ADMIN']}><CompanyEvaluation /></ProtectedRoute>} />
@@ -115,6 +118,7 @@ function App() {
 
           {/* Recruiter Routes */}
           <Route path="/recruiter/dashboard" element={<ProtectedRoute allowedRoles={['RECRUITER']}><RecruiterDashboard /></ProtectedRoute>} />
+          <Route path="/recruiter/profile" element={<ProtectedRoute allowedRoles={['RECRUITER']}><StaticProfile /></ProtectedRoute>} />
           <Route path="/recruiter/mail/*" element={<ProtectedRoute allowedRoles={['RECRUITER']}><Mail /></ProtectedRoute>} />
           <Route path="/recruiter/interview" element={<ProtectedRoute allowedRoles={['RECRUITER']}><RecruiterInterview /></ProtectedRoute>} />
           <Route path="/recruiter/interview/:id" element={<ProtectedRoute allowedRoles={['RECRUITER']}><InterviewRoom role="recruiter" /></ProtectedRoute>} />

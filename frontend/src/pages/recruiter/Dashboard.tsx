@@ -259,6 +259,7 @@ export default function RecruiterDashboard() {
         { icon: Terminal, label: 'CMD CENTER', active: true, onClick: () => window.location.href = '/recruiter/dashboard' },
         { icon: Video, label: 'INTERVIEWS', onClick: () => setActiveTab('INTERVIEWS') },
         { icon: Play, label: 'RECORDINGS', onClick: () => setActiveTab('RECORDINGS') },
+        { icon: FileText, label: 'PROFILE', onClick: () => window.location.href = '/recruiter/profile' },
     ];
 
     const filteredInterviews = SCHEDULED_INTERVIEWS.filter(s => {
