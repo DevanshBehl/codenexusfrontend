@@ -13,6 +13,9 @@ import {
 
 const router = Router();
 
+// Public routes — no auth
+router.get("/:cnid/profile", userController.getPublicProfile as RequestHandler);
+
 router.use(authenticate as RequestHandler);
 
 // Get current user profile

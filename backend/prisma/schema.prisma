@@ -52,6 +52,22 @@ model User {
 
   // Evaluations
   evaluations           Evaluation[] @relation("EvaluationEvaluator")
+
+  // Refresh tokens
+  refreshTokens         RefreshToken[]
+}
+
+// Refresh token for auth hardening
+model RefreshToken {
+  id        String   @id @default(uuid())
+  tokenHash String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 // ==========================================
@@ -137,6 +153,7 @@ model Student {
   xiiSchool          String?
   xiiPercentage      String?
   otherInfo          String?  @db.Text
+  avatarUrl          String?
   status             String   @default("AVAILABLE") // PLACED, AVAILABLE
   codeArenaScore     Int      @default(0)
   createdAt          DateTime @default(now())
@@ -159,6 +176,7 @@ model Project {
   techStack   String
   githubLink  String?
   liveLink    String?
+  imageUrl    String?
 
   student Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
 }

@@ -26,6 +26,7 @@ export const createProject = async (userId: string, data: CreateProjectInput) =>
             techStack: data.techStack,
             githubLink: data.githubLink || null,
             liveLink: data.liveLink || null,
+            imageUrl: data.imageUrl || null,
         }
     });
 }
@@ -93,6 +94,7 @@ export const updateProject = async (userId: string, projectId: string, data: Upd
             ...(data.techStack && { techStack: data.techStack }),
             ...(data.githubLink !== undefined && { githubLink: data.githubLink || null }),
             ...(data.liveLink !== undefined && { liveLink: data.liveLink || null }),
+            ...(data.imageUrl !== undefined && { imageUrl: data.imageUrl || null }),
         }
     });
 }

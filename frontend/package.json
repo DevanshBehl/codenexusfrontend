@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
@@ -18,17 +20,20 @@
     "framer-motion": "^12.36.0",
     "lucide-react": "^0.577.0",
     "mediasoup-client": "^3.18.7",
+    "randomcolor": "^0.6.2",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-router-dom": "^7.13.1",
     "socket.io-client": "^4.8.3",
     "tailwind-merge": "^3.5.0",
-    "yjs": "^13.6.14",
     "y-monaco": "^0.1.6",
-    "randomcolor": "^0.6.2"
+    "yjs": "^13.6.14"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
     "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^24.12.0",
     "@types/react": "^19.2.14",
@@ -40,10 +45,12 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.4.0",
+    "jsdom": "^29.0.2",
     "postcss": "^8.5.8",
     "tailwindcss": "^4.2.1",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.56.1",
-    "vite": "^8.0.0"
+    "vite": "^8.0.0",
+    "vitest": "^4.1.4"
   }
 }

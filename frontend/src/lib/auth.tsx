@@ -37,10 +37,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const login = async (data: LoginPayload) => {
         const res = await authApi.login(data);
-        const { user: loggedInUser, token: jwt } = res.data;
+        const { user: loggedInUser, token: jwt, refreshToken } = res.data;
         setUser(loggedInUser);
         setToken(jwt);
         localStorage.setItem('cn_token', jwt);
+        localStorage.setItem('cn_refresh_token', refreshToken);
         localStorage.setItem('cn_user', JSON.stringify(loggedInUser));
     };
 
@@ -50,10 +51,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         await login({ email: data.email, password: data.password });
     };
 
-    const logout = () => {
+    const logout = async () => {
+        try {
+            await authApi.logout();
+        } catch (e) {
+            // proceed with local cleanup even if API fails
+        }
         setUser(null);
         setToken(null);
         localStorage.removeItem('cn_token');
+        localStorage.removeItem('cn_refresh_token');
         localStorage.removeItem('cn_user');
     };
 

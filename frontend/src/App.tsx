@@ -78,6 +78,7 @@ function App() {
           <Route path="/about-developer" element={<AboutDeveloper />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/profile/:cnid" element={<StaticProfile />} />
 
           {/* Student Routes */}
           <Route path="/student/mail/*" element={<ProtectedRoute allowedRoles={['STUDENT']}><Mail /></ProtectedRoute>} />

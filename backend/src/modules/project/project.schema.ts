@@ -7,6 +7,7 @@ export const createProjectSchema = z.object({
         techStack: z.string().min(1, "Tech stack is required"),
         githubLink: z.string().url().optional().or(z.literal("")),
         liveLink: z.string().url().optional().or(z.literal("")),
+        imageUrl: z.string().optional(),
     })
 });
 
@@ -19,6 +20,7 @@ export const updateProjectSchema = z.object({
         techStack: z.string().min(1, "Tech stack is required").optional(),
         githubLink: z.string().url().optional().or(z.literal("")),
         liveLink: z.string().url().optional().or(z.literal("")),
+        imageUrl: z.string().optional(),
     })
 });
 

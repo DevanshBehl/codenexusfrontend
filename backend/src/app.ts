@@ -16,6 +16,8 @@ import caSubmissionsRoutes from "./modules/codearena/submissions.routes.js";
 import caLeaderboardRoutes from "./modules/codearena/leaderboard.routes.js";
 import dashboardRoutes from "./modules/dashboard/dashboard.routes.js";
 import evaluationRoutes from "./modules/evaluation/evaluation.routes.js";
+import uploadRoutes from "./modules/uploads/uploads.routes.js";
+import path from "path";
 
 const app: Application = express();
 app.use(express.json({ limit: '10mb' }));
@@ -41,6 +43,11 @@ app.use("/api/v1/applications", applicationRoutes);
 app.use("/api/v1/mail", mailRoutes);
 app.use("/api/v1/dashboard", dashboardRoutes);
 app.use("/api/v1/evaluations", evaluationRoutes);
+app.use("/api/v1/uploads", uploadRoutes);
+
+// Static file serving for uploads
+app.use("/uploads/avatars", express.static(path.join(process.cwd(), "uploads/avatars")));
+app.use("/uploads/projects", express.static(path.join(process.cwd(), "uploads/projects")));
 
 // Code Arena Endpoints
 app.use("/api/v1/codearena/problems", caProblemsRoutes);

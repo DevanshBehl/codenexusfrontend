@@ -13,7 +13,29 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const result = await authService.loginUser(req.body);
-        res.status(201).json(new ApiResponse(200, result, "User logged in successfully"))
+        res.status(200).json(new ApiResponse(200, result, "User logged in successfully"))
+    } catch (e) {
+        next(e);
+    }
+}
+
+export const refresh = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { refreshToken } = req.body;
+        const result = await authService.refreshAccessToken(refreshToken);
+        res.status(200).json(new ApiResponse(200, result, "Token refreshed successfully"));
+    } catch (e) {
+        next(e);
+    }
+}
+
+export const logout = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { refreshToken } = req.body;
+        if (refreshToken) {
+            await authService.deleteRefreshToken(refreshToken);
+        }
+        res.status(200).json(new ApiResponse(200, null, "Logged out successfully"));
     } catch (e) {
         next(e);
     }

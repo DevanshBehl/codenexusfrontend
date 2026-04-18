@@ -15,8 +15,29 @@ interface ApiErrorResponse {
 }
 
 class ApiClient {
+    private isRefreshing = false;
+    private refreshSubscribers: ((token: string) => void)[] = [];
+
     private getToken(): string | null {
         return localStorage.getItem('cn_token');
+    }
+
+    private getRefreshToken(): string | null {
+        return localStorage.getItem('cn_refresh_token');
+    }
+
+    private setTokens(accessToken: string, refreshToken: string) {
+        localStorage.setItem('cn_token', accessToken);
+        localStorage.setItem('cn_refresh_token', refreshToken);
+    }
+
+    private subscribeTokenRefresh(callback: (token: string) => void) {
+        this.refreshSubscribers.push(callback);
+    }
+
+    private onTokenRefreshed(token: string) {
+        this.refreshSubscribers.forEach(cb => cb(token));
+        this.refreshSubscribers = [];
     }
 
     private async request<T>(
@@ -46,6 +67,72 @@ class ApiClient {
         }
 
         const response = await fetch(`${API_BASE}${path}`, config);
+
+        if (!response.ok && response.status === 401 && requiresAuth) {
+            const refreshToken = this.getRefreshToken();
+            if (!refreshToken) {
+                window.location.href = '/login';
+                throw new ApiRequestError('Session expired', 401);
+            }
+
+            if (this.isRefreshing) {
+                // Queue this request until the in-flight refresh resolves
+                const newToken = await new Promise<string>((resolve, reject) => {
+                    this.subscribeTokenRefresh((token) => resolve(token));
+                    setTimeout(() => reject(new ApiRequestError('Token refresh timeout', 401)), 10000);
+                });
+                const retryResponse = await fetch(`${API_BASE}${path}`, {
+                    ...config,
+                    headers: { ...headers, Authorization: `Bearer ${newToken}` },
+                });
+                const retryJson = await retryResponse.json();
+                if (!retryResponse.ok) {
+                    throw new ApiRequestError(retryJson.message || 'Something went wrong', retryResponse.status, retryJson.errors);
+                }
+                return retryJson as ApiResponse<T>;
+            }
+
+            this.isRefreshing = true;
+            try {
+                const refreshResponse = await fetch(`${API_BASE}/auth/refresh`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ refreshToken }),
+                });
+
+                if (refreshResponse.ok) {
+                    const refreshJson = await refreshResponse.json();
+                    this.setTokens(refreshJson.data.token, refreshJson.data.refreshToken);
+                    this.onTokenRefreshed(refreshJson.data.token);
+                    this.isRefreshing = false;
+
+                    const retryResponse = await fetch(`${API_BASE}${path}`, {
+                        ...config,
+                        headers: { ...headers, Authorization: `Bearer ${refreshJson.data.token}` },
+                    });
+                    const retryJson = await retryResponse.json();
+                    if (!retryResponse.ok) {
+                        throw new ApiRequestError(
+                            retryJson.message || 'Something went wrong',
+                            retryResponse.status,
+                            retryJson.errors
+                        );
+                    }
+                    return retryJson as ApiResponse<T>;
+                } else {
+                    this.isRefreshing = false;
+                    this.refreshSubscribers = [];
+                    localStorage.removeItem('cn_token');
+                    localStorage.removeItem('cn_refresh_token');
+                    localStorage.removeItem('cn_user');
+                    window.location.href = '/login';
+                    throw new ApiRequestError('Session expired', 401);
+                }
+            } catch (e) {
+                this.isRefreshing = false;
+                throw e;
+            }
+        }
 
         const json = await response.json();
 
@@ -108,11 +195,18 @@ export interface AuthUser {
     id: string;
     email: string;
     role: string;
+    cnid?: string;
 }
 
 export interface LoginResponse {
     user: AuthUser;
     token: string;
+    refreshToken: string;
+}
+
+export interface RefreshResponse {
+    token: string;
+    refreshToken: string;
 }
 
 export interface SignupResponse {
@@ -127,6 +221,10 @@ export const authApi = {
         api.post<LoginResponse>('/auth/login', data, false),
     signup: (data: SignupPayload) =>
         api.post<SignupResponse>('/auth/signup', data, false),
+    refresh: (refreshToken: string) =>
+        api.post<RefreshResponse>('/auth/refresh', { refreshToken }, false),
+    logout: () =>
+        api.post('/auth/logout', { refreshToken: localStorage.getItem('cn_refresh_token') }),
 };
 
 // ─── User APIs ───
@@ -154,6 +252,7 @@ export interface StudentProfileData {
     otherInfo: string | null;
     status: string;
     codeArenaScore: number;
+    avatarUrl: string | null;
 }
 
 export interface UserProfile {
@@ -165,6 +264,18 @@ export interface UserProfile {
     profile: StudentProfileData | any;
 }
 
+export interface PublicProfile {
+    id: string;
+    cnid: string;
+    role: string;
+    createdAt: string;
+    profile: any;
+    stats: {
+        codeArenaScore: number | null;
+        problemsSolved: number;
+    };
+}
+
 export const userApi = {
     getMe: () => api.get<UserProfile>('/user/me'),
     getUniversities: () => api.get<{id: string, name: string}[]>('/user/universities'),
@@ -172,6 +283,7 @@ export const userApi = {
     updateStudentProfile: (data: any) => api.patch('/user/profile/student', data),
     createCompanyProfile: (data: any) => api.post('/user/profile/company', data),
     createUniversityProfile: (data: any) => api.post('/user/profile/university', data),
+    getPublicProfile: (cnid: string) => api.get<PublicProfile>(`/user/${cnid}/profile`, false),
 };
 
 // ─── Contest APIs ───
@@ -308,6 +420,7 @@ export interface ProjectItem {
     techStack: string;
     githubLink: string | null;
     liveLink: string | null;
+    imageUrl: string | null;
 }
 
 export interface CreateProjectPayload {
@@ -316,7 +429,41 @@ export interface CreateProjectPayload {
     techStack: string;
     githubLink?: string;
     liveLink?: string;
+    imageUrl?: string;
 }
+
+export const uploadApi = {
+    uploadAvatar: async (file: File) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        const token = localStorage.getItem("cn_token");
+        const response = await fetch("/api/v1/uploads/avatar", {
+            method: "POST",
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+            body: formData,
+        });
+        const json = await response.json();
+        if (!response.ok) {
+            throw new ApiRequestError(json.message || "Upload failed", response.status);
+        }
+        return json as ApiResponse<{ avatarUrl: string }>;
+    },
+    uploadProjectImage: async (file: File) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        const token = localStorage.getItem("cn_token");
+        const response = await fetch("/api/v1/uploads/project-image", {
+            method: "POST",
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+            body: formData,
+        });
+        const json = await response.json();
+        if (!response.ok) {
+            throw new ApiRequestError(json.message || "Upload failed", response.status);
+        }
+        return json as ApiResponse<{ imageUrl: string }>;
+    },
+};
 
 export const projectApi = {
     getMyProjects: () => api.get<ProjectItem[]>('/projects'),

@@ -8,13 +8,18 @@ services:
     container_name: postgres_db
     restart: always
     environment:
-      POSTGRES_USER: devanshbehl
-      POSTGRES_PASSWORD: devansh
-      POSTGRES_DB: codenexus
+      POSTGRES_USER: ${DB_USER:-codenexus}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required}
+      POSTGRES_DB: ${DB_NAME:-codenexus}
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-codenexus} -d ${DB_NAME:-codenexus}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
 
   app-redis:
     image: redis:7-alpine
@@ -33,7 +38,7 @@ services:
     container_name: judge0-server
     restart: unless-stopped
     ports:
-      - "127.0.0.1:2358:2358"          # Bind to localhost ONLY — not publicly accessible
+      - "127.0.0.1:2358:2358"
     environment:
       REDIS_URL: redis://judge0-redis:6379
       POSTGRES_HOST: judge0-postgres
@@ -118,8 +123,54 @@ services:
     networks:
       - judge0-net
 
+  # ============================================================
+  # Application Services
+  # ============================================================
+  backend:
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+    container_name: codenexus-backend
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      NODE_ENV: production
+      PORT: "8000"
+      DATABASE_URL: postgres://${DB_USER:-codenexus}:${DB_PASSWORD}@db:5432/${DB_NAME:-codenexus}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
+      REDIS_URL: redis://app-redis:6379
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:5173}
+    depends_on:
+      db:
+        condition: service_healthy
+      app-redis:
+        condition: service_started
+    volumes:
+      - uploads-data:/app/uploads
+    networks:
+      - app-net
+
+  frontend:
+    build:
+      context: ..
+      dockerfile: frontend/Dockerfile
+    container_name: codenexus-frontend
+    restart: always
+    ports:
+      - "5173:5173"
+    environment:
+      NODE_ENV: production
+      VITE_API_URL: /api
+    depends_on:
+      - backend
+    networks:
+      - app-net
+
 networks:
   judge0-net:
+    driver: bridge
+  app-net:
     driver: bridge
 
 volumes:
@@ -127,3 +178,4 @@ volumes:
   app-redis-data:
   judge0-redis-data:
   judge0-pg-data:
+  uploads-data:

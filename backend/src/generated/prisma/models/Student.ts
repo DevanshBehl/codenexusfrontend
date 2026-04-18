@@ -60,6 +60,7 @@ export type StudentMinAggregateOutputType = {
   xiiSchool: string | null
   xiiPercentage: string | null
   otherInfo: string | null
+  avatarUrl: string | null
   status: string | null
   codeArenaScore: number | null
   createdAt: Date | null
@@ -87,6 +88,7 @@ export type StudentMaxAggregateOutputType = {
   xiiSchool: string | null
   xiiPercentage: string | null
   otherInfo: string | null
+  avatarUrl: string | null
   status: string | null
   codeArenaScore: number | null
   createdAt: Date | null
@@ -114,6 +116,7 @@ export type StudentCountAggregateOutputType = {
   xiiSchool: number
   xiiPercentage: number
   otherInfo: number
+  avatarUrl: number
   status: number
   codeArenaScore: number
   createdAt: number
@@ -155,6 +158,7 @@ export type StudentMinAggregateInputType = {
   xiiSchool?: true
   xiiPercentage?: true
   otherInfo?: true
+  avatarUrl?: true
   status?: true
   codeArenaScore?: true
   createdAt?: true
@@ -182,6 +186,7 @@ export type StudentMaxAggregateInputType = {
   xiiSchool?: true
   xiiPercentage?: true
   otherInfo?: true
+  avatarUrl?: true
   status?: true
   codeArenaScore?: true
   createdAt?: true
@@ -209,6 +214,7 @@ export type StudentCountAggregateInputType = {
   xiiSchool?: true
   xiiPercentage?: true
   otherInfo?: true
+  avatarUrl?: true
   status?: true
   codeArenaScore?: true
   createdAt?: true
@@ -323,6 +329,7 @@ export type StudentGroupByOutputType = {
   xiiSchool: string | null
   xiiPercentage: string | null
   otherInfo: string | null
+  avatarUrl: string | null
   status: string
   codeArenaScore: number
   createdAt: Date
@@ -373,6 +380,7 @@ export type StudentWhereInput = {
   xiiSchool?: Prisma.StringNullableFilter<"Student"> | string | null
   xiiPercentage?: Prisma.StringNullableFilter<"Student"> | string | null
   otherInfo?: Prisma.StringNullableFilter<"Student"> | string | null
+  avatarUrl?: Prisma.StringNullableFilter<"Student"> | string | null
   status?: Prisma.StringFilter<"Student"> | string
   codeArenaScore?: Prisma.IntFilter<"Student"> | number
   createdAt?: Prisma.DateTimeFilter<"Student"> | Date | string
@@ -407,6 +415,7 @@ export type StudentOrderByWithRelationInput = {
   xiiSchool?: Prisma.SortOrderInput | Prisma.SortOrder
   xiiPercentage?: Prisma.SortOrderInput | Prisma.SortOrder
   otherInfo?: Prisma.SortOrderInput | Prisma.SortOrder
+  avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   codeArenaScore?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -444,6 +453,7 @@ export type StudentWhereUniqueInput = Prisma.AtLeast<{
   xiiSchool?: Prisma.StringNullableFilter<"Student"> | string | null
   xiiPercentage?: Prisma.StringNullableFilter<"Student"> | string | null
   otherInfo?: Prisma.StringNullableFilter<"Student"> | string | null
+  avatarUrl?: Prisma.StringNullableFilter<"Student"> | string | null
   status?: Prisma.StringFilter<"Student"> | string
   codeArenaScore?: Prisma.IntFilter<"Student"> | number
   createdAt?: Prisma.DateTimeFilter<"Student"> | Date | string
@@ -478,6 +488,7 @@ export type StudentOrderByWithAggregationInput = {
   xiiSchool?: Prisma.SortOrderInput | Prisma.SortOrder
   xiiPercentage?: Prisma.SortOrderInput | Prisma.SortOrder
   otherInfo?: Prisma.SortOrderInput | Prisma.SortOrder
+  avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   codeArenaScore?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -513,6 +524,7 @@ export type StudentScalarWhereWithAggregatesInput = {
   xiiSchool?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
   xiiPercentage?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
   otherInfo?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
+  avatarUrl?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
   status?: Prisma.StringWithAggregatesFilter<"Student"> | string
   codeArenaScore?: Prisma.IntWithAggregatesFilter<"Student"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Student"> | Date | string
@@ -538,6 +550,7 @@ export type StudentCreateInput = {
   xiiSchool?: string | null
   xiiPercentage?: string | null
   otherInfo?: string | null
+  avatarUrl?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -572,6 +585,7 @@ export type StudentUncheckedCreateInput = {
   xiiSchool?: string | null
   xiiPercentage?: string | null
   otherInfo?: string | null
+  avatarUrl?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -602,6 +616,7 @@ export type StudentUpdateInput = {
   xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -636,6 +651,7 @@ export type StudentUncheckedUpdateInput = {
   xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -668,6 +684,7 @@ export type StudentCreateManyInput = {
   xiiSchool?: string | null
   xiiPercentage?: string | null
   otherInfo?: string | null
+  avatarUrl?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -693,6 +710,7 @@ export type StudentUpdateManyMutationInput = {
   xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -720,6 +738,7 @@ export type StudentUncheckedUpdateManyInput = {
   xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -762,6 +781,7 @@ export type StudentCountOrderByAggregateInput = {
   xiiSchool?: Prisma.SortOrder
   xiiPercentage?: Prisma.SortOrder
   otherInfo?: Prisma.SortOrder
+  avatarUrl?: Prisma.SortOrder
   status?: Prisma.SortOrder
   codeArenaScore?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -795,6 +815,7 @@ export type StudentMaxOrderByAggregateInput = {
   xiiSchool?: Prisma.SortOrder
   xiiPercentage?: Prisma.SortOrder
   otherInfo?: Prisma.SortOrder
+  avatarUrl?: Prisma.SortOrder
   status?: Prisma.SortOrder
   codeArenaScore?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -822,6 +843,7 @@ export type StudentMinOrderByAggregateInput = {
   xiiSchool?: Prisma.SortOrder
   xiiPercentage?: Prisma.SortOrder
   otherInfo?: Prisma.SortOrder
+  avatarUrl?: Prisma.SortOrder
   status?: Prisma.SortOrder
   codeArenaScore?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -1018,6 +1040,7 @@ export type StudentCreateWithoutUserInput = {
   xiiSchool?: string | null
   xiiPercentage?: string | null
   otherInfo?: string | null
+  avatarUrl?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -1050,6 +1073,7 @@ export type StudentUncheckedCreateWithoutUserInput = {
   xiiSchool?: string | null
   xiiPercentage?: string | null
   otherInfo?: string | null
+  avatarUrl?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -1096,6 +1120,7 @@ export type StudentUpdateWithoutUserInput = {
   xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1128,6 +1153,7 @@ export type StudentUncheckedUpdateWithoutUserInput = {
   xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1158,6 +1184,7 @@ export type StudentCreateWithoutUniversityInput = {
   xiiSchool?: string | null
   xiiPercentage?: string | null
   otherInfo?: string | null
+  avatarUrl?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -1190,6 +1217,7 @@ export type StudentUncheckedCreateWithoutUniversityInput = {
   xiiSchool?: string | null
   xiiPercentage?: string | null
   otherInfo?: string | null
+  avatarUrl?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -1251,6 +1279,7 @@ export type StudentScalarWhereInput = {
   xiiSchool?: Prisma.StringNullableFilter<"Student"> | string | null
   xiiPercentage?: Prisma.StringNullableFilter<"Student"> | string | null
   otherInfo?: Prisma.StringNullableFilter<"Student"> | string | null
+  avatarUrl?: Prisma.StringNullableFilter<"Student"> | string | null
   status?: Prisma.StringFilter<"Student"> | string
   codeArenaScore?: Prisma.IntFilter<"Student"> | number
   createdAt?: Prisma.DateTimeFilter<"Student"> | Date | string
@@ -1276,6 +1305,7 @@ export type StudentCreateWithoutProjectsInput = {
   xiiSchool?: string | null
   xiiPercentage?: string | null
   otherInfo?: string | null
+  avatarUrl?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -1309,6 +1339,7 @@ export type StudentUncheckedCreateWithoutProjectsInput = {
   xiiSchool?: string | null
   xiiPercentage?: string | null
   otherInfo?: string | null
+  avatarUrl?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -1354,6 +1385,7 @@ export type StudentUpdateWithoutProjectsInput = {
   xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1387,6 +1419,7 @@ export type StudentUncheckedUpdateWithoutProjectsInput = {
   xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1416,6 +1449,7 @@ export type StudentCreateWithoutRegistrationsInput = {
   xiiSchool?: string | null
   xiiPercentage?: string | null
   otherInfo?: string | null
+  avatarUrl?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -1449,6 +1483,7 @@ export type StudentUncheckedCreateWithoutRegistrationsInput = {
   xiiSchool?: string | null
   xiiPercentage?: string | null
   otherInfo?: string | null
+  avatarUrl?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -1494,6 +1529,7 @@ export type StudentUpdateWithoutRegistrationsInput = {
   xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1527,6 +1563,7 @@ export type StudentUncheckedUpdateWithoutRegistrationsInput = {
   xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1556,6 +1593,7 @@ export type StudentCreateWithoutSubmissionsInput = {
   xiiSchool?: string | null
   xiiPercentage?: string | null
   otherInfo?: string | null
+  avatarUrl?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -1589,6 +1627,7 @@ export type StudentUncheckedCreateWithoutSubmissionsInput = {
   xiiSchool?: string | null
   xiiPercentage?: string | null
   otherInfo?: string | null
+  avatarUrl?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -1634,6 +1673,7 @@ export type StudentUpdateWithoutSubmissionsInput = {
   xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1667,6 +1707,7 @@ export type StudentUncheckedUpdateWithoutSubmissionsInput = {
   xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1696,6 +1737,7 @@ export type StudentCreateWithoutApplicationsInput = {
   xiiSchool?: string | null
   xiiPercentage?: string | null
   otherInfo?: string | null
+  avatarUrl?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -1729,6 +1771,7 @@ export type StudentUncheckedCreateWithoutApplicationsInput = {
   xiiSchool?: string | null
   xiiPercentage?: string | null
   otherInfo?: string | null
+  avatarUrl?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -1774,6 +1817,7 @@ export type StudentUpdateWithoutApplicationsInput = {
   xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1807,6 +1851,7 @@ export type StudentUncheckedUpdateWithoutApplicationsInput = {
   xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1836,6 +1881,7 @@ export type StudentCreateWithoutInterviewsInput = {
   xiiSchool?: string | null
   xiiPercentage?: string | null
   otherInfo?: string | null
+  avatarUrl?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -1869,6 +1915,7 @@ export type StudentUncheckedCreateWithoutInterviewsInput = {
   xiiSchool?: string | null
   xiiPercentage?: string | null
   otherInfo?: string | null
+  avatarUrl?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -1914,6 +1961,7 @@ export type StudentUpdateWithoutInterviewsInput = {
   xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1947,6 +1995,7 @@ export type StudentUncheckedUpdateWithoutInterviewsInput = {
   xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1977,6 +2026,7 @@ export type StudentCreateManyUniversityInput = {
   xiiSchool?: string | null
   xiiPercentage?: string | null
   otherInfo?: string | null
+  avatarUrl?: string | null
   status?: string
   codeArenaScore?: number
   createdAt?: Date | string
@@ -2002,6 +2052,7 @@ export type StudentUpdateWithoutUniversityInput = {
   xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2034,6 +2085,7 @@ export type StudentUncheckedUpdateWithoutUniversityInput = {
   xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2065,6 +2117,7 @@ export type StudentUncheckedUpdateManyWithoutUniversityInput = {
   xiiSchool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xiiPercentage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otherInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   codeArenaScore?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2159,6 +2212,7 @@ export type StudentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   xiiSchool?: boolean
   xiiPercentage?: boolean
   otherInfo?: boolean
+  avatarUrl?: boolean
   status?: boolean
   codeArenaScore?: boolean
   createdAt?: boolean
@@ -2194,6 +2248,7 @@ export type StudentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   xiiSchool?: boolean
   xiiPercentage?: boolean
   otherInfo?: boolean
+  avatarUrl?: boolean
   status?: boolean
   codeArenaScore?: boolean
   createdAt?: boolean
@@ -2223,6 +2278,7 @@ export type StudentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   xiiSchool?: boolean
   xiiPercentage?: boolean
   otherInfo?: boolean
+  avatarUrl?: boolean
   status?: boolean
   codeArenaScore?: boolean
   createdAt?: boolean
@@ -2252,12 +2308,13 @@ export type StudentSelectScalar = {
   xiiSchool?: boolean
   xiiPercentage?: boolean
   otherInfo?: boolean
+  avatarUrl?: boolean
   status?: boolean
   codeArenaScore?: boolean
   createdAt?: boolean
 }
 
-export type StudentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "universityId" | "name" | "age" | "phone" | "branch" | "cgpa" | "specialization" | "gender" | "registrationNumber" | "codeNexusId" | "parentsName" | "parentContactNo" | "parentEmail" | "address" | "xSchool" | "xPercentage" | "xiiSchool" | "xiiPercentage" | "otherInfo" | "status" | "codeArenaScore" | "createdAt", ExtArgs["result"]["student"]>
+export type StudentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "universityId" | "name" | "age" | "phone" | "branch" | "cgpa" | "specialization" | "gender" | "registrationNumber" | "codeNexusId" | "parentsName" | "parentContactNo" | "parentEmail" | "address" | "xSchool" | "xPercentage" | "xiiSchool" | "xiiPercentage" | "otherInfo" | "avatarUrl" | "status" | "codeArenaScore" | "createdAt", ExtArgs["result"]["student"]>
 export type StudentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   university?: boolean | Prisma.UniversityDefaultArgs<ExtArgs>
@@ -2310,6 +2367,7 @@ export type $StudentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     xiiSchool: string | null
     xiiPercentage: string | null
     otherInfo: string | null
+    avatarUrl: string | null
     status: string
     codeArenaScore: number
     createdAt: Date
@@ -2764,6 +2822,7 @@ export interface StudentFieldRefs {
   readonly xiiSchool: Prisma.FieldRef<"Student", 'String'>
   readonly xiiPercentage: Prisma.FieldRef<"Student", 'String'>
   readonly otherInfo: Prisma.FieldRef<"Student", 'String'>
+  readonly avatarUrl: Prisma.FieldRef<"Student", 'String'>
   readonly status: Prisma.FieldRef<"Student", 'String'>
   readonly codeArenaScore: Prisma.FieldRef<"Student", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Student", 'DateTime'>

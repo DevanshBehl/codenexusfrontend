@@ -91,6 +91,7 @@ export const updateStudentProfile = async (userId: string, data: UpdateStudentIn
     if (data.xiiSchool !== undefined) updateData.xiiSchool = data.xiiSchool;
     if (data.xiiPercentage !== undefined) updateData.xiiPercentage = data.xiiPercentage;
     if (data.otherInfo !== undefined) updateData.otherInfo = data.otherInfo;
+    if (data.avatarUrl !== undefined) updateData.avatarUrl = data.avatarUrl;
 
     return await prisma.student.update({
         where: { userId },
@@ -139,4 +140,78 @@ export const getUniversities = async () => {
             name: true,
         }
     });
+}
+
+export const getPublicProfile = async (cnid: string) => {
+    const user = await prisma.user.findUnique({
+        where: { cnid },
+        select: {
+            id: true,
+            cnid: true,
+            role: true,
+            createdAt: true,
+            studentProfile: {
+                select: {
+                    name: true,
+                    branch: true,
+                    cgpa: true,
+                    specialization: true,
+                    university: {
+                        select: { name: true }
+                    },
+                    projects: {
+                        select: {
+                            id: true,
+                            title: true,
+                            description: true,
+                            techStack: true,
+                            githubLink: true,
+                            liveLink: true,
+                            imageUrl: true,
+                        }
+                    },
+                    codeArenaScore: true,
+                    status: true,
+                }
+            },
+            universityProfile: {
+                select: {
+                    name: true,
+                    location: true,
+                    tier: true,
+                }
+            },
+            companyProfile: {
+                select: {
+                    name: true,
+                    industry: true,
+                    description: true,
+                }
+            },
+            recruiterProfile: {
+                select: {
+                    name: true,
+                    company: {
+                        select: { name: true }
+                    }
+                }
+            }
+        }
+    });
+
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+
+    return {
+        id: user.id,
+        cnid: user.cnid,
+        role: user.role,
+        createdAt: user.createdAt,
+        profile: user.studentProfile || user.universityProfile || user.companyProfile || user.recruiterProfile || null,
+        stats: {
+            codeArenaScore: user.studentProfile?.codeArenaScore || null,
+            problemsSolved: 0,
+        }
+    };
 }

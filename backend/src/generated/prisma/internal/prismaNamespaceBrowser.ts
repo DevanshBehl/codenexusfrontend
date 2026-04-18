@@ -52,6 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  RefreshToken: 'RefreshToken',
   University: 'University',
   Company: 'Company',
   CompanyUniversity: 'CompanyUniversity',
@@ -109,6 +110,17 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const RefreshTokenScalarFieldEnum = {
+  id: 'id',
+  tokenHash: 'tokenHash',
+  userId: 'userId',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+} as const
+
+export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]
 
 
 export const UniversityScalarFieldEnum = {
@@ -177,6 +189,7 @@ export const StudentScalarFieldEnum = {
   xiiSchool: 'xiiSchool',
   xiiPercentage: 'xiiPercentage',
   otherInfo: 'otherInfo',
+  avatarUrl: 'avatarUrl',
   status: 'status',
   codeArenaScore: 'codeArenaScore',
   createdAt: 'createdAt'
@@ -192,7 +205,8 @@ export const ProjectScalarFieldEnum = {
   description: 'description',
   techStack: 'techStack',
   githubLink: 'githubLink',
-  liveLink: 'liveLink'
+  liveLink: 'liveLink',
+  imageUrl: 'imageUrl'
 } as const
 
 export type ProjectScalarFieldEnum = (typeof ProjectScalarFieldEnum)[keyof typeof ProjectScalarFieldEnum]

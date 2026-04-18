@@ -55,3 +55,13 @@ export const getUniversities = async (req: Request, res: Response, next: NextFun
         next(e);
     }
 }
+
+export const getPublicProfile = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { cnid } = req.params;
+        const profile = await userService.getPublicProfile(cnid);
+        res.status(200).json(new ApiResponse(200, profile, "Profile fetched successfully"));
+    } catch (e) {
+        next(e);
+    }
+}

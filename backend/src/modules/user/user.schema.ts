@@ -43,6 +43,7 @@ export const updateStudentProfileSchema = z.object({
         xiiSchool: z.string().optional(),
         xiiPercentage: z.string().optional(),
         otherInfo: z.string().optional(),
+        avatarUrl: z.string().optional(),
     })
 });
 
