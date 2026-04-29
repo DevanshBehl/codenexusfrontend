@@ -56,7 +56,7 @@ export default function SchedulePPT() {
     useEffect(() => {
         const fetchWebinars = async () => {
             try {
-                const res = await webinarApi.getAll();
+                const res = await webinarApi.getMyList();
                 const webinars = res.data as any[];
                 setPpts(webinars.map((w: any) => ({
                     id: w.id,

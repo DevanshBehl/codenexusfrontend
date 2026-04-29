@@ -1,4 +1,4 @@
-import { prisma } from "../../lib/prisma.js";
+import { prisma } from "../lib/prisma.js";
 
 const INTERVAL_MS = 60_000;
 

@@ -27,18 +27,21 @@ export type AggregateCompanyUniversity = {
 export type CompanyUniversityMinAggregateOutputType = {
   companyId: string | null
   universityId: string | null
+  status: string | null
   createdAt: Date | null
 }
 
 export type CompanyUniversityMaxAggregateOutputType = {
   companyId: string | null
   universityId: string | null
+  status: string | null
   createdAt: Date | null
 }
 
 export type CompanyUniversityCountAggregateOutputType = {
   companyId: number
   universityId: number
+  status: number
   createdAt: number
   _all: number
 }
@@ -47,18 +50,21 @@ export type CompanyUniversityCountAggregateOutputType = {
 export type CompanyUniversityMinAggregateInputType = {
   companyId?: true
   universityId?: true
+  status?: true
   createdAt?: true
 }
 
 export type CompanyUniversityMaxAggregateInputType = {
   companyId?: true
   universityId?: true
+  status?: true
   createdAt?: true
 }
 
 export type CompanyUniversityCountAggregateInputType = {
   companyId?: true
   universityId?: true
+  status?: true
   createdAt?: true
   _all?: true
 }
@@ -138,6 +144,7 @@ export type CompanyUniversityGroupByArgs<ExtArgs extends runtime.Types.Extension
 export type CompanyUniversityGroupByOutputType = {
   companyId: string
   universityId: string
+  status: string
   createdAt: Date
   _count: CompanyUniversityCountAggregateOutputType | null
   _min: CompanyUniversityMinAggregateOutputType | null
@@ -165,6 +172,7 @@ export type CompanyUniversityWhereInput = {
   NOT?: Prisma.CompanyUniversityWhereInput | Prisma.CompanyUniversityWhereInput[]
   companyId?: Prisma.StringFilter<"CompanyUniversity"> | string
   universityId?: Prisma.StringFilter<"CompanyUniversity"> | string
+  status?: Prisma.StringFilter<"CompanyUniversity"> | string
   createdAt?: Prisma.DateTimeFilter<"CompanyUniversity"> | Date | string
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
   university?: Prisma.XOR<Prisma.UniversityScalarRelationFilter, Prisma.UniversityWhereInput>
@@ -173,6 +181,7 @@ export type CompanyUniversityWhereInput = {
 export type CompanyUniversityOrderByWithRelationInput = {
   companyId?: Prisma.SortOrder
   universityId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   company?: Prisma.CompanyOrderByWithRelationInput
   university?: Prisma.UniversityOrderByWithRelationInput
@@ -185,6 +194,7 @@ export type CompanyUniversityWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.CompanyUniversityWhereInput | Prisma.CompanyUniversityWhereInput[]
   companyId?: Prisma.StringFilter<"CompanyUniversity"> | string
   universityId?: Prisma.StringFilter<"CompanyUniversity"> | string
+  status?: Prisma.StringFilter<"CompanyUniversity"> | string
   createdAt?: Prisma.DateTimeFilter<"CompanyUniversity"> | Date | string
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
   university?: Prisma.XOR<Prisma.UniversityScalarRelationFilter, Prisma.UniversityWhereInput>
@@ -193,6 +203,7 @@ export type CompanyUniversityWhereUniqueInput = Prisma.AtLeast<{
 export type CompanyUniversityOrderByWithAggregationInput = {
   companyId?: Prisma.SortOrder
   universityId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.CompanyUniversityCountOrderByAggregateInput
   _max?: Prisma.CompanyUniversityMaxOrderByAggregateInput
@@ -205,10 +216,12 @@ export type CompanyUniversityScalarWhereWithAggregatesInput = {
   NOT?: Prisma.CompanyUniversityScalarWhereWithAggregatesInput | Prisma.CompanyUniversityScalarWhereWithAggregatesInput[]
   companyId?: Prisma.StringWithAggregatesFilter<"CompanyUniversity"> | string
   universityId?: Prisma.StringWithAggregatesFilter<"CompanyUniversity"> | string
+  status?: Prisma.StringWithAggregatesFilter<"CompanyUniversity"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"CompanyUniversity"> | Date | string
 }
 
 export type CompanyUniversityCreateInput = {
+  status?: string
   createdAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutPartnerUniversitiesInput
   university: Prisma.UniversityCreateNestedOneWithoutPartnerCompaniesInput
@@ -217,10 +230,12 @@ export type CompanyUniversityCreateInput = {
 export type CompanyUniversityUncheckedCreateInput = {
   companyId: string
   universityId: string
+  status?: string
   createdAt?: Date | string
 }
 
 export type CompanyUniversityUpdateInput = {
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutPartnerUniversitiesNestedInput
   university?: Prisma.UniversityUpdateOneRequiredWithoutPartnerCompaniesNestedInput
@@ -229,22 +244,26 @@ export type CompanyUniversityUpdateInput = {
 export type CompanyUniversityUncheckedUpdateInput = {
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
   universityId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type CompanyUniversityCreateManyInput = {
   companyId: string
   universityId: string
+  status?: string
   createdAt?: Date | string
 }
 
 export type CompanyUniversityUpdateManyMutationInput = {
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type CompanyUniversityUncheckedUpdateManyInput = {
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
   universityId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -266,18 +285,21 @@ export type CompanyUniversityCompanyIdUniversityIdCompoundUniqueInput = {
 export type CompanyUniversityCountOrderByAggregateInput = {
   companyId?: Prisma.SortOrder
   universityId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type CompanyUniversityMaxOrderByAggregateInput = {
   companyId?: Prisma.SortOrder
   universityId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type CompanyUniversityMinOrderByAggregateInput = {
   companyId?: Prisma.SortOrder
   universityId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -366,12 +388,14 @@ export type CompanyUniversityUncheckedUpdateManyWithoutCompanyNestedInput = {
 }
 
 export type CompanyUniversityCreateWithoutUniversityInput = {
+  status?: string
   createdAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutPartnerUniversitiesInput
 }
 
 export type CompanyUniversityUncheckedCreateWithoutUniversityInput = {
   companyId: string
+  status?: string
   createdAt?: Date | string
 }
 
@@ -407,16 +431,19 @@ export type CompanyUniversityScalarWhereInput = {
   NOT?: Prisma.CompanyUniversityScalarWhereInput | Prisma.CompanyUniversityScalarWhereInput[]
   companyId?: Prisma.StringFilter<"CompanyUniversity"> | string
   universityId?: Prisma.StringFilter<"CompanyUniversity"> | string
+  status?: Prisma.StringFilter<"CompanyUniversity"> | string
   createdAt?: Prisma.DateTimeFilter<"CompanyUniversity"> | Date | string
 }
 
 export type CompanyUniversityCreateWithoutCompanyInput = {
+  status?: string
   createdAt?: Date | string
   university: Prisma.UniversityCreateNestedOneWithoutPartnerCompaniesInput
 }
 
 export type CompanyUniversityUncheckedCreateWithoutCompanyInput = {
   universityId: string
+  status?: string
   createdAt?: Date | string
 }
 
@@ -448,41 +475,49 @@ export type CompanyUniversityUpdateManyWithWhereWithoutCompanyInput = {
 
 export type CompanyUniversityCreateManyUniversityInput = {
   companyId: string
+  status?: string
   createdAt?: Date | string
 }
 
 export type CompanyUniversityUpdateWithoutUniversityInput = {
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutPartnerUniversitiesNestedInput
 }
 
 export type CompanyUniversityUncheckedUpdateWithoutUniversityInput = {
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type CompanyUniversityUncheckedUpdateManyWithoutUniversityInput = {
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type CompanyUniversityCreateManyCompanyInput = {
   universityId: string
+  status?: string
   createdAt?: Date | string
 }
 
 export type CompanyUniversityUpdateWithoutCompanyInput = {
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   university?: Prisma.UniversityUpdateOneRequiredWithoutPartnerCompaniesNestedInput
 }
 
 export type CompanyUniversityUncheckedUpdateWithoutCompanyInput = {
   universityId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type CompanyUniversityUncheckedUpdateManyWithoutCompanyInput = {
   universityId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -491,6 +526,7 @@ export type CompanyUniversityUncheckedUpdateManyWithoutCompanyInput = {
 export type CompanyUniversitySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   companyId?: boolean
   universityId?: boolean
+  status?: boolean
   createdAt?: boolean
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   university?: boolean | Prisma.UniversityDefaultArgs<ExtArgs>
@@ -499,6 +535,7 @@ export type CompanyUniversitySelect<ExtArgs extends runtime.Types.Extensions.Int
 export type CompanyUniversitySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   companyId?: boolean
   universityId?: boolean
+  status?: boolean
   createdAt?: boolean
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   university?: boolean | Prisma.UniversityDefaultArgs<ExtArgs>
@@ -507,6 +544,7 @@ export type CompanyUniversitySelectCreateManyAndReturn<ExtArgs extends runtime.T
 export type CompanyUniversitySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   companyId?: boolean
   universityId?: boolean
+  status?: boolean
   createdAt?: boolean
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   university?: boolean | Prisma.UniversityDefaultArgs<ExtArgs>
@@ -515,10 +553,11 @@ export type CompanyUniversitySelectUpdateManyAndReturn<ExtArgs extends runtime.T
 export type CompanyUniversitySelectScalar = {
   companyId?: boolean
   universityId?: boolean
+  status?: boolean
   createdAt?: boolean
 }
 
-export type CompanyUniversityOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"companyId" | "universityId" | "createdAt", ExtArgs["result"]["companyUniversity"]>
+export type CompanyUniversityOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"companyId" | "universityId" | "status" | "createdAt", ExtArgs["result"]["companyUniversity"]>
 export type CompanyUniversityInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   university?: boolean | Prisma.UniversityDefaultArgs<ExtArgs>
@@ -541,6 +580,7 @@ export type $CompanyUniversityPayload<ExtArgs extends runtime.Types.Extensions.I
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     companyId: string
     universityId: string
+    status: string
     createdAt: Date
   }, ExtArgs["result"]["companyUniversity"]>
   composites: {}
@@ -969,6 +1009,7 @@ export interface Prisma__CompanyUniversityClient<T, Null = never, ExtArgs extend
 export interface CompanyUniversityFieldRefs {
   readonly companyId: Prisma.FieldRef<"CompanyUniversity", 'String'>
   readonly universityId: Prisma.FieldRef<"CompanyUniversity", 'String'>
+  readonly status: Prisma.FieldRef<"CompanyUniversity", 'String'>
   readonly createdAt: Prisma.FieldRef<"CompanyUniversity", 'DateTime'>
 }
     

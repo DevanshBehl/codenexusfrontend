@@ -17,6 +17,7 @@ import caLeaderboardRoutes from "./modules/codearena/leaderboard.routes.js";
 import dashboardRoutes from "./modules/dashboard/dashboard.routes.js";
 import evaluationRoutes from "./modules/evaluation/evaluation.routes.js";
 import uploadRoutes from "./modules/uploads/uploads.routes.js";
+import partnershipRoutes from "./modules/partnership/partnership.routes.js";
 import path from "path";
 
 const app: Application = express();
@@ -44,6 +45,7 @@ app.use("/api/v1/mail", mailRoutes);
 app.use("/api/v1/dashboard", dashboardRoutes);
 app.use("/api/v1/evaluations", evaluationRoutes);
 app.use("/api/v1/uploads", uploadRoutes);
+app.use("/api/v1/partnerships", partnershipRoutes);
 
 // Static file serving for uploads
 app.use("/uploads/avatars", express.static(path.join(process.cwd(), "uploads/avatars")));

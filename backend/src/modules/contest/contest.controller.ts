@@ -24,6 +24,15 @@ export const getContests = async (req: Request, res: Response, next: NextFunctio
     }
 }
 
+export const getMyContests = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const contests = await contestService.getContests(req.user!.id as string);
+        res.status(200).json(new ApiResponse(200, contests, "Company contests fetched successfully"));
+    } catch (e) {
+        next(e);
+    }
+}
+
 export const getContestById = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const contest = await contestService.getContestById(req.params.id as string);

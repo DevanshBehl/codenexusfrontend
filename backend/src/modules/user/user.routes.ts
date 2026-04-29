@@ -26,7 +26,7 @@ router.get("/universities", userController.getUniversities as RequestHandler);
 
 // Student profile
 router.post("/profile/student", authorize(['STUDENT']) as RequestHandler,
-    validate(createStundetProfileSchema) as RequestHandler,
+    validate(createStudentProfileSchema) as RequestHandler,
     userController.setupStudentProfile as RequestHandler
 )
 router.patch("/profile/student", authorize(['STUDENT']) as RequestHandler,

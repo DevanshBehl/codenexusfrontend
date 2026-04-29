@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { dashboardApi, type CompanyDashboardData } from '../../lib/api';
+import { dashboardApi, partnershipApi, type CompanyDashboardData } from '../../lib/api';
 import {
     Terminal,
     Building2,
@@ -36,12 +36,36 @@ const CompanyDashboard = () => {
     const [studentFilter, setStudentFilter] = useState<StudentFilter>('ALL');
     const [searchQuery, setSearchQuery] = useState('');
     const [data, setData] = useState<CompanyDashboardData | null>(null);
+    const [showAddUniModal, setShowAddUniModal] = useState(false);
+    const [allUniversities, setAllUniversities] = useState<any[]>([]);
+    const [sendingRequest, setSendingRequest] = useState<string | null>(null);
 
-    useEffect(() => {
+    const fetchDashboard = () => {
         dashboardApi.company()
             .then(res => setData(res.data))
             .catch(() => { });
-    }, []);
+    };
+
+    useEffect(() => { fetchDashboard(); }, []);
+
+    const openAddUniModal = async () => {
+        setShowAddUniModal(true);
+        try {
+            const res = await partnershipApi.getUniversities();
+            setAllUniversities(res.data);
+        } catch { }
+    };
+
+    const handleSendRequest = async (universityId: string) => {
+        setSendingRequest(universityId);
+        try {
+            await partnershipApi.sendRequest(universityId);
+            const res = await partnershipApi.getUniversities();
+            setAllUniversities(res.data);
+            fetchDashboard();
+        } catch { }
+        setSendingRequest(null);
+    };
 
     const sidebarItems = [
         { icon: Mail, label: 'MAIL', onClick: () => window.location.href = '/company/mail' },
@@ -273,6 +297,12 @@ const CompanyDashboard = () => {
                                             <Building2 size={16} className="text-[#888]" />
                                             Partner Universities
                                         </h3>
+                                        <button
+                                            onClick={openAddUniModal}
+                                            className="flex items-center gap-2 px-3 py-1.5 bg-accent-500/10 border border-accent-500/30 text-accent-400 text-[10px] font-mono uppercase tracking-widest hover:bg-accent-500/20 transition-colors rounded-sm"
+                                        >
+                                            <Plus size={12} /> Add University
+                                        </button>
                                     </div>
 
                                     <div className="divide-y divide-[#1a1a1a]">
@@ -503,6 +533,65 @@ const CompanyDashboard = () => {
                     </AnimatePresence>
                 </div>
             </main>
+
+            <AnimatePresence>
+                {showAddUniModal && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
+                        onClick={() => setShowAddUniModal(false)}
+                    >
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="bg-[#0A0A0A] border border-[#333] rounded-sm w-full max-w-lg max-h-[80vh] flex flex-col"
+                        >
+                            <div className="flex justify-between items-center p-6 border-b border-[#222]">
+                                <h3 className="text-sm font-bold font-sans uppercase tracking-widest text-white">Send Partnership Request</h3>
+                                <button onClick={() => setShowAddUniModal(false)} className="text-[#666] hover:text-white text-lg">&times;</button>
+                            </div>
+                            <div className="flex-1 overflow-y-auto divide-y divide-[#1a1a1a] custom-scrollbar">
+                                {allUniversities.map((uni) => (
+                                    <div key={uni.id} className="flex items-center justify-between p-4 hover:bg-[#111] transition-colors">
+                                        <div>
+                                            <h4 className="font-sans font-bold text-sm text-white">{uni.name}</h4>
+                                            <p className="text-[10px] font-mono text-[#666] mt-0.5">{uni.location} &middot; Tier {uni.tier} &middot; {uni.studentCount} students</p>
+                                        </div>
+                                        {uni.partnershipStatus === 'APPROVED' ? (
+                                            <span className="text-[9px] font-mono px-2 py-1 border border-green-500/20 text-green-400 bg-green-500/10 rounded-sm uppercase tracking-widest">Approved</span>
+                                        ) : uni.partnershipStatus === 'PENDING' ? (
+                                            <span className="text-[9px] font-mono px-2 py-1 border border-yellow-500/20 text-yellow-400 bg-yellow-500/10 rounded-sm uppercase tracking-widest">Pending</span>
+                                        ) : uni.partnershipStatus === 'REJECTED' ? (
+                                            <button
+                                                onClick={() => handleSendRequest(uni.id)}
+                                                disabled={sendingRequest === uni.id}
+                                                className="text-[9px] font-mono px-3 py-1.5 border border-accent-500/30 text-accent-400 bg-accent-500/10 rounded-sm uppercase tracking-widest hover:bg-accent-500/20 transition-colors disabled:opacity-50"
+                                            >
+                                                {sendingRequest === uni.id ? 'Sending...' : 'Re-request'}
+                                            </button>
+                                        ) : (
+                                            <button
+                                                onClick={() => handleSendRequest(uni.id)}
+                                                disabled={sendingRequest === uni.id}
+                                                className="text-[9px] font-mono px-3 py-1.5 border border-accent-500/30 text-accent-400 bg-accent-500/10 rounded-sm uppercase tracking-widest hover:bg-accent-500/20 transition-colors disabled:opacity-50"
+                                            >
+                                                {sendingRequest === uni.id ? 'Sending...' : 'Send Request'}
+                                            </button>
+                                        )}
+                                    </div>
+                                ))}
+                                {allUniversities.length === 0 && (
+                                    <div className="text-center py-12 text-[#555] font-mono text-xs uppercase tracking-widest">Loading universities...</div>
+                                )}
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             <style dangerouslySetInnerHTML={{
                 __html: `

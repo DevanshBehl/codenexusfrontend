@@ -215,9 +215,25 @@ export const getStudentsForScheduling = async (userId: string, role: string) => 
         throw new ApiError(403, "Not authorized to access students");
     }
 
-    // For simplicity, returning all available students
+    let companyId: string;
+    if (role === "COMPANY_ADMIN") {
+        const company = await prisma.company.findUnique({ where: { userId } });
+        if (!company) throw new ApiError(404, "Company not found");
+        companyId = company.id;
+    } else {
+        const recruiter = await prisma.recruiter.findUnique({ where: { userId }, select: { companyId: true } });
+        if (!recruiter) throw new ApiError(404, "Recruiter not found");
+        companyId = recruiter.companyId;
+    }
+
+    const approvedUnis = await prisma.companyUniversity.findMany({
+        where: { companyId, status: "APPROVED" },
+        select: { universityId: true },
+    });
+    const universityIds = approvedUnis.map((u) => u.universityId);
+
     return await prisma.student.findMany({
-        where: { status: "AVAILABLE" },
+        where: { status: "AVAILABLE", universityId: { in: universityIds } },
         select: {
             id: true,
             name: true,

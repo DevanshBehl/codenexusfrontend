@@ -9,6 +9,14 @@ const router = Router();
 
 // Public routes - list and get contests
 router.get("/", contestController.getContests as RequestHandler);
+
+// Company's own contests
+router.get("/my",
+    authenticate as RequestHandler,
+    authorize(["COMPANY_ADMIN"]) as RequestHandler,
+    contestController.getMyContests as RequestHandler
+);
+
 router.get("/:id", contestController.getContestById as RequestHandler);
 
 // Protected routes - register for contest (STUDENT only)

@@ -324,6 +324,7 @@ export interface CreateContestPayload {
 
 export const contestApi = {
     getAll: () => api.get<ContestListItem[]>('/contests', false),
+    getMy: () => api.get<ContestListItem[]>('/contests/my'),
     getById: (id: string) => api.get<any>(`/contests/${id}`, false),
     create: (data: CreateContestPayload) => api.post('/contests', data),
     register: (contestId: string) => api.post(`/contests/${contestId}/register`, {}),
@@ -822,6 +823,13 @@ export interface UniversityDashboardData {
         scheduledAt: string;
         durationMins: number;
     }[];
+    pendingRequests: {
+        companyId: string;
+        companyName: string;
+        industry: string;
+        description: string | null;
+        requestedAt: string;
+    }[];
 }
 
 export interface RecruiterDashboardData {
@@ -882,4 +890,12 @@ export const dashboardApi = {
     company: () => api.get<CompanyDashboardData>('/dashboard/company'),
     university: () => api.get<UniversityDashboardData>('/dashboard/university'),
     recruiter: () => api.get<RecruiterDashboardData>('/dashboard/recruiter'),
+};
+
+export const partnershipApi = {
+    getUniversities: () => api.get<any[]>('/partnerships/universities'),
+    sendRequest: (universityId: string) => api.post('/partnerships/request', { universityId }),
+    getPending: () => api.get<any[]>('/partnerships/pending'),
+    approve: (companyId: string) => api.patch(`/partnerships/${companyId}/approve`, {}),
+    reject: (companyId: string) => api.patch(`/partnerships/${companyId}/reject`, {}),
 };

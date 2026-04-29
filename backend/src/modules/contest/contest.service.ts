@@ -52,8 +52,15 @@ export const createContest = async (userId: string, data: CreateContestInput) =>
     });
 }
 
-export const getContests = async () => {
+export const getContests = async (companyUserId?: string) => {
+    const where: any = {};
+    if (companyUserId) {
+        const company = await prisma.company.findUnique({ where: { userId: companyUserId } });
+        if (company) where.companyId = company.id;
+    }
+
     const contests = await prisma.contest.findMany({
+        where,
         include: {
             company: {
                 select: {

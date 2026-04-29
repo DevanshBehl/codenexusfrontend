@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { dashboardApi, type UniversityDashboardData } from '../../lib/api';
+import { dashboardApi, partnershipApi, type UniversityDashboardData } from '../../lib/api';
 import {
     Terminal,
     Building2,
@@ -33,12 +33,25 @@ const UniversityDashboard = () => {
     const [studentFilter, setStudentFilter] = useState<'ALL' | 'PLACED' | 'AVAILABLE'>('ALL');
     const [searchQuery, setSearchQuery] = useState('');
     const [data, setData] = useState<UniversityDashboardData | null>(null);
+    const [processingRequest, setProcessingRequest] = useState<string | null>(null);
 
-    useEffect(() => {
+    const fetchDashboard = () => {
         dashboardApi.university()
             .then(res => setData(res.data))
             .catch(() => { });
-    }, []);
+    };
+
+    useEffect(() => { fetchDashboard(); }, []);
+
+    const handlePartnership = async (companyId: string, action: 'approve' | 'reject') => {
+        setProcessingRequest(companyId);
+        try {
+            if (action === 'approve') await partnershipApi.approve(companyId);
+            else await partnershipApi.reject(companyId);
+            fetchDashboard();
+        } catch { }
+        setProcessingRequest(null);
+    };
 
     const sidebarItems = [
         { icon: Mail, label: 'MAIL', onClick: () => window.location.href = '/university/mail' },
@@ -403,6 +416,46 @@ const UniversityDashboard = () => {
 
                         {/* Right Column */}
                         <div className="space-y-6 flex flex-col">
+
+                            {/* Partnership Requests */}
+                            {data?.pendingRequests?.length > 0 && (
+                                <div className="bg-[#0A0A0A] border border-accent-500/30 p-6 rounded-sm">
+                                    <div className="flex justify-between items-center mb-4 pb-4 border-b border-[#222]">
+                                        <h3 className="text-sm font-bold font-sans uppercase tracking-widest text-white flex items-center gap-2">
+                                            <Bell size={16} className="text-accent-400" />
+                                            Partnership Requests
+                                            <span className="text-[9px] font-mono px-1.5 py-0.5 bg-accent-500/20 border border-accent-500/30 text-accent-400 rounded-sm">
+                                                {data?.pendingRequests.length}
+                                            </span>
+                                        </h3>
+                                    </div>
+                                    <div className="space-y-3">
+                                        {data?.pendingRequests.map((req: any) => (
+                                            <div key={req.companyId} className="p-4 bg-[#050505] border border-[#222] rounded-sm">
+                                                <h4 className="font-sans font-bold text-sm text-white">{req.companyName}</h4>
+                                                <p className="text-[10px] font-mono text-[#666] mt-0.5 uppercase tracking-widest">{req.industry}</p>
+                                                {req.description && <p className="text-[10px] font-mono text-[#555] mt-1">{req.description}</p>}
+                                                <div className="flex gap-2 mt-3">
+                                                    <button
+                                                        onClick={() => handlePartnership(req.companyId, 'approve')}
+                                                        disabled={processingRequest === req.companyId}
+                                                        className="flex-1 text-[9px] font-mono uppercase tracking-widest px-3 py-1.5 bg-green-500/10 border border-green-500/30 text-green-400 rounded-sm hover:bg-green-500/20 transition-colors disabled:opacity-50"
+                                                    >
+                                                        {processingRequest === req.companyId ? '...' : 'Approve'}
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handlePartnership(req.companyId, 'reject')}
+                                                        disabled={processingRequest === req.companyId}
+                                                        className="flex-1 text-[9px] font-mono uppercase tracking-widest px-3 py-1.5 bg-red-500/10 border border-red-500/30 text-red-400 rounded-sm hover:bg-red-500/20 transition-colors disabled:opacity-50"
+                                                    >
+                                                        {processingRequest === req.companyId ? '...' : 'Reject'}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
 
                             {/* Upcoming Webinars */}
                             <div className="bg-[#0A0A0A] border border-[#222] p-6 rounded-sm flex-1">

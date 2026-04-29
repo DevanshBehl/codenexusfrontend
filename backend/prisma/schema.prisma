@@ -111,6 +111,7 @@ model Company {
 model CompanyUniversity {
   companyId    String
   universityId String
+  status       String   @default("PENDING") // PENDING, APPROVED, REJECTED
   createdAt    DateTime @default(now())
 
   company    Company    @relation(fields: [companyId], references: [id], onDelete: Cascade)

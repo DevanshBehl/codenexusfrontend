@@ -184,7 +184,7 @@ async function main() {
     console.log('Creating company-university partnerships...');
     for (const c of companies) {
         for (const u of universities) {
-            await prisma.companyUniversity.create({ data: { companyId: c.profile.id, universityId: u.profile.id } });
+            await prisma.companyUniversity.create({ data: { companyId: c.profile.id, universityId: u.profile.id, status: 'APPROVED' } });
         }
     }
 
@@ -522,7 +522,7 @@ async function main() {
         },
     });
     // demo company
-    await prisma.user.create({
+    const demoCompany = await prisma.user.create({
         data: {
             email: 'company@demo.in',
             password: passwordHash,
@@ -530,6 +530,7 @@ async function main() {
             cnid: randomCnid('COM'),
             companyProfile: { create: { name: 'Demo Tech Pvt. Ltd.', description: 'Demo company for testing.', industry: 'Technology' } },
         },
+        include: { companyProfile: true },
     });
     // demo university
     await prisma.user.create({
@@ -541,14 +542,14 @@ async function main() {
             universityProfile: { create: { name: 'Demo Institute of Technology', location: 'Bengaluru, Karnataka', tier: 1, status: 'ACTIVE' } },
         },
     });
-    // demo recruiter (attached to first company)
+    // demo recruiter (attached to demo company)
     await prisma.user.create({
         data: {
             email: 'recruiter@demo.in',
             password: passwordHash,
             role: Role.RECRUITER,
             cnid: randomCnid('REC'),
-            recruiterProfile: { create: { companyId: companies[0]!.profile.id, name: 'Demo Recruiter' } },
+            recruiterProfile: { create: { companyId: demoCompany.companyProfile!.id, name: 'Demo Recruiter' } },
         },
     });
     // touch demoStudent so the linter doesn't complain about unused

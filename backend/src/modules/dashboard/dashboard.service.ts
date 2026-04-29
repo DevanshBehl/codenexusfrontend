@@ -139,7 +139,7 @@ export const getCompanyDashboard = async (userId: string) => {
     if (!company) throw new ApiError(404, "Company profile not found");
 
     const partnerUniversities = await prisma.companyUniversity.findMany({
-        where: { companyId: company.id },
+        where: { companyId: company.id, status: "APPROVED" },
         include: {
             university: {
                 select: {
@@ -290,7 +290,15 @@ export const getUniversityDashboard = async (userId: string) => {
     const available = students.filter((s) => s.status === "AVAILABLE").length;
 
     const partnerCompanies = await prisma.companyUniversity.count({
-        where: { universityId: university.id },
+        where: { universityId: university.id, status: "APPROVED" },
+    });
+
+    const pendingRequests = await prisma.companyUniversity.findMany({
+        where: { universityId: university.id, status: "PENDING" },
+        include: {
+            company: { select: { id: true, name: true, industry: true, description: true } },
+        },
+        orderBy: { createdAt: "desc" },
     });
 
     const now = new Date();
@@ -304,12 +312,12 @@ export const getUniversityDashboard = async (userId: string) => {
         include: { company: { select: { name: true } } },
     });
 
-    // Recent drives = contests from partner companies
+    // Recent drives = contests from approved partner companies
     const recentDrives = await prisma.contest.findMany({
         where: {
             company: {
                 partnerUniversities: {
-                    some: { universityId: university.id },
+                    some: { universityId: university.id, status: "APPROVED" },
                 },
             },
         },
@@ -374,6 +382,13 @@ export const getUniversityDashboard = async (userId: string) => {
             company: w.company.name,
             scheduledAt: w.scheduledAt,
             durationMins: w.durationMins,
+        })),
+        pendingRequests: pendingRequests.map((r) => ({
+            companyId: r.company.id,
+            companyName: r.company.name,
+            industry: r.company.industry,
+            description: r.company.description,
+            requestedAt: r.createdAt,
         })),
     };
 };
