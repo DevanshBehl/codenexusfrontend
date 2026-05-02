@@ -1,5 +1,9 @@
 const API_BASE = '/api/v1';
 
+const IS_MOCK_MODE = import.meta.env.VITE_MOCK_API === 'true';
+
+import { getMockResponse } from './mockApi';
+
 interface ApiResponse<T> {
     success: boolean;
     statusCode: number;
@@ -46,6 +50,14 @@ class ApiClient {
         body?: unknown,
         requiresAuth: boolean = true
     ): Promise<ApiResponse<T>> {
+        if (IS_MOCK_MODE) {
+            const mockRes = getMockResponse(path, method, body);
+            if (!mockRes.success) {
+                throw new ApiRequestError(mockRes.message, mockRes.statusCode);
+            }
+            return mockRes as ApiResponse<T>;
+        }
+
         const headers: Record<string, string> = {
             'Content-Type': 'application/json',
         };

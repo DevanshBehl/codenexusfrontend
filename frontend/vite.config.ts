@@ -1,7 +1,9 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-// https://vite.dev/config/
+
+const shouldProxy = process.env.VITE_MOCK_API !== 'true';
+
 export default defineConfig({
   plugins: [
     tailwindcss(),
@@ -9,7 +11,7 @@ export default defineConfig({
   ],
   server: {
     host: '0.0.0.0',
-    proxy: {
+    proxy: shouldProxy ? {
       '/api': {
         target: 'http://localhost:8000',
         changeOrigin: true,
@@ -17,7 +19,7 @@ export default defineConfig({
       '/socket.io': {
         target: 'http://localhost:8000',
         ws: true,
-      }
-    }
-  }
+      },
+    } : undefined,
+  },
 })
